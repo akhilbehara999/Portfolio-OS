@@ -6,6 +6,8 @@ import type { DeviceMode } from '../types/os.types';
 
 interface OSState {
   bootStatus: BootStatus;
+  bootProgress: number;
+  bootMessage: string;
   deviceMode: DeviceMode;
   isLocked: boolean;
   uptime: number;
@@ -14,6 +16,8 @@ interface OSState {
 
 interface OSActions {
   boot: () => Promise<void>;
+  setBootProgress: (progress: number) => void;
+  setBootMessage: (message: string) => void;
   lock: () => void;
   unlock: (pin?: string) => void;
   sleep: () => void;
@@ -27,12 +31,15 @@ export const useOSStore = create<OSState & OSActions>()(
   persist(
     immer((set) => ({
       bootStatus: BootStatus.COLD_START,
+      bootProgress: 0,
+      bootMessage: 'Initializing...',
       deviceMode: 'desktop',
       isLocked: false,
       uptime: 0,
       currentTime: new Date(),
 
       boot: async () => {
+        // Fallback simple boot if runBootSequence is not used
         set((state) => { state.bootStatus = BootStatus.BOOTING; });
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -44,6 +51,9 @@ export const useOSStore = create<OSState & OSActions>()(
           state.uptime = 0;
         });
       },
+
+      setBootProgress: (progress) => set((state) => { state.bootProgress = progress; }),
+      setBootMessage: (message) => set((state) => { state.bootMessage = message; }),
 
       lock: () => set((state) => { state.isLocked = true; }),
       unlock: () => set((state) => { state.isLocked = false; }),
