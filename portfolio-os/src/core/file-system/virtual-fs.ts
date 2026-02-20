@@ -1,4 +1,8 @@
-import { type FileSystemNode, type FileSystemNodeType, FileType } from '../../types/filesystem.types';
+import {
+  type FileSystemNode,
+  type FileSystemNodeType,
+  FileType,
+} from '../../types/filesystem.types';
 
 export class VirtualFileSystem {
   private static instance: VirtualFileSystem;
@@ -34,8 +38,22 @@ export class VirtualFileSystem {
 
     // Documents
     this.createNode('documents', 'Documents', 'folder', `${userPath}/Documents`, userId);
-    this.createNode('resume', 'Resume.pdf', 'file', `${userPath}/Documents/Resume.pdf`, 'documents', { fileType: FileType.PDF });
-    this.createNode('cover_letter', 'CoverLetter.md', 'file', `${userPath}/Documents/CoverLetter.md`, 'documents', { fileType: FileType.MARKDOWN });
+    this.createNode(
+      'resume',
+      'Resume.pdf',
+      'file',
+      `${userPath}/Documents/Resume.pdf`,
+      'documents',
+      { fileType: FileType.PDF }
+    );
+    this.createNode(
+      'cover_letter',
+      'CoverLetter.md',
+      'file',
+      `${userPath}/Documents/CoverLetter.md`,
+      'documents',
+      { fileType: FileType.MARKDOWN }
+    );
 
     // Projects
     this.createNode('projects', 'Projects', 'folder', `${userPath}/Projects`, userId);
@@ -47,8 +65,16 @@ export class VirtualFileSystem {
 
     // Pictures
     this.createNode('pictures', 'Pictures', 'folder', `${userPath}/Pictures`, userId);
-    this.createNode('screenshots', 'Screenshots', 'folder', `${userPath}/Pictures/Screenshots`, 'pictures');
-    this.createNode('avatar', 'Avatar.png', 'file', `${userPath}/Pictures/Avatar.png`, 'pictures', { fileType: FileType.IMAGE });
+    this.createNode(
+      'screenshots',
+      'Screenshots',
+      'folder',
+      `${userPath}/Pictures/Screenshots`,
+      'pictures'
+    );
+    this.createNode('avatar', 'Avatar.png', 'file', `${userPath}/Pictures/Avatar.png`, 'pictures', {
+      fileType: FileType.IMAGE,
+    });
 
     // .config
     this.createNode('config', '.config', 'folder', `${userPath}/.config`, userId);

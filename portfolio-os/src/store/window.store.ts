@@ -38,18 +38,18 @@ export const useWindowStore = create<WindowStoreState & WindowStoreActions>()(
       nextZIndex: INITIAL_Z_INDEX,
 
       openWindow: (appId, options) => {
-        const app = APP_REGISTRY.find(a => a.id === appId);
+        const app = APP_REGISTRY.find((a) => a.id === appId);
         if (!app) return;
 
         // Check singleton
         if (app.singleton) {
-          const existing = Array.from(get().windows.values()).find(w => w.appId === appId);
+          const existing = Array.from(get().windows.values()).find((w) => w.appId === appId);
           if (existing) {
             get().focusWindow(existing.id);
             if (existing.isMinimized) {
-              set(state => {
-                 const w = state.windows.get(existing.id);
-                 if (w) w.isMinimized = false;
+              set((state) => {
+                const w = state.windows.get(existing.id);
+                if (w) w.isMinimized = false;
               });
             }
             return;
@@ -67,7 +67,7 @@ export const useWindowStore = create<WindowStoreState & WindowStoreActions>()(
         const startY = 50;
         const position = {
           x: startX + (offset % 300),
-          y: startY + (offset % 200)
+          y: startY + (offset % 200),
         };
 
         const newWindow: WindowState = {
@@ -91,7 +91,7 @@ export const useWindowStore = create<WindowStoreState & WindowStoreActions>()(
           metadata: options?.metadata,
         };
 
-        set(state => {
+        set((state) => {
           state.windows.set(id, newWindow);
           state.activeWindowId = id;
           state.windowOrder.push(id);
@@ -100,23 +100,23 @@ export const useWindowStore = create<WindowStoreState & WindowStoreActions>()(
 
         // Animation delay for opening
         setTimeout(() => {
-           set(state => {
-             const w = state.windows.get(id);
-             if (w) w.state = 'open';
-           });
+          set((state) => {
+            const w = state.windows.get(id);
+            if (w) w.state = 'open';
+          });
         }, 300);
       },
 
       closeWindow: (id) => {
-        set(state => {
-           const w = state.windows.get(id);
-           if (w) w.state = 'closing';
+        set((state) => {
+          const w = state.windows.get(id);
+          if (w) w.state = 'closing';
         });
 
         setTimeout(() => {
-          set(state => {
+          set((state) => {
             state.windows.delete(id);
-            state.windowOrder = state.windowOrder.filter(wId => wId !== id);
+            state.windowOrder = state.windowOrder.filter((wId) => wId !== id);
             if (state.activeWindowId === id) {
               const last = state.windowOrder[state.windowOrder.length - 1];
               state.activeWindowId = last || null;
@@ -130,146 +130,146 @@ export const useWindowStore = create<WindowStoreState & WindowStoreActions>()(
       },
 
       minimizeWindow: (id) => {
-         set(state => {
-           const w = state.windows.get(id);
-           if (w) {
-             w.isMinimized = true;
-             w.isFocused = false;
-           }
-           if (state.activeWindowId === id) {
-             state.activeWindowId = null;
-           }
-         });
+        set((state) => {
+          const w = state.windows.get(id);
+          if (w) {
+            w.isMinimized = true;
+            w.isFocused = false;
+          }
+          if (state.activeWindowId === id) {
+            state.activeWindowId = null;
+          }
+        });
       },
 
       maximizeWindow: (id) => {
-        set(state => {
+        set((state) => {
           const w = state.windows.get(id);
           if (w) {
-             w.isMaximized = !w.isMaximized;
-             if (w.isMaximized) {
-               w.isFocused = true;
-               state.activeWindowId = id;
-               w.zIndex = state.nextZIndex;
-               state.nextZIndex++;
+            w.isMaximized = !w.isMaximized;
+            if (w.isMaximized) {
+              w.isFocused = true;
+              state.activeWindowId = id;
+              w.zIndex = state.nextZIndex;
+              state.nextZIndex++;
 
-               const idx = state.windowOrder.indexOf(id);
-               if (idx !== -1) {
-                  state.windowOrder.splice(idx, 1);
-                  state.windowOrder.push(id);
-               }
-             }
+              const idx = state.windowOrder.indexOf(id);
+              if (idx !== -1) {
+                state.windowOrder.splice(idx, 1);
+                state.windowOrder.push(id);
+              }
+            }
           }
         });
       },
 
       focusWindow: (id) => {
-        set(state => {
-           const w = state.windows.get(id);
-           if (!w) return;
+        set((state) => {
+          const w = state.windows.get(id);
+          if (!w) return;
 
-           if (state.activeWindowId === id) return;
+          if (state.activeWindowId === id) return;
 
-           if (state.activeWindowId) {
-             const current = state.windows.get(state.activeWindowId);
-             if (current) current.isFocused = false;
-           }
+          if (state.activeWindowId) {
+            const current = state.windows.get(state.activeWindowId);
+            if (current) current.isFocused = false;
+          }
 
-           w.isFocused = true;
-           w.isMinimized = false;
-           state.activeWindowId = id;
+          w.isFocused = true;
+          w.isMinimized = false;
+          state.activeWindowId = id;
 
-           w.zIndex = state.nextZIndex;
-           state.nextZIndex++;
+          w.zIndex = state.nextZIndex;
+          state.nextZIndex++;
 
-           const idx = state.windowOrder.indexOf(id);
-           if (idx !== -1) {
-              state.windowOrder.splice(idx, 1);
-              state.windowOrder.push(id);
-           }
+          const idx = state.windowOrder.indexOf(id);
+          if (idx !== -1) {
+            state.windowOrder.splice(idx, 1);
+            state.windowOrder.push(id);
+          }
         });
       },
 
       moveWindow: (id, pos) => {
-        set(state => {
-           const w = state.windows.get(id);
-           if (w && !w.isMaximized) {
-             w.position = pos;
-           }
+        set((state) => {
+          const w = state.windows.get(id);
+          if (w && !w.isMaximized) {
+            w.position = pos;
+          }
         });
       },
 
       resizeWindow: (id, size) => {
-        set(state => {
-           const w = state.windows.get(id);
-           if (w && !w.isMaximized) {
-             w.size = size;
-           }
+        set((state) => {
+          const w = state.windows.get(id);
+          if (w && !w.isMaximized) {
+            w.size = size;
+          }
         });
       },
 
       snapWindow: (id, direction) => {
-         if (typeof window === 'undefined') return;
+        if (typeof window === 'undefined') return;
 
-         set(state => {
-            const w = state.windows.get(id);
-            if (!w) return;
+        set((state) => {
+          const w = state.windows.get(id);
+          if (!w) return;
 
-            const screenW = window.innerWidth;
-            const screenH = window.innerHeight; // excluding taskbar if possible, but hardcoded here
+          const screenW = window.innerWidth;
+          const screenH = window.innerHeight; // excluding taskbar if possible, but hardcoded here
 
-            if (direction === 'maximize') {
-               w.isMaximized = true;
-            } else if (direction === 'left') {
-               w.isMaximized = false;
-               w.position = { x: 0, y: 0 };
-               w.size = { width: screenW / 2, height: screenH - 48 };
-            } else if (direction === 'right') {
-               w.isMaximized = false;
-               w.position = { x: screenW / 2, y: 0 };
-               w.size = { width: screenW / 2, height: screenH - 48 };
-            } else if (direction === 'top') {
-               w.isMaximized = true;
-            }
-         });
+          if (direction === 'maximize') {
+            w.isMaximized = true;
+          } else if (direction === 'left') {
+            w.isMaximized = false;
+            w.position = { x: 0, y: 0 };
+            w.size = { width: screenW / 2, height: screenH - 48 };
+          } else if (direction === 'right') {
+            w.isMaximized = false;
+            w.position = { x: screenW / 2, y: 0 };
+            w.size = { width: screenW / 2, height: screenH - 48 };
+          } else if (direction === 'top') {
+            w.isMaximized = true;
+          }
+        });
       },
 
       minimizeAll: () => {
-         set(state => {
-            state.windows.forEach(w => {
-               w.isMinimized = true;
-               w.isFocused = false;
-            });
-            state.activeWindowId = null;
-         });
+        set((state) => {
+          state.windows.forEach((w) => {
+            w.isMinimized = true;
+            w.isFocused = false;
+          });
+          state.activeWindowId = null;
+        });
       },
 
       restoreAll: () => {
-         set(state => {
-            state.windows.forEach(w => {
-               w.isMinimized = false;
-            });
-            if (state.windowOrder.length > 0) {
-               const lastId = state.windowOrder[state.windowOrder.length - 1];
-               const w = state.windows.get(lastId);
-               if (w) {
-                  w.isFocused = true;
-                  state.activeWindowId = lastId;
-               }
+        set((state) => {
+          state.windows.forEach((w) => {
+            w.isMinimized = false;
+          });
+          if (state.windowOrder.length > 0) {
+            const lastId = state.windowOrder[state.windowOrder.length - 1];
+            const w = state.windows.get(lastId);
+            if (w) {
+              w.isFocused = true;
+              state.activeWindowId = lastId;
             }
-         });
+          }
+        });
       },
 
       closeAll: () => {
-         set(state => {
-            state.windows.clear();
-            state.windowOrder = [];
-            state.activeWindowId = null;
-         });
+        set((state) => {
+          state.windows.clear();
+          state.windowOrder = [];
+          state.activeWindowId = null;
+        });
       },
 
       getWindowsByApp: (appId) => {
-         return Array.from(get().windows.values()).filter(w => w.appId === appId);
+        return Array.from(get().windows.values()).filter((w) => w.appId === appId);
       },
     })),
     {
@@ -277,35 +277,35 @@ export const useWindowStore = create<WindowStoreState & WindowStoreActions>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         windows: Array.from(state.windows.entries()).map(([k, v]) => {
-           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-           const { component, ...rest } = v;
-           return [k, rest];
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { component, ...rest } = v;
+          return [k, rest];
         }),
         windowOrder: state.windowOrder,
         activeWindowId: state.activeWindowId,
         nextZIndex: state.nextZIndex,
       }),
       merge: (persistedState: any, currentState) => {
-         if (!persistedState) return currentState;
+        if (!persistedState) return currentState;
 
-         const windows = new Map<string, WindowState>();
-         if (persistedState.windows && Array.isArray(persistedState.windows)) {
-            persistedState.windows.forEach(([id, wState]: [string, any]) => {
-               const app = APP_REGISTRY.find(a => a.id === wState.appId);
-               if (app) {
-                  windows.set(id, {
-                     ...wState,
-                     component: app.component,
-                  });
-               }
-            });
-         }
+        const windows = new Map<string, WindowState>();
+        if (persistedState.windows && Array.isArray(persistedState.windows)) {
+          persistedState.windows.forEach(([id, wState]: [string, any]) => {
+            const app = APP_REGISTRY.find((a) => a.id === wState.appId);
+            if (app) {
+              windows.set(id, {
+                ...wState,
+                component: app.component,
+              });
+            }
+          });
+        }
 
-         return {
-            ...currentState,
-            ...persistedState,
-            windows,
-         };
+        return {
+          ...currentState,
+          ...persistedState,
+          windows,
+        };
       },
     }
   )

@@ -15,7 +15,7 @@ export const FileType = {
   UNKNOWN: 'UNKNOWN',
 } as const;
 
-export type FileType = typeof FileType[keyof typeof FileType];
+export type FileType = (typeof FileType)[keyof typeof FileType];
 
 export type FileSystemNodeType = 'file' | 'folder' | 'shortcut';
 

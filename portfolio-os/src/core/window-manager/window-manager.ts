@@ -98,16 +98,11 @@ export const calculateCenterPosition = (
   return { x: Math.max(0, x), y: Math.max(0, y) };
 };
 
-export const getWindowsInZOrder = (
-  windows: Map<string, WindowState>
-): WindowState[] => {
+export const getWindowsInZOrder = (windows: Map<string, WindowState>): WindowState[] => {
   return Array.from(windows.values()).sort((a, b) => a.zIndex - b.zIndex);
 };
 
-export const detectWindowCollision = (
-  windowA: WindowState,
-  windowB: WindowState
-): boolean => {
+export const detectWindowCollision = (windowA: WindowState, windowB: WindowState): boolean => {
   return (
     windowA.position.x < windowB.position.x + windowB.size.width &&
     windowA.position.x + windowA.size.width > windowB.position.x &&

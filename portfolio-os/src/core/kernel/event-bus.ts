@@ -14,7 +14,7 @@ export const EventType = {
   BOOT_PROGRESS: 'BOOT_PROGRESS',
 } as const;
 
-export type EventType = typeof EventType[keyof typeof EventType];
+export type EventType = (typeof EventType)[keyof typeof EventType];
 
 export interface EventPayloads {
   [EventType.WINDOW_OPENED]: { windowId: string };

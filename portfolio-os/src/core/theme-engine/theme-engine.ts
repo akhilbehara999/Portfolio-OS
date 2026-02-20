@@ -29,11 +29,13 @@ export const applyTheme = (theme: ThemePreset): void => {
 export const applyWallpaper = (wallpaper: WallpaperConfig): void => {
   // If it's a static image or gradient, we can set it on body or a layer
   if (wallpaper.type === 'static' || wallpaper.type === 'gradient') {
-     document.documentElement.style.setProperty('--os-wallpaper', `url(${wallpaper.source})`);
+    document.documentElement.style.setProperty('--os-wallpaper', `url(${wallpaper.source})`);
   }
 };
 
-export const generateAccentVariants = (baseColor: string): { light: string; dark: string; transparent: string } => {
+export const generateAccentVariants = (
+  baseColor: string
+): { light: string; dark: string; transparent: string } => {
   return {
     light: `color-mix(in srgb, ${baseColor}, white 20%)`,
     dark: `color-mix(in srgb, ${baseColor}, black 20%)`,
@@ -42,29 +44,29 @@ export const generateAccentVariants = (baseColor: string): { light: string; dark
 };
 
 export const interpolateTheme = (from: ThemePreset, to: ThemePreset, progress: number): void => {
-    // For now, if progress > 0.5, apply 'to', else 'from'.
-    // True interpolation requires parsing colors which is complex without a library.
-    if (progress > 0.5) {
-        applyTheme(to);
-    } else {
-        applyTheme(from);
-    }
+  // For now, if progress > 0.5, apply 'to', else 'from'.
+  // True interpolation requires parsing colors which is complex without a library.
+  if (progress > 0.5) {
+    applyTheme(to);
+  } else {
+    applyTheme(from);
+  }
 };
 
 // System dark mode listener
-export const initSystemThemeListener = (callback: (isDark: boolean) => void): () => void => {
-    if (typeof window === 'undefined' || !window.matchMedia) return () => {};
+export const initSystemThemeListener = (callback: (isDark: boolean) => void): (() => void) => {
+  if (typeof window === 'undefined' || !window.matchMedia) return () => {};
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handler = (e: MediaQueryListEvent) => {
-        callback(e.matches);
-    };
+  const handler = (e: MediaQueryListEvent) => {
+    callback(e.matches);
+  };
 
-    mediaQuery.addEventListener('change', handler);
+  mediaQuery.addEventListener('change', handler);
 
-    // Initial check
-    callback(mediaQuery.matches);
+  // Initial check
+  callback(mediaQuery.matches);
 
-    return () => mediaQuery.removeEventListener('change', handler);
+  return () => mediaQuery.removeEventListener('change', handler);
 };

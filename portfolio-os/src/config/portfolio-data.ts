@@ -6,7 +6,14 @@ export interface SocialLink {
 
 export interface Skill {
   name: string;
-  category: 'Languages' | 'Frameworks' | 'AI/ML' | 'Data Science' | 'Databases' | 'DevOps' | 'Tools';
+  category:
+    | 'Languages'
+    | 'Frameworks'
+    | 'AI/ML'
+    | 'Data Science'
+    | 'Databases'
+    | 'DevOps'
+    | 'Tools';
   proficiency: number; // 0-100
   icon: string;
 }

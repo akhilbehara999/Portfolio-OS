@@ -31,6 +31,10 @@ export class KeyboardHandler {
     this.shortcuts.delete(shortcutId);
   }
 
+  public isShortcutRegistered(shortcutId: string): boolean {
+    return this.shortcuts.has(shortcutId);
+  }
+
   public setEnabled(enabled: boolean): void {
     this.enabled = enabled;
   }
@@ -51,7 +55,7 @@ export class KeyboardHandler {
   }
 
   private matchesShortcut(event: KeyboardEvent, shortcut: KeyboardShortcut): boolean {
-    const keys = shortcut.keys.map(k => k.toLowerCase());
+    const keys = shortcut.keys.map((k) => k.toLowerCase());
 
     // Check modifiers
     const meta = keys.includes('meta') || keys.includes('cmd') || keys.includes('command');
@@ -66,8 +70,8 @@ export class KeyboardHandler {
 
     // Check main key
     // Filter out modifiers from the shortcut definition to find the main key
-    const mainKeys = keys.filter(k =>
-      !['meta', 'cmd', 'command', 'ctrl', 'control', 'alt', 'option', 'shift'].includes(k)
+    const mainKeys = keys.filter(
+      (k) => !['meta', 'cmd', 'command', 'ctrl', 'control', 'alt', 'option', 'shift'].includes(k)
     );
 
     if (mainKeys.length === 0) return false;

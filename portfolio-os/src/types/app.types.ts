@@ -11,7 +11,7 @@ export const AppCategory = {
   PRODUCTIVITY: 'PRODUCTIVITY',
 } as const;
 
-export type AppCategory = typeof AppCategory[keyof typeof AppCategory];
+export type AppCategory = (typeof AppCategory)[keyof typeof AppCategory];
 
 export interface AppDefinition {
   /** Unique identifier for the application */
