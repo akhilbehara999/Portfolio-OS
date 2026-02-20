@@ -31,20 +31,20 @@ class NotificationEngine {
       lastActive.title === notification.title &&
       lastActive.message === notification.message
     ) {
-        // Already exists as last notification, maybe update timestamp or count?
-        // For now, let's just skip duplicate pushing to avoid spam.
-        return;
+      // Already exists as last notification, maybe update timestamp or count?
+      // For now, let's just skip duplicate pushing to avoid spam.
+      return;
     }
 
     // Check queue as well
     const lastQueued = this.queue[this.queue.length - 1];
     if (
-        lastQueued &&
-        lastQueued.appId === notification.appId &&
-        lastQueued.title === notification.title &&
-        lastQueued.message === notification.message
+      lastQueued &&
+      lastQueued.appId === notification.appId &&
+      lastQueued.title === notification.title &&
+      lastQueued.message === notification.message
     ) {
-        return;
+      return;
     }
 
     this.queue.push(notification);

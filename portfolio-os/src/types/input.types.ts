@@ -26,7 +26,7 @@ export const GestureType = {
   DOUBLE_TAP: 'DOUBLE_TAP',
 } as const;
 
-export type GestureType = typeof GestureType[keyof typeof GestureType];
+export type GestureType = (typeof GestureType)[keyof typeof GestureType];
 
 export interface GestureConfig {
   /** The type of gesture to listen for */

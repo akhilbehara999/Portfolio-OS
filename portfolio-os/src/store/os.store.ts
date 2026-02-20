@@ -40,10 +40,14 @@ export const useOSStore = create<OSState & OSActions>()(
 
       boot: async () => {
         // Fallback simple boot if runBootSequence is not used
-        set((state) => { state.bootStatus = BootStatus.BOOTING; });
+        set((state) => {
+          state.bootStatus = BootStatus.BOOTING;
+        });
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        set((state) => { state.bootStatus = BootStatus.LOADING_SHELL; });
+        set((state) => {
+          state.bootStatus = BootStatus.LOADING_SHELL;
+        });
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
         set((state) => {
@@ -52,16 +56,43 @@ export const useOSStore = create<OSState & OSActions>()(
         });
       },
 
-      setBootProgress: (progress) => set((state) => { state.bootProgress = progress; }),
-      setBootMessage: (message) => set((state) => { state.bootMessage = message; }),
+      setBootProgress: (progress) =>
+        set((state) => {
+          state.bootProgress = progress;
+        }),
+      setBootMessage: (message) =>
+        set((state) => {
+          state.bootMessage = message;
+        }),
 
-      lock: () => set((state) => { state.isLocked = true; }),
-      unlock: () => set((state) => { state.isLocked = false; }),
-      sleep: () => set((state) => { state.bootStatus = BootStatus.SLEEP; }),
-      wake: () => set((state) => { state.bootStatus = BootStatus.READY; }),
-      setDeviceMode: (mode) => set((state) => { state.deviceMode = mode; }),
-      updateTime: () => set((state) => { state.currentTime = new Date(); }),
-      incrementUptime: () => set((state) => { state.uptime += 1; }),
+      lock: () =>
+        set((state) => {
+          state.isLocked = true;
+        }),
+      unlock: () =>
+        set((state) => {
+          state.isLocked = false;
+        }),
+      sleep: () =>
+        set((state) => {
+          state.bootStatus = BootStatus.SLEEP;
+        }),
+      wake: () =>
+        set((state) => {
+          state.bootStatus = BootStatus.READY;
+        }),
+      setDeviceMode: (mode) =>
+        set((state) => {
+          state.deviceMode = mode;
+        }),
+      updateTime: () =>
+        set((state) => {
+          state.currentTime = new Date();
+        }),
+      incrementUptime: () =>
+        set((state) => {
+          state.uptime += 1;
+        }),
     })),
     {
       name: 'portfolio-os-state',
@@ -69,7 +100,8 @@ export const useOSStore = create<OSState & OSActions>()(
         isLocked: state.isLocked,
         deviceMode: state.deviceMode,
         uptime: state.uptime,
-        bootStatus: state.bootStatus === BootStatus.READY ? BootStatus.READY : BootStatus.COLD_START,
+        bootStatus:
+          state.bootStatus === BootStatus.READY ? BootStatus.READY : BootStatus.COLD_START,
       }),
     }
   )

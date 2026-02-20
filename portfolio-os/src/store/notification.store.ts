@@ -52,7 +52,7 @@ export const useNotificationStore = create<NotificationState & NotificationActio
       // Auto dismiss
       if (!notification.persistent) {
         const timeoutId = setTimeout(() => {
-           get().dismissNotification(id);
+          get().dismissNotification(id);
         }, notification.duration);
         timeouts.set(id, timeoutId);
       }
@@ -66,7 +66,7 @@ export const useNotificationStore = create<NotificationState & NotificationActio
       }
 
       set((state) => {
-        const index = state.notifications.findIndex(n => n.id === id);
+        const index = state.notifications.findIndex((n) => n.id === id);
         if (index !== -1) {
           if (!state.notifications[index].isRead) {
             state.unreadCount = Math.max(0, state.unreadCount - 1);
@@ -78,13 +78,13 @@ export const useNotificationStore = create<NotificationState & NotificationActio
 
     markAsRead: (id) => {
       set((state) => {
-        const notification = state.notifications.find(n => n.id === id);
+        const notification = state.notifications.find((n) => n.id === id);
         if (notification && !notification.isRead) {
           notification.isRead = true;
           state.unreadCount = Math.max(0, state.unreadCount - 1);
         }
 
-        const histNotification = state.notificationHistory.find(n => n.id === id);
+        const histNotification = state.notificationHistory.find((n) => n.id === id);
         if (histNotification) {
           histNotification.isRead = true;
         }
@@ -103,7 +103,7 @@ export const useNotificationStore = create<NotificationState & NotificationActio
     },
 
     getByApp: (appId) => {
-      return get().notificationHistory.filter(n => n.appId === appId);
+      return get().notificationHistory.filter((n) => n.appId === appId);
     },
   }))
 );

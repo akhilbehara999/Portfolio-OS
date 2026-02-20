@@ -13,7 +13,7 @@ export const BootStatus = {
   SLEEP: 'SLEEP',
 } as const;
 
-export type BootStatus = typeof BootStatus[keyof typeof BootStatus];
+export type BootStatus = (typeof BootStatus)[keyof typeof BootStatus];
 
 export type DeviceMode = 'mobile' | 'tablet' | 'desktop';
 

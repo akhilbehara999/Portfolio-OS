@@ -28,7 +28,7 @@ interface ThemeActions {
 const DEFAULT_THEME = THEME_PRESETS[0];
 const DEFAULT_WALLPAPER = WALLPAPERS[0];
 
-const camelToKebab = (str: string) => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+const camelToKebab = (str: string) => str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 
 const updateCSSVariables = (state: ThemeState) => {
   if (typeof document === 'undefined') return;
@@ -53,7 +53,7 @@ const updateCSSVariables = (state: ThemeState) => {
 
   // Shadows
   Object.entries(state.currentTheme.shadows).forEach(([key, value]) => {
-     root.style.setProperty(`--shadow-${key}`, value);
+    root.style.setProperty(`--shadow-${key}`, value);
   });
 
   // Dark mode
@@ -76,9 +76,9 @@ export const useThemeStore = create<ThemeState & ThemeActions>()(
       fontScale: 1,
 
       setTheme: (presetId) => {
-        const theme = THEME_PRESETS.find(t => t.id === presetId);
+        const theme = THEME_PRESETS.find((t) => t.id === presetId);
         if (theme) {
-          set(state => {
+          set((state) => {
             state.currentTheme = theme;
             state.accentColor = theme.colors.accent;
             state.transparency = theme.glassOpacity;
@@ -86,20 +86,38 @@ export const useThemeStore = create<ThemeState & ThemeActions>()(
         }
       },
       setWallpaper: (id) => {
-        const wp = WALLPAPERS.find(w => w.id === id);
-        if (wp) set(state => { state.currentWallpaper = wp; });
+        const wp = WALLPAPERS.find((w) => w.id === id);
+        if (wp)
+          set((state) => {
+            state.currentWallpaper = wp;
+          });
       },
-      toggleDarkMode: () => set(state => { state.isDarkMode = !state.isDarkMode; }),
-      setAccentColor: (color) => set(state => { state.accentColor = color; }),
-      setTransparency: (level) => set(state => { state.transparency = level; }),
-      setAnimationSpeed: (speed) => set(state => { state.animationSpeed = speed; }),
-      setFontScale: (scale) => set(state => { state.fontScale = scale; }),
+      toggleDarkMode: () =>
+        set((state) => {
+          state.isDarkMode = !state.isDarkMode;
+        }),
+      setAccentColor: (color) =>
+        set((state) => {
+          state.accentColor = color;
+        }),
+      setTransparency: (level) =>
+        set((state) => {
+          state.transparency = level;
+        }),
+      setAnimationSpeed: (speed) =>
+        set((state) => {
+          state.animationSpeed = speed;
+        }),
+      setFontScale: (scale) =>
+        set((state) => {
+          state.fontScale = scale;
+        }),
     })),
     {
       name: 'portfolio-theme-storage',
       onRehydrateStorage: () => (state) => {
         if (state) updateCSSVariables(state);
-      }
+      },
     }
   )
 );

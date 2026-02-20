@@ -7,7 +7,7 @@ interface BootPhase {
   duration: number; // Duration of this phase in ms
   message: string;
   startProgress: number; // Progress at start of phase
-  endProgress: number;   // Progress at end of phase
+  endProgress: number; // Progress at end of phase
 }
 
 const BOOT_PHASES: BootPhase[] = [
@@ -66,7 +66,8 @@ export class BootSequence {
     const store = useOSStore.getState();
 
     // Check if we should fast boot
-    const hasBootedBefore = typeof localStorage !== 'undefined' && localStorage.getItem('hasBootedBefore') === 'true';
+    const hasBootedBefore =
+      typeof localStorage !== 'undefined' && localStorage.getItem('hasBootedBefore') === 'true';
     const isFastBoot = hasBootedBefore;
 
     // Set initial state
@@ -88,15 +89,16 @@ export class BootSequence {
       while (elapsed < duration) {
         elapsed = Date.now() - startTime;
         const phaseProgress = Math.min(elapsed / duration, 1);
-        const totalProgress = phase.startProgress + (phase.endProgress - phase.startProgress) * phaseProgress;
+        const totalProgress =
+          phase.startProgress + (phase.endProgress - phase.startProgress) * phaseProgress;
 
         store.setBootProgress(Math.floor(totalProgress));
         eventBus.emit(EventType.BOOT_PROGRESS, {
-            progress: Math.floor(totalProgress),
-            message: phase.message
+          progress: Math.floor(totalProgress),
+          message: phase.message,
         });
 
-        await new Promise(resolve => setTimeout(resolve, interval));
+        await new Promise((resolve) => setTimeout(resolve, interval));
       }
 
       // Ensure we hit the end progress of the phase
@@ -105,14 +107,14 @@ export class BootSequence {
 
     // Mark as booted in localStorage
     if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('hasBootedBefore', 'true');
+      localStorage.setItem('hasBootedBefore', 'true');
     }
 
     // Finalize
     useOSStore.setState({
-        bootStatus: BootStatus.READY,
-        bootProgress: 100,
-        bootMessage: 'System Ready'
+      bootStatus: BootStatus.READY,
+      bootProgress: 100,
+      bootMessage: 'System Ready',
     });
   }
 }

@@ -41,7 +41,7 @@ export const useGesture = (
 
         if (config.type === GestureType.LONG_PRESS) {
           longPressTimer.current = setTimeout(() => {
-             config.onGesture(e);
+            config.onGesture(e);
           }, LONG_PRESS_DELAY);
         }
       } else if (activePointers.current.size === 2) {
@@ -52,8 +52,8 @@ export const useGesture = (
 
         // Cancel other gestures if pinching starts?
         if (longPressTimer.current) {
-            clearTimeout(longPressTimer.current);
-            longPressTimer.current = null;
+          clearTimeout(longPressTimer.current);
+          longPressTimer.current = null;
         }
       }
     };
@@ -65,29 +65,32 @@ export const useGesture = (
 
       // If moving significantly, cancel long press
       if (config.type === GestureType.LONG_PRESS && longPressTimer.current && startPos.current) {
-         const currentX = e.clientX;
-         const currentY = e.clientY;
-         const dist = Math.hypot(currentX - startPos.current.x, currentY - startPos.current.y);
-         if (dist > 10) {
-              clearTimeout(longPressTimer.current);
-              longPressTimer.current = null;
-         }
+        const currentX = e.clientX;
+        const currentY = e.clientY;
+        const dist = Math.hypot(currentX - startPos.current.x, currentY - startPos.current.y);
+        if (dist > 10) {
+          clearTimeout(longPressTimer.current);
+          longPressTimer.current = null;
+        }
       }
 
       // Pinch check
       if (activePointers.current.size === 2 && initialPinchDist.current !== null) {
         const pointers = Array.from(activePointers.current.values());
-        const currentDist = Math.hypot(pointers[0].x - pointers[1].x, pointers[0].y - pointers[1].y);
+        const currentDist = Math.hypot(
+          pointers[0].x - pointers[1].x,
+          pointers[0].y - pointers[1].y
+        );
         const diff = currentDist - initialPinchDist.current;
 
         if (Math.abs(diff) > PINCH_THRESHOLD) {
-            if (config.type === GestureType.PINCH_IN && diff < 0) {
-                config.onGesture(e);
-                initialPinchDist.current = currentDist;
-            } else if (config.type === GestureType.PINCH_OUT && diff > 0) {
-                config.onGesture(e);
-                initialPinchDist.current = currentDist;
-            }
+          if (config.type === GestureType.PINCH_IN && diff < 0) {
+            config.onGesture(e);
+            initialPinchDist.current = currentDist;
+          } else if (config.type === GestureType.PINCH_OUT && diff > 0) {
+            config.onGesture(e);
+            initialPinchDist.current = currentDist;
+          }
         }
       }
     };
@@ -97,7 +100,7 @@ export const useGesture = (
       element.releasePointerCapture(e.pointerId);
 
       if (activePointers.current.size < 2) {
-          initialPinchDist.current = null;
+        initialPinchDist.current = null;
       }
 
       if (config.type === GestureType.LONG_PRESS && longPressTimer.current) {
@@ -117,26 +120,42 @@ export const useGesture = (
 
         // Swipe detection
         if (timeElapsed < 500) {
-            if (config.type === GestureType.SWIPE_LEFT && diffX < -SWIPE_THRESHOLD && absDiffY < absDiffX) {
-                config.onGesture(e);
-            } else if (config.type === GestureType.SWIPE_RIGHT && diffX > SWIPE_THRESHOLD && absDiffY < absDiffX) {
-                config.onGesture(e);
-            } else if (config.type === GestureType.SWIPE_UP && diffY < -SWIPE_THRESHOLD && absDiffX < absDiffY) {
-                config.onGesture(e);
-            } else if (config.type === GestureType.SWIPE_DOWN && diffY > SWIPE_THRESHOLD && absDiffX < absDiffY) {
-                config.onGesture(e);
-            }
+          if (
+            config.type === GestureType.SWIPE_LEFT &&
+            diffX < -SWIPE_THRESHOLD &&
+            absDiffY < absDiffX
+          ) {
+            config.onGesture(e);
+          } else if (
+            config.type === GestureType.SWIPE_RIGHT &&
+            diffX > SWIPE_THRESHOLD &&
+            absDiffY < absDiffX
+          ) {
+            config.onGesture(e);
+          } else if (
+            config.type === GestureType.SWIPE_UP &&
+            diffY < -SWIPE_THRESHOLD &&
+            absDiffX < absDiffY
+          ) {
+            config.onGesture(e);
+          } else if (
+            config.type === GestureType.SWIPE_DOWN &&
+            diffY > SWIPE_THRESHOLD &&
+            absDiffX < absDiffY
+          ) {
+            config.onGesture(e);
+          }
         }
 
         // Double tap detection
         if (config.type === GestureType.DOUBLE_TAP) {
-            const currentTime = Date.now();
-            if (currentTime - lastTapTime.current < DOUBLE_TAP_DELAY) {
+          const currentTime = Date.now();
+          if (currentTime - lastTapTime.current < DOUBLE_TAP_DELAY) {
             config.onGesture(e);
             lastTapTime.current = 0; // Reset
-            } else {
+          } else {
             lastTapTime.current = currentTime;
-            }
+          }
         }
 
         startPos.current = null;
@@ -144,14 +163,14 @@ export const useGesture = (
     };
 
     const handlePointerCancel = (e: PointerEvent) => {
-        activePointers.current.delete(e.pointerId);
-        element.releasePointerCapture(e.pointerId);
-        startPos.current = null;
-        initialPinchDist.current = null;
-        if (longPressTimer.current) {
-            clearTimeout(longPressTimer.current);
-            longPressTimer.current = null;
-        }
+      activePointers.current.delete(e.pointerId);
+      element.releasePointerCapture(e.pointerId);
+      startPos.current = null;
+      initialPinchDist.current = null;
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current);
+        longPressTimer.current = null;
+      }
     };
 
     element.addEventListener('pointerdown', handlePointerDown);
