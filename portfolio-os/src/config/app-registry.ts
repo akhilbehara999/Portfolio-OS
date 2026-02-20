@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { AppDefinition, AppCategory } from '../types/app.types';
+import { type AppDefinition, AppCategory } from '../types/app.types';
 
 export const APP_REGISTRY: AppDefinition[] = [
   {

@@ -1,4 +1,4 @@
-import { KeyboardShortcut } from '../types/input.types';
+import type { KeyboardShortcut } from '../types/input.types';
 
 export const KEYBOARD_SHORTCUTS: KeyboardShortcut[] = [
   {

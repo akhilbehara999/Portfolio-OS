@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNotificationStore } from '../../store/notification.store';
 import { useThemeStore } from '../../store/theme.store';
 import { APP_REGISTRY } from '../../config/app-registry';
@@ -7,19 +7,22 @@ import { LuX, LuBell, LuTrash2 } from 'react-icons/lu';
 import { isToday, formatDistanceToNow } from 'date-fns';
 import * as Icons from 'react-icons/lu';
 
-export const NotificationPanel: React.FC = () => {
-  const { notifications, notificationHistory, dismissNotification, clearAll } = useNotificationStore();
+interface NotificationPanelProps {
+  className?: string;
+}
+
+export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className = "top-12 right-4" }) => {
+  const { notificationHistory, dismissNotification, clearAll } = useNotificationStore();
   const { isDarkMode } = useThemeStore();
 
   // Combine active notifications and history, deduplicating by ID
   const allNotifications = useMemo(() => {
-    const activeIds = new Set(notifications.map(n => n.id));
     // History contains read notifications, active contains unread/active.
     // If we want to show all, we can merge.
     // Usually notification panel shows history too.
     // Let's use notificationHistory which seems to be the full log.
     return [...notificationHistory].sort((a, b) => b.timestamp - a.timestamp);
-  }, [notifications, notificationHistory]);
+  }, [notificationHistory]);
 
   const groupedNotifications = useMemo(() => {
     const today: typeof allNotifications = [];
@@ -53,7 +56,7 @@ export const NotificationPanel: React.FC = () => {
     visible: {
       x: 0,
       opacity: 1,
-      transition: { type: 'spring', damping: 25, stiffness: 200 }
+      transition: { type: 'spring' as const, damping: 25, stiffness: 200 }
     },
     exit: { x: '100%', opacity: 0 }
   };
@@ -69,7 +72,7 @@ export const NotificationPanel: React.FC = () => {
 
   return (
     <motion.div
-      className={`absolute top-12 right-4 w-80 md:w-96 rounded-xl shadow-2xl overflow-hidden z-[50] border flex flex-col max-h-[80vh]
+      className={`absolute ${className} w-80 md:w-96 rounded-xl shadow-2xl overflow-hidden z-[50] border flex flex-col max-h-[80vh]
         ${isDarkMode ? 'bg-gray-900/95 border-gray-700 backdrop-blur-md' : 'bg-white/95 border-gray-200 backdrop-blur-md'}
       `}
       variants={panelVariants}
