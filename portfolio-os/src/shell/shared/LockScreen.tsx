@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { motion, type PanInfo } from 'framer-motion';
 import { useClock } from '../../hooks/useClock';
 import { useOSStore } from '../../store/os.store';
 import { useThemeStore } from '../../store/theme.store';
@@ -10,29 +10,17 @@ import { LuChevronUp, LuLock } from 'react-icons/lu';
 
 export const LockScreen: React.FC = () => {
   const { time, date } = useClock(true);
-  const { unlock, isLocked } = useOSStore(
+  const { unlock } = useOSStore(
     useShallow((state) => ({
       unlock: state.unlock,
-      isLocked: state.isLocked,
     }))
   );
   const { currentWallpaper } = useThemeStore(useShallow((state) => ({ currentWallpaper: state.currentWallpaper })));
   const { notifications } = useNotificationStore(useShallow((state) => ({ notifications: state.notifications })));
 
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
   // Handle unlock attempt
   const handleUnlock = () => {
-    // Simple unlock for now, or check password if provided
-    if (showPassword && password === '0000') { // Example PIN
-        unlock();
-    } else if (!showPassword) {
-        // Just unlock if no password field shown yet, or show password field?
-        // Prompt says "Optional: Simple PIN/password field".
-        // Let's just unlock for simplicity unless configured otherwise.
-        unlock();
-    }
+    unlock();
   };
 
   const handleDragEnd = (_: any, info: PanInfo) => {

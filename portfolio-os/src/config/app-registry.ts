@@ -1,5 +1,10 @@
-import { lazy } from 'react';
-import { AppDefinition, AppCategory } from '../types/app.types';
+import React, { lazy } from 'react';
+import { type AppDefinition, AppCategory } from '../types/app.types';
+
+// Placeholder for apps that are not yet implemented
+const MockApp = lazy(() => Promise.resolve({
+  default: () => React.createElement('div', { className: "p-4 flex items-center justify-center h-full" }, "App Content Placeholder")
+}));
 
 export const APP_REGISTRY: AppDefinition[] = [
   {
@@ -8,7 +13,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'user',
     description: 'Learn more about me and my background',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/AboutApp')),
+    component: MockApp,
     defaultWindowSize: { width: 700, height: 500 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -21,7 +26,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'code',
     description: 'Overview of my technical skills',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/SkillsApp')),
+    component: MockApp,
     defaultWindowSize: { width: 800, height: 600 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -34,7 +39,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'graduation-cap',
     description: 'My academic journey',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/EducationApp')),
+    component: MockApp,
     defaultWindowSize: { width: 650, height: 500 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -47,7 +52,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'folder-code',
     description: 'Showcase of my projects',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/ProjectsApp')),
+    component: MockApp,
     defaultWindowSize: { width: 900, height: 650 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -60,7 +65,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'award',
     description: 'My professional certifications',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/CertificationsApp')),
+    component: MockApp,
     defaultWindowSize: { width: 700, height: 500 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -73,7 +78,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'briefcase',
     description: 'My work experience',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/ExperienceApp')),
+    component: MockApp,
     defaultWindowSize: { width: 750, height: 550 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -86,7 +91,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'mail',
     description: 'Get in touch with me',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/ContactApp')),
+    component: MockApp,
     defaultWindowSize: { width: 500, height: 600 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -99,7 +104,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'file-text',
     description: 'View and download my resume',
     category: AppCategory.PORTFOLIO,
-    component: lazy(() => import('../apps/ResumeApp')),
+    component: MockApp,
     defaultWindowSize: { width: 800, height: 700 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -112,7 +117,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'terminal',
     description: 'Command line interface',
     category: AppCategory.SYSTEM,
-    component: lazy(() => import('../apps/TerminalApp')),
+    component: MockApp,
     defaultWindowSize: { width: 700, height: 450 },
     supportsMobile: false,
     supportsDesktop: true,
@@ -126,7 +131,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'settings',
     description: 'Configure system options',
     category: AppCategory.SYSTEM,
-    component: lazy(() => import('../apps/SettingsApp')),
+    component: MockApp,
     defaultWindowSize: { width: 750, height: 550 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -140,7 +145,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'folder',
     description: 'Browse files and folders',
     category: AppCategory.SYSTEM,
-    component: lazy(() => import('../apps/FileExplorerApp')),
+    component: MockApp,
     defaultWindowSize: { width: 800, height: 500 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -154,7 +159,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'image',
     description: 'Image viewer',
     category: AppCategory.UTILITY,
-    component: lazy(() => import('../apps/GalleryApp')),
+    component: MockApp,
     defaultWindowSize: { width: 850, height: 600 },
     supportsMobile: true,
     supportsDesktop: true,
@@ -167,7 +172,7 @@ export const APP_REGISTRY: AppDefinition[] = [
     icon: 'globe',
     description: 'Web browser',
     category: AppCategory.UTILITY,
-    component: lazy(() => import('../apps/BrowserApp')),
+    component: MockApp,
     defaultWindowSize: { width: 900, height: 650 },
     supportsMobile: true,
     supportsDesktop: true,

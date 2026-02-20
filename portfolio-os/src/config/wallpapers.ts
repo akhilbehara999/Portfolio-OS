@@ -1,4 +1,4 @@
-import { WallpaperConfig } from '../types/theme.types';
+import { type WallpaperConfig } from '../types/theme.types';
 
 const encodeSvg = (svg: string) => `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 

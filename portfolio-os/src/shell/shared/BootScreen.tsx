@@ -8,7 +8,7 @@ interface BootScreenProps {
 }
 
 export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
-  const { bootPhase, progress, statusMessage, isBooted } = useBootSequence();
+  const { bootPhase, progress, statusMessage } = useBootSequence();
   const [show, setShow] = useState(true);
   const [isFastBoot, setIsFastBoot] = useState(false);
 

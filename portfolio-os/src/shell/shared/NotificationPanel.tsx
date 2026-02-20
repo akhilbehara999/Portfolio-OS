@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNotificationStore } from '../../store/notification.store';
 import { useThemeStore } from '../../store/theme.store';
 import { APP_REGISTRY } from '../../config/app-registry';
@@ -8,18 +8,17 @@ import { isToday, formatDistanceToNow } from 'date-fns';
 import * as Icons from 'react-icons/lu';
 
 export const NotificationPanel: React.FC = () => {
-  const { notifications, notificationHistory, dismissNotification, clearAll } = useNotificationStore();
+  const { notificationHistory, dismissNotification, clearAll } = useNotificationStore();
   const { isDarkMode } = useThemeStore();
 
   // Combine active notifications and history, deduplicating by ID
   const allNotifications = useMemo(() => {
-    const activeIds = new Set(notifications.map(n => n.id));
     // History contains read notifications, active contains unread/active.
     // If we want to show all, we can merge.
     // Usually notification panel shows history too.
     // Let's use notificationHistory which seems to be the full log.
     return [...notificationHistory].sort((a, b) => b.timestamp - a.timestamp);
-  }, [notifications, notificationHistory]);
+  }, [notificationHistory]);
 
   const groupedNotifications = useMemo(() => {
     const today: typeof allNotifications = [];
@@ -53,7 +52,7 @@ export const NotificationPanel: React.FC = () => {
     visible: {
       x: 0,
       opacity: 1,
-      transition: { type: 'spring', damping: 25, stiffness: 200 }
+      transition: { type: 'spring' as const, damping: 25, stiffness: 200 }
     },
     exit: { x: '100%', opacity: 0 }
   };

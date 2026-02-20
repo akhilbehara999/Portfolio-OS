@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { useContextMenu, ContextMenuItem } from '../../hooks/useContextMenu';
+import { useContextMenu } from '../../hooks/useContextMenu';
+import type { ContextMenuItem } from '../../hooks/useContextMenu';
 import { LuChevronRight } from 'react-icons/lu';
 import { useThemeStore } from '../../store/theme.store';
 import * as Icons from 'react-icons/lu'; // Import all icons to dynamically render
@@ -98,7 +99,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                               onClick={(e) => {
                                  e.stopPropagation();
                                  if (item.disabled) return;
-                                 item.action();
+                                 item.action?.();
                                  closeContextMenu();
                               }}
                               className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors text-left group
