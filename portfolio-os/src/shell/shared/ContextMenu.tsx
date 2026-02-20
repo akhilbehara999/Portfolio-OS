@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { useContextMenu, ContextMenuItem } from '../../hooks/useContextMenu';
+import { useContextMenu, type ContextMenuItem } from '../../hooks/useContextMenu';
 import { LuChevronRight } from 'react-icons/lu';
 import { useThemeStore } from '../../store/theme.store';
 import * as Icons from 'react-icons/lu'; // Import all icons to dynamically render

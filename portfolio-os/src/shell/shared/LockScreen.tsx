@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, type PanInfo } from 'framer-motion';
 import { useClock } from '../../hooks/useClock';
 import { useOSStore } from '../../store/os.store';
 import { useThemeStore } from '../../store/theme.store';
@@ -10,7 +10,7 @@ import { LuChevronUp, LuLock } from 'react-icons/lu';
 
 export const LockScreen: React.FC = () => {
   const { time, date } = useClock(true);
-  const { unlock, isLocked } = useOSStore(
+  const { unlock } = useOSStore(
     useShallow((state) => ({
       unlock: state.unlock,
       isLocked: state.isLocked,
@@ -19,8 +19,8 @@ export const LockScreen: React.FC = () => {
   const { currentWallpaper } = useThemeStore(useShallow((state) => ({ currentWallpaper: state.currentWallpaper })));
   const { notifications } = useNotificationStore(useShallow((state) => ({ notifications: state.notifications })));
 
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [password, _setPassword] = useState('');
+  const [showPassword, _setShowPassword] = useState(false);
 
   // Handle unlock attempt
   const handleUnlock = () => {

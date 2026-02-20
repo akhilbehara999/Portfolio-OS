@@ -26,7 +26,7 @@ export const Spotlight: React.FC = () => {
 
   const { launchApp } = useAppStore();
   const { isDarkMode } = useThemeStore();
-  const { lock, boot } = useOSStore(); // boot used for restart/shutdown simulation
+  const { lock } = useOSStore(); // boot used for restart/shutdown simulation
 
   // Mock Files and Actions
   const mockFiles = [

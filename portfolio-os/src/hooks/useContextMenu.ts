@@ -1,14 +1,24 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-export interface ContextMenuItem {
-  label: string;
-  action: () => void;
-  icon?: string;
-  disabled?: boolean;
-  shortcut?: string;
-  separator?: boolean;
-  submenu?: ContextMenuItem[];
-}
+export type ContextMenuItem =
+  | {
+      label: string;
+      action: () => void;
+      icon?: string;
+      disabled?: boolean;
+      shortcut?: string;
+      separator?: false;
+      submenu?: ContextMenuItem[];
+    }
+  | {
+      separator: true;
+      label?: never;
+      action?: never;
+      icon?: never;
+      disabled?: never;
+      shortcut?: never;
+      submenu?: never;
+    };
 
 export interface ContextMenuState {
   isOpen: boolean;
@@ -86,9 +96,6 @@ export const useContextMenu = () => {
     document.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('scroll', handleScroll, { capture: true });
     window.addEventListener('resize', handleScroll);
-
-    // Also close if another context menu is triggered?
-    // The openContextMenu handles it by replacing state.
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
