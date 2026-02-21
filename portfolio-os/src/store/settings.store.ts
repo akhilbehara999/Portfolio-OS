@@ -6,6 +6,7 @@ interface SettingsState {
   // Appearance additions
   enableWindowAnimations: boolean;
   enableHoverEffects: boolean;
+  timeFormat: '12h' | '24h';
 
   // Desktop
   taskbarPosition: 'bottom' | 'left' | 'right' | 'top';
@@ -22,6 +23,7 @@ interface SettingsState {
 interface SettingsActions {
   setWindowAnimations: (enabled: boolean) => void;
   setHoverEffects: (enabled: boolean) => void;
+  setTimeFormat: (format: '12h' | '24h') => void;
   setTaskbarPosition: (pos: 'bottom' | 'left' | 'right' | 'top') => void;
   setIconSize: (size: 'small' | 'medium' | 'large') => void;
   setShowDesktopIcons: (show: boolean) => void;
@@ -35,6 +37,7 @@ interface SettingsActions {
 const DEFAULT_SETTINGS: SettingsState = {
   enableWindowAnimations: true,
   enableHoverEffects: true,
+  timeFormat: '12h',
   taskbarPosition: 'bottom',
   iconSize: 'medium',
   showDesktopIcons: true,
@@ -50,6 +53,7 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       ...DEFAULT_SETTINGS,
       setWindowAnimations: (enabled) => set((state) => { state.enableWindowAnimations = enabled; }),
       setHoverEffects: (enabled) => set((state) => { state.enableHoverEffects = enabled; }),
+      setTimeFormat: (format) => set((state) => { state.timeFormat = format; }),
       setTaskbarPosition: (pos) => set((state) => { state.taskbarPosition = pos; }),
       setIconSize: (size) => set((state) => { state.iconSize = size; }),
       setShowDesktopIcons: (show) => set((state) => { state.showDesktopIcons = show; }),
@@ -65,6 +69,9 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
              case 'animations':
                state.enableWindowAnimations = DEFAULT_SETTINGS.enableWindowAnimations;
                state.enableHoverEffects = DEFAULT_SETTINGS.enableHoverEffects;
+               break;
+             case 'appearance':
+               state.timeFormat = DEFAULT_SETTINGS.timeFormat;
                break;
              case 'desktop':
                state.taskbarPosition = DEFAULT_SETTINGS.taskbarPosition;
