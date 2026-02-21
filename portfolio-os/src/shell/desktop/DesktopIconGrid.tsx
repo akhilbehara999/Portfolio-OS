@@ -112,7 +112,21 @@ export const DesktopIconGrid: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Filter specific apps for desktop
-  const desktopApps = ['about', 'projects', 'terminal', 'resume', 'settings', 'file-explorer'];
+  const desktopApps = [
+    'about',
+    'skills',
+    'education',
+    'experience',
+    'projects',
+    'certifications',
+    'contact',
+    'gallery',
+    'resume',
+    'terminal',
+    'settings',
+    'file-explorer',
+    'browser',
+  ];
   const initialItems = desktopApps
     .map((id) => APP_REGISTRY.find((app) => app.id === id))
     .filter((app): app is NonNullable<typeof app> => !!app);
