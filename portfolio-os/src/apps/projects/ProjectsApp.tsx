@@ -1,494 +1,320 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { PORTFOLIO_DATA } from '@config/portfolio-data';
 import {
   LuSearch,
-  LuLayoutGrid,
-  LuList,
-  LuGithub,
   LuExternalLink,
+  LuGithub,
+  LuLayout,
+  LuGrid,
+  LuList,
   LuArrowLeft,
   LuLayers,
+  LuCode,
+  LuTag
 } from 'react-icons/lu';
-import {
-  SiReact,
-  SiTypescript,
-  SiTailwindcss,
-  SiPython,
-  SiTensorflow,
-  SiFlask,
-  SiFirebase,
-  SiRust,
-  SiDocker,
-  SiPostgresql,
-  SiRedis,
-  SiJavascript,
-  SiHtml5,
-  SiCss3,
-  SiNodedotjs,
-  SiMongodb,
-  SiAmazon,
-  SiGit,
-  SiLinux,
-  SiNextdotjs,
-  SiOpencv,
-  SiPytorch,
-  SiScikitlearn,
-  SiTableau,
-  SiPandas,
-  SiNumpy,
-  SiKeras,
-  SiFlutter,
-  SiSqlite,
-} from 'react-icons/si';
-import { PORTFOLIO_DATA, type Project } from '../../config/portfolio-data';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// --- Icon Mapping Helper ---
-const getTechIcon = (tech: string) => {
-  const normalized = tech.toLowerCase().replace(/\s+/g, '');
-  const iconMap: Record<string, React.ElementType> = {
-    react: SiReact,
-    typescript: SiTypescript,
-    tailwindcss: SiTailwindcss,
-    python: SiPython,
-    tensorflow: SiTensorflow,
-    flask: SiFlask,
-    firebase: SiFirebase,
-    rust: SiRust,
-    docker: SiDocker,
-    postgresql: SiPostgresql,
-    redis: SiRedis,
-    javascript: SiJavascript,
-    html: SiHtml5,
-    css: SiCss3,
-    nodejs: SiNodedotjs,
-    mongodb: SiMongodb,
-    aws: SiAmazon,
-    git: SiGit,
-    linux: SiLinux,
-    nextjs: SiNextdotjs,
-    opencv: SiOpencv,
-    pytorch: SiPytorch,
-    scikitlearn: SiScikitlearn,
-    tableau: SiTableau,
-    pandas: SiPandas,
-    numpy: SiNumpy,
-    keras: SiKeras,
-    flutter: SiFlutter,
-    sqlite: SiSqlite,
-  };
-  return iconMap[normalized] || LuLayers; // Fallback icon
-};
+const ProjectsApp: React.FC = () => {
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
 
-// --- Interfaces ---
-interface ProjectsAppProps {
-  windowId: string;
-  mode: 'desktop' | 'mobile';
-}
+  const categories = ['All', 'Featured', ...Array.from(new Set(PORTFOLIO_DATA.projects.map(p => p.category)))];
 
-// --- Components ---
+  const filteredProjects = useMemo(() => {
+    return PORTFOLIO_DATA.projects.filter(project => {
+      const matchesCategory = activeCategory === 'All'
+        ? true
+        : activeCategory === 'Featured'
+          ? project.featured
+          : project.category === activeCategory;
+      const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            project.techStack.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesCategory && matchesSearch;
+    });
+  }, [activeCategory, searchQuery]);
 
-const ProjectCard = ({
-  project,
-  viewMode,
-  onClick,
-}: {
-  project: Project;
-  viewMode: 'grid' | 'list';
-  onClick: () => void;
-}) => {
-  const isGrid = viewMode === 'grid';
+  // Detail View
+  if (selectedProjectIndex !== null) {
+    const project = PORTFOLIO_DATA.projects[selectedProjectIndex];
+    const relatedProjects = PORTFOLIO_DATA.projects
+      .filter((p, i) => i !== selectedProjectIndex && p.category === project.category)
+      .slice(0, 2);
 
+    return (
+      <div className="h-full w-full bg-white dark:bg-slate-900 text-slate-900 dark:text-white flex flex-col overflow-y-auto">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-10 flex items-center gap-4">
+          <button
+            onClick={() => setSelectedProjectIndex(null)}
+            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            <LuArrowLeft size={24} />
+          </button>
+          <h2 className="text-xl font-bold truncate">{project.title}</h2>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 50 }}
+          className="p-6 max-w-4xl mx-auto space-y-8"
+        >
+          {/* Hero Image / Placeholder */}
+          <div className="w-full h-64 md:h-96 rounded-xl overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 relative shadow-lg">
+             {project.image ? (
+               <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+             ) : (
+               <div className="w-full h-full flex items-center justify-center text-white text-6xl font-bold opacity-30">
+                 {project.title.substring(0, 2).toUpperCase()}
+               </div>
+             )}
+             {project.featured && (
+               <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                 Featured
+               </div>
+             )}
+          </div>
+
+          <div className="grid md:grid-cols-[2fr_1fr] gap-8">
+            <div className="space-y-6">
+              <h1 className="text-3xl font-bold">{project.title}</h1>
+              <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                {project.longDescription}
+              </p>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                  <LuLayers className="text-blue-500" /> Key Features
+                </h3>
+                <ul className="space-y-2">
+                   {/* Mock features if not in data schema, or parse description */}
+                   <li className="flex items-start gap-2">
+                     <span className="mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
+                     <span>Innovative architecture using modern frameworks</span>
+                   </li>
+                   <li className="flex items-start gap-2">
+                     <span className="mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
+                     <span>Optimized performance and responsiveness</span>
+                   </li>
+                   <li className="flex items-start gap-2">
+                     <span className="mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
+                     <span>User-centric design implementation</span>
+                   </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
+                <h3 className="font-semibold mb-4 text-sm uppercase tracking-wider text-slate-500">Links</h3>
+                <div className="flex flex-col gap-3">
+                  {project.liveLink && (
+                    <a href={project.liveLink} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium">
+                      <LuExternalLink size={18} /> Live Demo
+                    </a>
+                  )}
+                  {project.githubLink && (
+                    <a href={project.githubLink} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 w-full py-2 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-700 dark:hover:bg-slate-600 rounded-lg transition-colors font-medium">
+                      <LuGithub size={18} /> Source Code
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-slate-500">Tech Stack</h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.techStack.map(tech => (
+                    <span key={tech} className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full text-sm border border-slate-200 dark:border-slate-700">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                 <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-slate-500">Category</h3>
+                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 rounded-full text-sm">
+                   <LuTag size={14} /> {project.category}
+                 </span>
+              </div>
+            </div>
+          </div>
+
+          {relatedProjects.length > 0 && (
+            <div className="pt-8 border-t border-slate-200 dark:border-slate-800">
+               <h3 className="text-xl font-bold mb-6">Related Projects</h3>
+               <div className="grid md:grid-cols-2 gap-6">
+                 {relatedProjects.map((p) => {
+                   // Find index in main list
+                   const originalIndex = PORTFOLIO_DATA.projects.findIndex(proj => proj.title === p.title);
+                   return (
+                     <div
+                       key={p.title}
+                       onClick={() => setSelectedProjectIndex(originalIndex)}
+                       className="cursor-pointer group bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-100 dark:border-slate-700 hover:border-blue-400 transition-all"
+                     >
+                        <h4 className="font-bold group-hover:text-blue-500 transition-colors">{p.title}</h4>
+                        <p className="text-sm text-slate-500 line-clamp-1">{p.description}</p>
+                     </div>
+                   );
+                 })}
+               </div>
+            </div>
+          )}
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Grid/List View
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
-      className={`group relative overflow-hidden rounded-xl border border-white/40 bg-white/60 shadow-sm backdrop-blur-md transition-all hover:border-blue-500/50 ${
-        isGrid ? 'flex flex-col' : 'flex flex-row items-center gap-4 p-4'
-      }`}
-      onClick={onClick}
-    >
-      {/* Image Placeholder */}
-      <div
-        className={`${
-          isGrid ? 'h-48 w-full' : 'h-24 w-24 shrink-0 rounded-lg'
-        } relative overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100`}
-      >
-        {project.image && !project.image.includes('placeholder') ? (
-          <img
-            src={project.image}
-            alt={project.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-4xl font-bold text-gray-400">
-            {project.title
-              .split(' ')
-              .map((n) => n[0])
-              .join('')
-              .slice(0, 2)}
-          </div>
-        )}
+    <div className="h-full w-full bg-white dark:bg-slate-900 text-slate-900 dark:text-white flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 sticky top-0 z-10">
+         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+            <h1 className="text-2xl font-bold flex items-center gap-2">
+              My Projects <span className="text-sm font-normal text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded-full">{PORTFOLIO_DATA.projects.length}</span>
+            </h1>
 
-        {project.featured && isGrid && (
-          <div className="absolute right-2 top-2 rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white shadow-md">
-            Featured
-          </div>
-        )}
+            <div className="flex gap-2 w-full md:w-auto">
+               <div className="relative flex-1 md:w-64">
+                 <LuSearch className="absolute left-3 top-2.5 text-slate-400" size={18} />
+                 <input
+                   type="text"
+                   placeholder="Search projects..."
+                   value={searchQuery}
+                   onChange={(e) => setSearchQuery(e.target.value)}
+                   className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                 />
+               </div>
+
+               <div className="flex bg-slate-200 dark:bg-slate-800 rounded-lg p-1">
+                 <button
+                   onClick={() => setViewMode('grid')}
+                   className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-slate-600 shadow-sm' : 'text-slate-500'}`}
+                 >
+                   <LuGrid size={20} />
+                 </button>
+                 <button
+                   onClick={() => setViewMode('list')}
+                   className={`p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-slate-600 shadow-sm' : 'text-slate-500'}`}
+                 >
+                   <LuList size={20} />
+                 </button>
+               </div>
+            </div>
+         </div>
+
+         {/* Filters */}
+         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
+                  activeCategory === cat
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+         </div>
       </div>
 
       {/* Content */}
-      <div className={`flex flex-1 flex-col ${isGrid ? 'p-4' : ''}`}>
-        <div className="flex items-start justify-between">
-          <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600">
-            {project.title}
-          </h3>
-          {project.featured && !isGrid && (
-            <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">
-              Featured
-            </span>
-          )}
-        </div>
+      <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
+         <AnimatePresence mode="popLayout">
+           <motion.div
+             layout
+             className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'flex flex-col gap-4'}
+           >
+             {filteredProjects.map((project, index) => {
+               // Must find original index for selection
+               const originalIndex = PORTFOLIO_DATA.projects.findIndex(p => p.title === project.title);
 
-        <p className={`mt-2 text-sm text-gray-600 ${isGrid ? 'line-clamp-2' : 'line-clamp-2'}`}>
-          {project.description}
-        </p>
-
-        {/* Tech Stack */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {project.techStack.slice(0, isGrid ? 4 : 6).map((tech) => {
-            const Icon = getTechIcon(tech);
-            return (
-              <div
-                key={tech}
-                className="flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600"
-                title={tech}
-              >
-                <Icon className="h-3 w-3" />
-                <span className={isGrid ? 'hidden xl:inline' : 'inline'}>{tech}</span>
-              </div>
-            );
-          })}
-          {project.techStack.length > (isGrid ? 4 : 6) && (
-            <span className="flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500">
-              +{project.techStack.length - (isGrid ? 4 : 6)}
-            </span>
-          )}
-        </div>
-
-        {/* Actions */}
-        <div className={`mt-4 flex items-center gap-2 ${!isGrid && 'ml-auto mt-0 self-end'}`}>
-          {project.githubLink && (
-            <a
-              href={project.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
-              onClick={(e) => e.stopPropagation()}
-              title="View Source"
-            >
-              <LuGithub className="h-5 w-5" />
-            </a>
-          )}
-          {project.liveLink && (
-            <a
-              href={project.liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
-              onClick={(e) => e.stopPropagation()}
-              title="Live Demo"
-            >
-              <LuExternalLink className="h-5 w-5" />
-            </a>
-          )}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick();
-            }}
-            className="ml-auto flex items-center gap-1 rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100"
-          >
-            Details
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-const ProjectDetails = ({ project, onClose }: { project: Project; onClose: () => void }) => {
-  return (
-    <motion.div
-      initial={{ x: '100%' }}
-      animate={{ x: 0 }}
-      exit={{ x: '100%' }}
-      transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="absolute inset-0 z-50 flex flex-col overflow-y-auto bg-white/95 backdrop-blur-xl"
-    >
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200/50 bg-white/80 p-4 backdrop-blur-md">
-        <button
-          onClick={onClose}
-          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
-        >
-          <LuArrowLeft className="h-5 w-5" />
-          Back to Projects
-        </button>
-        <div className="flex gap-2">
-          {project.githubLink && (
-            <a
-              href={project.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-            >
-              <LuGithub className="h-4 w-4" />
-              GitHub
-            </a>
-          )}
-          {project.liveLink && (
-            <a
-              href={project.liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              <LuExternalLink className="h-4 w-4" />
-              Live Demo
-            </a>
-          )}
-        </div>
-      </div>
-
-      <div className="mx-auto w-full max-w-4xl p-6 md:p-8">
-        {/* Header Image */}
-        <div className="relative mb-8 h-64 w-full overflow-hidden rounded-2xl bg-gray-100 md:h-96">
-          {project.image && !project.image.includes('placeholder') ? (
-            <img
-              src={project.image}
-              alt={project.title}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-6xl font-bold text-gray-400">
-              {project.title
-                .split(' ')
-                .map((n) => n[0])
-                .join('')
-                .slice(0, 2)}
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-8">
-          <div>
-            <div className="flex items-center gap-4">
-              <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">{project.title}</h1>
-              {project.featured && (
-                <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
-                  Featured
-                </span>
-              )}
-            </div>
-            <p className="mt-2 text-lg text-gray-600">{project.category}</p>
-          </div>
-
-          <div className="prose prose-lg max-w-none text-gray-600">
-            <p>{project.longDescription}</p>
-          </div>
-
-          <div>
-            <h3 className="mb-4 text-xl font-bold text-gray-900">Technologies Used</h3>
-            <div className="flex flex-wrap gap-3">
-              {project.techStack.map((tech) => {
-                const Icon = getTechIcon(tech);
-                return (
-                  <div
-                    key={tech}
-                    className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
-                  >
-                    <Icon className="h-5 w-5 text-gray-500" />
-                    {tech}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Related Projects Logic could go here, for now simpler */}
-        </div>
-
-        <div className="mt-12 border-t border-gray-200 pt-8">
-           <h3 className="mb-6 text-xl font-bold text-gray-900">More Projects</h3>
-           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-             {PORTFOLIO_DATA.projects
-               .filter(p => p.title !== project.title)
-               .slice(0, 2)
-               .map(related => (
-                 <div key={related.title} className="flex items-center gap-4 rounded-xl border border-gray-200 p-4 transition-colors hover:bg-gray-50">
-                    <div className="h-16 w-16 shrink-0 rounded-lg bg-gray-200 overflow-hidden">
-                       {related.image && !related.image.includes('placeholder') ? (
-                          <img src={related.image} className="w-full h-full object-cover" />
+               return (
+                 <motion.div
+                   layout
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   exit={{ opacity: 0, scale: 0.9 }}
+                   transition={{ duration: 0.3 }}
+                   key={project.title}
+                   className={`group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex ${viewMode === 'list' ? 'flex-row h-48' : 'flex-col'}`}
+                   onClick={() => setSelectedProjectIndex(originalIndex)}
+                 >
+                    {/* Image */}
+                    <div className={`relative overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-600 ${viewMode === 'list' ? 'w-1/3' : 'h-48'}`}>
+                       {project.image ? (
+                         <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-blue-100 text-blue-500 font-bold">
-                            {related.title.substring(0,2)}
-                          </div>
+                         <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-slate-400/50">
+                           {project.title.substring(0, 2).toUpperCase()}
+                         </div>
+                       )}
+                       {project.featured && (
+                         <div className="absolute top-3 right-3 bg-yellow-400/90 backdrop-blur-sm text-yellow-900 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                           Featured
+                         </div>
                        )}
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{related.title}</h4>
-                      <p className="text-sm text-gray-500 line-clamp-1">{related.description}</p>
+
+                    {/* Content */}
+                    <div className="p-5 flex flex-col flex-1">
+                       <h3 className="font-bold text-lg mb-2 group-hover:text-blue-500 transition-colors">{project.title}</h3>
+                       <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4 flex-1">
+                         {project.description}
+                       </p>
+
+                       {/* Tech Stack Preview */}
+                       <div className="flex flex-wrap gap-1.5 mb-4">
+                          {project.techStack.slice(0, 4).map(tech => (
+                            <span key={tech} className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 rounded text-xs border border-slate-200 dark:border-slate-700/50">
+                              {tech}
+                            </span>
+                          ))}
+                          {project.techStack.length > 4 && (
+                            <span className="px-2 py-0.5 text-xs text-slate-500">+{project.techStack.length - 4}</span>
+                          )}
+                       </div>
+
+                       {/* Actions */}
+                       <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50 mt-auto">
+                          <button className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                            Details
+                          </button>
+                          <div className="flex gap-3">
+                             {project.githubLink && (
+                               <a href={project.githubLink} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                                 <LuGithub size={18} />
+                               </a>
+                             )}
+                             {project.liveLink && (
+                               <a href={project.liveLink} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-slate-400 hover:text-blue-500 transition-colors">
+                                 <LuExternalLink size={18} />
+                               </a>
+                             )}
+                          </div>
+                       </div>
                     </div>
-                 </div>
-               ))
-             }
+                 </motion.div>
+               );
+             })}
+           </motion.div>
+         </AnimatePresence>
+
+         {filteredProjects.length === 0 && (
+           <div className="flex flex-col items-center justify-center h-64 text-slate-400">
+             <LuSearch size={48} className="mb-4 opacity-50" />
+             <p className="text-lg">No projects found</p>
+             <p className="text-sm">Try adjusting your filters or search query</p>
            </div>
-        </div>
+         )}
       </div>
-    </motion.div>
-  );
-};
-
-const ProjectsApp: React.FC<ProjectsAppProps> = ({ mode }) => {
-  const [filter, setFilter] = useState('All');
-  const [search, setSearch] = useState('');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  const filters = ['All', 'Featured', 'AI/ML', 'Web Development', 'Data Science', 'Tools', 'IoT'];
-
-  const filteredProjects = useMemo(() => {
-    return PORTFOLIO_DATA.projects.filter((project) => {
-      const matchesFilter =
-        filter === 'All' ||
-        (filter === 'Featured' ? project.featured : project.category === filter);
-      const matchesSearch =
-        project.title.toLowerCase().includes(search.toLowerCase()) ||
-        project.techStack.some((tech) => tech.toLowerCase().includes(search.toLowerCase()));
-      return matchesFilter && matchesSearch;
-    });
-  }, [filter, search]);
-
-  const isMobile = mode === 'mobile';
-
-  return (
-    <div className="relative h-full w-full overflow-hidden bg-gray-50/50">
-      <div className={`flex h-full flex-col ${selectedProject ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        {/* Header */}
-        <div className="sticky top-0 z-20 border-b border-gray-200/50 bg-white/80 p-6 backdrop-blur-md">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-gray-900">
-                My Projects <span className="ml-2 text-lg font-normal text-gray-500">({filteredProjects.length})</span>
-              </h1>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`rounded-lg p-2 transition-colors ${
-                    viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'
-                  }`}
-                >
-                  <LuLayoutGrid className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`rounded-lg p-2 transition-colors ${
-                    viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'
-                  }`}
-                >
-                  <LuList className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4 md:flex-row md:items-center">
-              <div className="relative flex-1">
-                <LuSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                />
-              </div>
-              <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-                {filters.map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setFilter(f)}
-                    className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-                      filter === f
-                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
-                        : 'bg-white text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className={`flex-1 p-6 ${isMobile ? 'pb-24' : ''}`}>
-          {filteredProjects.length > 0 ? (
-            <div
-              className={`grid gap-6 ${
-                viewMode === 'grid'
-                  ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' // Added lg:grid-cols-3 for wider screens
-                  : 'grid-cols-1'
-              }`}
-            >
-              <AnimatePresence>
-                {filteredProjects.map((project) => (
-                  <ProjectCard
-                    key={project.title}
-                    project={project}
-                    viewMode={viewMode}
-                    onClick={() => setSelectedProject(project)}
-                  />
-                ))}
-              </AnimatePresence>
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex h-64 flex-col items-center justify-center text-center"
-            >
-              <div className="mb-4 rounded-full bg-gray-100 p-6">
-                <LuSearch className="h-12 w-12 text-gray-400" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">No projects found</h3>
-              <p className="mt-2 text-gray-500">
-                Try adjusting your search or filters to find what you're looking for.
-              </p>
-              <button
-                onClick={() => {
-                  setFilter('All');
-                  setSearch('');
-                }}
-                className="mt-6 rounded-lg bg-blue-600 px-6 py-2 font-medium text-white transition-colors hover:bg-blue-700"
-              >
-                Clear Filters
-              </button>
-            </motion.div>
-          )}
-        </div>
-      </div>
-
-      {/* Detail View Overlay */}
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectDetails
-            project={selectedProject}
-            onClose={() => setSelectedProject(null)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 };

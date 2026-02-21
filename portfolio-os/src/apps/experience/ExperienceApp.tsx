@@ -1,221 +1,110 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { PORTFOLIO_DATA } from '@config/portfolio-data';
 import {
   LuBriefcase,
-  LuCalendar,
   LuBuilding,
-  LuCheck,
-  LuLayers,
+  LuCalendar,
+  LuMapPin,
+  LuCheckCircle
 } from 'react-icons/lu';
-import {
-  SiReact,
-  SiTypescript,
-  SiTailwindcss,
-  SiPython,
-  SiTensorflow,
-  SiFlask,
-  SiFirebase,
-  SiRust,
-  SiDocker,
-  SiPostgresql,
-  SiRedis,
-  SiJavascript,
-  SiHtml5,
-  SiCss3,
-  SiNodedotjs,
-  SiMongodb,
-  SiAmazon,
-  SiGit,
-  SiLinux,
-  SiNextdotjs,
-  SiOpencv,
-  SiPytorch,
-  SiScikitlearn,
-  SiTableau,
-  SiPandas,
-  SiNumpy,
-  SiKeras,
-  SiFlutter,
-  SiSqlite,
-  SiWordpress,
-  SiPhp,
-} from 'react-icons/si';
-import { PORTFOLIO_DATA, type Experience } from '../../config/portfolio-data';
+import { motion } from 'framer-motion';
 
-// --- Icon Mapping Helper ---
-const getTechIcon = (tech: string) => {
-  const normalized = tech.toLowerCase().replace(/\s+/g, '');
-  const iconMap: Record<string, React.ElementType> = {
-    react: SiReact,
-    typescript: SiTypescript,
-    tailwindcss: SiTailwindcss,
-    python: SiPython,
-    tensorflow: SiTensorflow,
-    flask: SiFlask,
-    firebase: SiFirebase,
-    rust: SiRust,
-    docker: SiDocker,
-    postgresql: SiPostgresql,
-    redis: SiRedis,
-    javascript: SiJavascript,
-    html: SiHtml5,
-    css: SiCss3,
-    nodejs: SiNodedotjs,
-    mongodb: SiMongodb,
-    aws: SiAmazon,
-    git: SiGit,
-    linux: SiLinux,
-    nextjs: SiNextdotjs,
-    opencv: SiOpencv,
-    pytorch: SiPytorch,
-    scikitlearn: SiScikitlearn,
-    tableau: SiTableau,
-    pandas: SiPandas,
-    numpy: SiNumpy,
-    keras: SiKeras,
-    flutter: SiFlutter,
-    sqlite: SiSqlite,
-    wordpress: SiWordpress,
-    php: SiPhp,
-  };
-  return iconMap[normalized] || LuLayers;
-};
-
-interface ExperienceAppProps {
-  windowId: string;
-  mode: 'desktop' | 'mobile';
-}
-
-const ExperienceCard = ({ experience, index }: { experience: Experience; index: number }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.15, type: 'spring', stiffness: 50 }}
-      className="relative mb-12 pl-8 last:mb-0 md:pl-12"
-    >
-      {/* Timeline Connector */}
-      <div className="absolute left-0 top-0 flex h-full w-12 justify-center">
-         <div className="h-full w-px bg-gray-200"></div>
-      </div>
-
-      {/* Timeline Dot */}
-      <div className="absolute left-0 top-0 flex w-12 justify-center pt-2">
-         <div className="h-3 w-3 rounded-full border-2 border-white bg-blue-500 ring-4 ring-blue-50"></div>
-      </div>
-
-      <div className="group relative rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm transition-all hover:border-blue-500/30 hover:shadow-md md:p-8">
-        {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/10 to-indigo-500/10 text-xl font-bold text-blue-600 shadow-sm">
-              {experience.company.charAt(0)}
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900">{experience.role}</h3>
-              <div className="flex items-center gap-2 text-base font-medium text-gray-700">
-                <LuBuilding className="h-4 w-4 text-gray-400" />
-                {experience.company}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-2 rounded-full bg-gray-50 px-3 py-1 text-sm font-medium text-gray-600">
-            <LuCalendar className="h-4 w-4 text-gray-400" />
-            {experience.duration}
-          </div>
-        </div>
-
-        {/* Description */}
-        <div className="mt-6 space-y-3">
-          {experience.description.map((point, i) => (
-            <div key={i} className="flex items-start gap-3 text-gray-600">
-              <LuCheck className="mt-1 h-5 w-5 shrink-0 text-blue-500/50" />
-              <span className="leading-relaxed">{point}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Tech Stack */}
-        <div className="mt-6 flex flex-wrap gap-2 border-t border-gray-100/50 pt-4">
-          {experience.techUsed.map((tech) => {
-            const Icon = getTechIcon(tech);
-            return (
-              <div
-                key={tech}
-                className="flex items-center gap-1.5 rounded-lg bg-gray-50 px-2.5 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
-              >
-                <Icon className="h-3.5 w-3.5 text-gray-400" />
-                {tech}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-const ExperienceApp: React.FC<ExperienceAppProps> = ({ mode }) => {
-  const { experience } = PORTFOLIO_DATA;
-  const isMobile = mode === 'mobile';
-
-  // Calculate total experience duration roughly
-  const totalExperience = "3+ Years";
+const ExperienceApp: React.FC = () => {
+  // Simple calculation for years of experience
+  const startYear = 2021; // Could be from data
+  const currentYear = new Date().getFullYear();
+  const totalYears = currentYear - startYear;
 
   return (
-    <div className={`h-full w-full overflow-y-auto bg-gray-50/50 ${isMobile ? 'p-6 pb-24' : 'p-12'}`}>
-      <div className="mx-auto max-w-3xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12 text-center"
-        >
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-            Professional Experience
-          </h1>
-          <p className="mt-2 text-lg text-gray-600">
-            My career journey and professional milestones.
-          </p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm shadow-blue-500/20">
-            <LuBriefcase className="h-4 w-4" />
-            <span>{totalExperience} Experience</span>
+    <div className="h-full w-full bg-white dark:bg-slate-900 text-slate-900 dark:text-white overflow-y-auto relative">
+       {/* Background Decoration */}
+       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
+       </div>
+
+       <div className="max-w-4xl mx-auto p-6 md:p-12 relative z-10">
+          <div className="text-center mb-12">
+             <h1 className="text-3xl font-bold mb-2">Work Experience</h1>
+             <p className="text-slate-500 dark:text-slate-400">
+               {totalYears}+ years of professional experience building software
+             </p>
           </div>
-        </motion.div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Main vertical line for the whole list */}
-          <div className="absolute left-6 top-2 h-[calc(100%-2rem)] w-px bg-gray-200 md:left-6"></div>
+          <div className="relative border-l-2 border-slate-200 dark:border-slate-700 ml-4 md:ml-0 space-y-12">
+             {PORTFOLIO_DATA.experience.map((exp, index) => (
+               <motion.div
+                 key={index}
+                 initial={{ opacity: 0, x: -20 }}
+                 whileInView={{ opacity: 1, x: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                 className="relative pl-8 md:pl-12"
+               >
+                  {/* Timeline Dot */}
+                  <div className="absolute -left-[9px] top-0 w-5 h-5 rounded-full bg-white dark:bg-slate-900 border-4 border-blue-500 shadow-sm" />
 
-          {experience.length > 0 ? (
-            <div className="space-y-2">
-              {experience.map((exp, index) => (
-                <ExperienceCard key={index} experience={exp} index={index} />
-              ))}
-            </div>
-          ) : (
-             <div className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="bg-gray-100 p-6 rounded-full mb-4">
-                  <LuBriefcase className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">More experiences coming soon... 🚀</h3>
+                  <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-6 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow">
+                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
+                        <div className="flex items-start gap-4">
+                           {/* Company Logo Placeholder */}
+                           <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0">
+                              {exp.company.charAt(0)}
+                           </div>
+
+                           <div>
+                              <h2 className="text-xl font-bold text-slate-800 dark:text-white">{exp.role}</h2>
+                              <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
+                                 <LuBuilding size={16} />
+                                 <span>{exp.company}</span>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="flex flex-col md:items-end gap-1 text-sm text-slate-500 dark:text-slate-400">
+                           <div className="flex items-center gap-1.5">
+                              <LuCalendar size={14} />
+                              <span>{exp.duration}</span>
+                           </div>
+                           <div className="flex items-center gap-1.5">
+                              <LuMapPin size={14} />
+                              <span>Remote / On-site</span>
+                              {/* Add location to data schema if needed */}
+                           </div>
+                        </div>
+                     </div>
+
+                     <ul className="space-y-3 mb-6">
+                        {exp.description.map((point, i) => (
+                          <li key={i} className="flex items-start gap-3 text-slate-600 dark:text-slate-300 leading-relaxed">
+                             <LuCheckCircle className="mt-1 text-green-500 flex-shrink-0" size={16} />
+                             <span>{point}</span>
+                          </li>
+                        ))}
+                     </ul>
+
+                     <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                        {exp.techUsed.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-3 py-1 bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 rounded-full text-xs font-medium border border-slate-200 dark:border-slate-600/50"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                     </div>
+                  </div>
+               </motion.div>
+             ))}
+          </div>
+
+          {PORTFOLIO_DATA.experience.length === 0 && (
+             <div className="text-center py-20 text-slate-400">
+                <LuBriefcase size={48} className="mx-auto mb-4 opacity-50" />
+                <p>More experiences coming soon... 🚀</p>
              </div>
           )}
-        </div>
-
-        {/* Footer/Resume Download Prompt could go here */}
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="mt-12 text-center"
-        >
-            <p className="text-sm text-gray-500">Looking for a more detailed overview?</p>
-            {/* Could link to Resume app if available */}
-        </motion.div>
-      </div>
+       </div>
     </div>
   );
 };
