@@ -9,7 +9,7 @@ import { AppView } from './AppView';
 import { NotificationShade } from './NotificationShade';
 import { LockScreen } from '../shared/LockScreen';
 import { useOSStore } from '../../store/os.store';
-import { AppDefinition } from '../../types/app.types';
+import type { AppDefinition } from '../../types/app.types';
 
 export const MobileShell: React.FC = () => {
   const { isLocked } = useOSStore();

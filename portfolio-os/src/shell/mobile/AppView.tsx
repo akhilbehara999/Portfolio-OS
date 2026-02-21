@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AppDefinition } from '../../types/app.types';
-import { LuChevronLeft, LuMoreHorizontal } from 'react-icons/lu';
+import type { AppDefinition } from '../../types/app.types';
+import { LuChevronLeft, LuMenu } from 'react-icons/lu';
 
 interface AppViewProps {
   app: AppDefinition;
@@ -44,7 +44,7 @@ export const AppView: React.FC<AppViewProps> = ({ app, onClose }) => {
         </button>
         <h1 className="text-lg font-semibold truncate flex-1 text-center">{app.name}</h1>
         <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-          <LuMoreHorizontal className="w-6 h-6" />
+          <LuMenu className="w-6 h-6" />
         </button>
       </div>
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { APP_REGISTRY } from '../../config/app-registry';
-import { AppDefinition } from '../../types/app.types';
-import * as Icons from 'react-icons/lu';
+import type { AppDefinition } from '../../types/app.types';
 
 interface HomeScreenProps {
   onAppLaunch: (app: AppDefinition) => void;
@@ -24,7 +23,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onAppLaunch }) => {
 
   const pages = [
     // Page 0: Main
-    <div className="flex flex-col gap-8 h-full">
+    <div key="page-0" className="flex flex-col gap-8 h-full">
       {/* Date/Greeting Widget */}
       <div className="flex flex-col gap-1 pt-12 px-6">
         <div className="text-sm font-medium uppercase tracking-wider opacity-60">
@@ -46,7 +45,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onAppLaunch }) => {
       </div>
     </div>,
     // Page 1: Utilities
-    <div className="flex flex-col gap-8 h-full pt-12 px-4">
+    <div key="page-1" className="flex flex-col gap-8 h-full pt-12 px-4">
       {/* Quick Stats Widget */}
       <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex justify-around">
         <div className="text-center">
@@ -87,7 +86,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onAppLaunch }) => {
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
-            onDragEnd={(e, { offset, velocity }) => {
+            onDragEnd={(_, { offset }) => {
               if (offset.x < -100) {
                 if (page < pages.length - 1) setPage(page + 1);
               } else if (offset.x > 100) {
@@ -136,12 +135,6 @@ interface AppIconProps {
 }
 
 const AppIcon: React.FC<AppIconProps> = ({ app, onClick, showLabel = true, size = 'md' }) => {
-  // Try to resolve icon component dynamically
-  const IconComponent =
-    (Icons as any)[
-      app.icon.charAt(0).toUpperCase() + app.icon.slice(1).replace(/-./g, (x) => x[1].toUpperCase())
-    ] || Icons.LuAppWindow; // Fallback
-
   return (
     <div className="flex flex-col items-center gap-1">
       <motion.button
@@ -157,12 +150,6 @@ const AppIcon: React.FC<AppIconProps> = ({ app, onClick, showLabel = true, size 
           background: `linear-gradient(135deg, var(--color-${app.accentColor}-400), var(--color-${app.accentColor}-600))`,
         }}
       >
-        {/* We can map app.icon string to Lucide icon component if needed.
-            For now, just using a generic fallback or the dynamic one if resolved.
-            But the icon names in registry are lower-kebab-case (e.g. 'folder-code'),
-            Lucide exports PascalCase (e.g. FolderCode).
-            I'll use a simple icon for now or just the first letter if dynamic fails.
-        */}
         <div className="text-2xl font-bold uppercase">{app.name.substring(0, 1)}</div>
       </motion.button>
       {showLabel && (
