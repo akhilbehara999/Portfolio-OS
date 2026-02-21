@@ -45,13 +45,13 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
           exit={{
             opacity: 0,
             scale: 1.1,
-            filter: "blur(10px)",
-            transition: { duration: 0.8, ease: "easeInOut" }
+            filter: 'blur(10px)',
+            transition: { duration: 0.8, ease: 'easeInOut' },
           }}
         >
           {/* Background particles/gradient */}
           <div className="absolute inset-0 z-0 opacity-20">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900 via-gray-900 to-black" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900 via-gray-900 to-black" />
           </div>
 
           {/* Logo */}
@@ -66,10 +66,10 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
                 className="text-6xl font-bold tracking-tighter"
                 animate={{
                   textShadow: [
-                    "0 0 10px rgba(255,255,255,0.2)",
-                    "0 0 20px rgba(255,255,255,0.5)",
-                    "0 0 10px rgba(255,255,255,0.2)"
-                  ]
+                    '0 0 10px rgba(255,255,255,0.2)',
+                    '0 0 20px rgba(255,255,255,0.5)',
+                    '0 0 10px rgba(255,255,255,0.2)',
+                  ],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
@@ -89,9 +89,9 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
               <div className="h-1 w-full bg-gray-800 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-blue-500"
-                  initial={{ width: "0%" }}
+                  initial={{ width: '0%' }}
                   animate={{ width: `${progress}%` }}
-                  transition={{ type: "spring", stiffness: 50 }}
+                  transition={{ type: 'spring', stiffness: 50 }}
                 />
               </div>
               <div className="flex justify-between text-xs text-gray-400 font-mono">
@@ -101,8 +101,8 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
             </motion.div>
           )}
 
-           {/* Fast Boot Message (Optional) */}
-           {isFastBoot && (
+          {/* Fast Boot Message (Optional) */}
+          {isFastBoot && (
             <motion.div
               className="z-10 mt-4 text-gray-400 text-sm"
               initial={{ opacity: 0 }}

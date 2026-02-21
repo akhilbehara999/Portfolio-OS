@@ -57,18 +57,9 @@ export const ParticleField: React.FC = () => {
         zIndex: -1,
       }}
     >
-      <div
-        className="stars-1"
-        style={{ '--shadows': shadows.small } as React.CSSProperties}
-      />
-      <div
-        className="stars-2"
-        style={{ '--shadows': shadows.medium } as React.CSSProperties}
-      />
-      <div
-        className="stars-3"
-        style={{ '--shadows': shadows.big } as React.CSSProperties}
-      />
+      <div className="stars-1" style={{ '--shadows': shadows.small } as React.CSSProperties} />
+      <div className="stars-2" style={{ '--shadows': shadows.medium } as React.CSSProperties} />
+      <div className="stars-3" style={{ '--shadows': shadows.big } as React.CSSProperties} />
 
       <style>{`
         .stars-1, .stars-2, .stars-3 {
@@ -231,7 +222,7 @@ export const MatrixRain: React.FC = () => {
         {'01'
           .repeat(20)
           .split('')
-            .map((_, j) => (
+          .map((_, j) => (
             <span key={j} style={{ opacity: Math.random() }}>
               {Math.random() > 0.5 ? '1' : '0'}
             </span>

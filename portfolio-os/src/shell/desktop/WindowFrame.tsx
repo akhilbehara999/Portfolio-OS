@@ -22,17 +22,8 @@ const getIconComponent = (iconName: string): IconType => {
 };
 
 export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children }) => {
-  const {
-    id,
-    title,
-    icon,
-    position,
-    size,
-    isMinimized,
-    isMaximized,
-    isFocused,
-    zIndex,
-  } = windowState;
+  const { id, title, icon, position, size, isMinimized, isMaximized, isFocused, zIndex } =
+    windowState;
 
   const {
     focusWindow,
@@ -51,7 +42,12 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
   const [localPos, setLocalPos] = useState(position);
   const [localSize, setLocalSize] = useState(size);
   const isDraggingRef = useRef(false);
-  const [snapPreview, setSnapPreview] = useState<{ x: number, y: number, width: number, height: number } | null>(null);
+  const [snapPreview, setSnapPreview] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
 
   // Sync from store when not dragging
   useEffect(() => {
@@ -80,13 +76,13 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
 
     // Snapping Logic
     if (e.clientY < margin) {
-       setSnapPreview({ x: 0, y: 0, width: screenW, height: screenH });
+      setSnapPreview({ x: 0, y: 0, width: screenW, height: screenH });
     } else if (e.clientX < margin) {
-       setSnapPreview({ x: 0, y: 0, width: screenW / 2, height: screenH });
+      setSnapPreview({ x: 0, y: 0, width: screenW / 2, height: screenH });
     } else if (e.clientX > screenW - margin) {
-       setSnapPreview({ x: screenW / 2, y: 0, width: screenW / 2, height: screenH });
+      setSnapPreview({ x: screenW / 2, y: 0, width: screenW / 2, height: screenH });
     } else {
-       setSnapPreview(null);
+      setSnapPreview(null);
     }
   };
 
@@ -110,7 +106,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
   const handleResizeStop = (_e: any, _direction: any, ref: any, _delta: any, position: any) => {
     const newSize = {
       width: parseInt(ref.style.width),
-      height: parseInt(ref.style.height)
+      height: parseInt(ref.style.height),
     };
     setLocalSize(newSize);
     setLocalPos(position);
@@ -127,22 +123,22 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
 
   return (
     <>
-       <AnimatePresence>
-         {snapPreview && (
-           <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 0.3 }}
-             exit={{ opacity: 0 }}
-             className="fixed bg-blue-500 rounded-lg z-[9000] pointer-events-none border-2 border-blue-300"
-             style={{
-               left: snapPreview.x,
-               top: snapPreview.y,
-               width: snapPreview.width,
-               height: snapPreview.height,
-             }}
-           />
-         )}
-       </AnimatePresence>
+      <AnimatePresence>
+        {snapPreview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            exit={{ opacity: 0 }}
+            className="fixed bg-blue-500 rounded-lg z-[9000] pointer-events-none border-2 border-blue-300"
+            style={{
+              left: snapPreview.x,
+              top: snapPreview.y,
+              width: snapPreview.width,
+              height: snapPreview.height,
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       <Rnd
         size={rndSize}
@@ -167,66 +163,85 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
           ${isMinimized ? '!pointer-events-none !opacity-0' : ''}
         `}
       >
-         <motion.div
-            className="flex flex-col w-full h-full"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{
-                opacity: isMinimized ? 0 : 1,
-                scale: isMinimized ? 0.8 : 1,
-                y: isMinimized ? 200 : 0
-            }}
-            transition={{ duration: 0.2 }}
-         >
-            {/* Title Bar */}
-            <div
-              className={`window-titlebar h-10 flex items-center justify-between px-3 select-none flex-shrink-0
+        <motion.div
+          className="flex flex-col w-full h-full"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{
+            opacity: isMinimized ? 0 : 1,
+            scale: isMinimized ? 0.8 : 1,
+            y: isMinimized ? 200 : 0,
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          {/* Title Bar */}
+          <div
+            className={`window-titlebar h-10 flex items-center justify-between px-3 select-none flex-shrink-0
                  ${isDarkMode ? 'bg-white/5' : 'bg-black/5'}
                  border-b ${isDarkMode ? 'border-white/10' : 'border-black/5'}
               `}
-              onDoubleClick={() => maximizeWindow(id)}
-            >
-               <div className="flex items-center gap-2 overflow-hidden">
-                  <div className={`flex items-center justify-center
+            onDoubleClick={() => maximizeWindow(id)}
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div
+                className={`flex items-center justify-center
                      ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}
-                  `}>
-                     <Icon size={16} />
-                  </div>
-                  <span className={`text-xs font-medium truncate ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                     {title}
-                  </span>
-               </div>
-
-               <div className="flex items-center gap-2">
-                  <button
-                     className={`p-1 rounded-md hover:bg-white/10 transition-colors group`}
-                     onClick={(e) => { e.stopPropagation(); minimizeWindow(id); }}
-                  >
-                     <LucideIcons.LuMinus size={14} className="opacity-50 group-hover:opacity-100" />
-                  </button>
-                  <button
-                     className={`p-1 rounded-md hover:bg-white/10 transition-colors group`}
-                     onClick={(e) => { e.stopPropagation(); maximizeWindow(id); }}
-                  >
-                     {isMaximized ? (
-                        <LucideIcons.LuMinimize2 size={14} className="opacity-50 group-hover:opacity-100" />
-                     ) : (
-                        <LucideIcons.LuMaximize2 size={14} className="opacity-50 group-hover:opacity-100" />
-                     )}
-                  </button>
-                  <button
-                     className={`p-1 rounded-md hover:bg-red-500 hover:text-white transition-colors group`}
-                     onClick={(e) => { e.stopPropagation(); closeWindow(id); }}
-                  >
-                     <LucideIcons.LuX size={14} className="opacity-50 group-hover:opacity-100" />
-                  </button>
-               </div>
+                  `}
+              >
+                <Icon size={16} />
+              </div>
+              <span
+                className={`text-xs font-medium truncate ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}
+              >
+                {title}
+              </span>
             </div>
 
-            {/* Window Content */}
-            <div className="flex-1 relative overflow-hidden" onMouseDown={handleMouseDown}>
-               {children}
+            <div className="flex items-center gap-2">
+              <button
+                className={`p-1 rounded-md hover:bg-white/10 transition-colors group`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  minimizeWindow(id);
+                }}
+              >
+                <LucideIcons.LuMinus size={14} className="opacity-50 group-hover:opacity-100" />
+              </button>
+              <button
+                className={`p-1 rounded-md hover:bg-white/10 transition-colors group`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  maximizeWindow(id);
+                }}
+              >
+                {isMaximized ? (
+                  <LucideIcons.LuMinimize2
+                    size={14}
+                    className="opacity-50 group-hover:opacity-100"
+                  />
+                ) : (
+                  <LucideIcons.LuMaximize2
+                    size={14}
+                    className="opacity-50 group-hover:opacity-100"
+                  />
+                )}
+              </button>
+              <button
+                className={`p-1 rounded-md hover:bg-red-500 hover:text-white transition-colors group`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeWindow(id);
+                }}
+              >
+                <LucideIcons.LuX size={14} className="opacity-50 group-hover:opacity-100" />
+              </button>
             </div>
-         </motion.div>
+          </div>
+
+          {/* Window Content */}
+          <div className="flex-1 relative overflow-hidden" onMouseDown={handleMouseDown}>
+            {children}
+          </div>
+        </motion.div>
       </Rnd>
     </>
   );

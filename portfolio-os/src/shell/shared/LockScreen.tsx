@@ -16,8 +16,12 @@ export const LockScreen: React.FC = () => {
       isLocked: state.isLocked,
     }))
   );
-  const { currentWallpaper } = useThemeStore(useShallow((state) => ({ currentWallpaper: state.currentWallpaper })));
-  const { notifications } = useNotificationStore(useShallow((state) => ({ notifications: state.notifications })));
+  const { currentWallpaper } = useThemeStore(
+    useShallow((state) => ({ currentWallpaper: state.currentWallpaper }))
+  );
+  const { notifications } = useNotificationStore(
+    useShallow((state) => ({ notifications: state.notifications }))
+  );
 
   const [password, _setPassword] = useState('');
   const [showPassword, _setShowPassword] = useState(false);
@@ -25,13 +29,14 @@ export const LockScreen: React.FC = () => {
   // Handle unlock attempt
   const handleUnlock = () => {
     // Simple unlock for now, or check password if provided
-    if (showPassword && password === '0000') { // Example PIN
-        unlock();
+    if (showPassword && password === '0000') {
+      // Example PIN
+      unlock();
     } else if (!showPassword) {
-        // Just unlock if no password field shown yet, or show password field?
-        // Prompt says "Optional: Simple PIN/password field".
-        // Let's just unlock for simplicity unless configured otherwise.
-        unlock();
+      // Just unlock if no password field shown yet, or show password field?
+      // Prompt says "Optional: Simple PIN/password field".
+      // Let's just unlock for simplicity unless configured otherwise.
+      unlock();
     }
   };
 
@@ -104,25 +109,28 @@ export const LockScreen: React.FC = () => {
 
         {/* Notifications Preview */}
         {recentNotifications.length > 0 && (
-            <motion.div
-                className="mt-8 w-full space-y-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-            >
-                {recentNotifications.map((notif) => (
-                    <div key={notif.id} className="bg-white/10 backdrop-blur-md rounded-lg p-3 flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-xs">
-                           {/* Placeholder for app icon */}
-                           <span className="uppercase">{notif.appId.slice(0, 2)}</span>
-                        </div>
-                        <div className="flex-1 overflow-hidden">
-                            <h4 className="text-sm font-medium truncate">{notif.title}</h4>
-                            <p className="text-xs opacity-70 truncate">{notif.message}</p>
-                        </div>
-                    </div>
-                ))}
-            </motion.div>
+          <motion.div
+            className="mt-8 w-full space-y-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            {recentNotifications.map((notif) => (
+              <div
+                key={notif.id}
+                className="bg-white/10 backdrop-blur-md rounded-lg p-3 flex items-center gap-3"
+              >
+                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-xs">
+                  {/* Placeholder for app icon */}
+                  <span className="uppercase">{notif.appId.slice(0, 2)}</span>
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <h4 className="text-sm font-medium truncate">{notif.title}</h4>
+                  <p className="text-xs opacity-70 truncate">{notif.message}</p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         )}
       </div>
 
@@ -140,16 +148,14 @@ export const LockScreen: React.FC = () => {
       >
         <motion.div
           animate={{ y: [0, -10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
         >
           <LuChevronUp className="w-6 h-6 opacity-70" />
         </motion.div>
         <p className="mt-2 text-sm font-light opacity-70 tracking-wide uppercase">
           Swipe up to unlock
         </p>
-        <p className="text-xs font-light opacity-50 mt-1 hidden md:block">
-            or Press Enter
-        </p>
+        <p className="text-xs font-light opacity-50 mt-1 hidden md:block">or Press Enter</p>
       </motion.div>
     </motion.div>
   );
