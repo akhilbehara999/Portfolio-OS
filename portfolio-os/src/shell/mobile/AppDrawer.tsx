@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { APP_REGISTRY } from '../../config/app-registry';
-import { AppDefinition } from '../../types/app.types';
+import type { AppDefinition } from '../../types/app.types';
 import { LuSearch, LuX } from 'react-icons/lu';
 
 interface AppDrawerProps {

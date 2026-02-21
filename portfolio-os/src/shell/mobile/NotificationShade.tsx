@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 import {
   LuWifi,
   LuBluetooth,
@@ -7,8 +7,6 @@ import {
   LuSun,
   LuVolume2,
   LuLock,
-  LuSettings,
-  LuX,
   LuMusic,
   LuBatteryFull,
 } from 'react-icons/lu';
@@ -46,7 +44,7 @@ const NotificationItem = ({ app, title, time, content }: any) => (
 );
 
 export const NotificationShade: React.FC<NotificationShadeProps> = ({ isOpen, onClose }) => {
-  const { toggleTheme, theme } = useThemeStore();
+  const { toggleDarkMode, isDarkMode } = useThemeStore();
   const { isLocked, lock } = useOSStore();
 
   // Quick Settings State
@@ -72,6 +70,7 @@ export const NotificationShade: React.FC<NotificationShadeProps> = ({ isOpen, on
           onClose();
         }
       }}
+      style={{ y }}
     >
       {/* Header */}
       <div className="pt-12 px-6 pb-4 flex justify-between items-end">
@@ -102,11 +101,11 @@ export const NotificationShade: React.FC<NotificationShadeProps> = ({ isOpen, on
           onClick={() => setBluetooth(!bluetooth)}
         />
         <QuickTile
-          icon={theme.mode === 'dark' ? LuMoon : LuSun}
+          icon={isDarkMode ? LuMoon : LuSun}
           label="Theme"
           active={true}
-          onClick={toggleTheme}
-          color={theme.mode === 'dark' ? 'bg-indigo-500' : 'bg-orange-400'}
+          onClick={toggleDarkMode}
+          color={isDarkMode ? 'bg-indigo-500' : 'bg-orange-400'}
         />
         <QuickTile icon={LuLock} label="Lock" active={isLocked} onClick={lock} color="bg-red-500" />
       </div>
