@@ -1,1 +1,1 @@
-export { default } from './AppPlaceholder';
+export { default } from './skills/SkillsApp';
