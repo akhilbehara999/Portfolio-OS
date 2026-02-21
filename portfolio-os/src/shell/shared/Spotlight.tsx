@@ -31,7 +31,12 @@ export const Spotlight: React.FC = () => {
   // Mock Files and Actions
   const mockFiles = [
     { id: 'resume.pdf', title: 'Resume.pdf', description: 'Documents', type: 'file' as const },
-    { id: 'project-specs.docx', title: 'Project Specs.docx', description: 'Work', type: 'file' as const },
+    {
+      id: 'project-specs.docx',
+      title: 'Project Specs.docx',
+      description: 'Work',
+      type: 'file' as const,
+    },
     { id: 'budget.xlsx', title: 'Budget 2024.xlsx', description: 'Finance', type: 'file' as const },
   ];
 
@@ -42,15 +47,15 @@ export const Spotlight: React.FC = () => {
       description: 'System',
       type: 'action' as const,
       icon: 'Lock',
-      action: () => lock()
+      action: () => lock(),
     },
     {
-        id: 'reload',
-        title: 'Reload System',
-        description: 'System',
-        type: 'action' as const,
-        icon: 'RefreshCw',
-        action: () => window.location.reload()
+      id: 'reload',
+      title: 'Reload System',
+      description: 'System',
+      type: 'action' as const,
+      icon: 'RefreshCw',
+      action: () => window.location.reload(),
     },
   ];
 
@@ -60,34 +65,35 @@ export const Spotlight: React.FC = () => {
 
     const lowerQuery = query.toLowerCase();
 
-    const appResults = APP_REGISTRY
-      .filter(app =>
+    const appResults = APP_REGISTRY.filter(
+      (app) =>
         app.name.toLowerCase().includes(lowerQuery) ||
         app.description.toLowerCase().includes(lowerQuery)
-      )
-      .map(app => ({
-        id: app.id,
-        type: 'app' as const,
-        title: app.name,
-        description: app.description,
-        icon: app.icon,
-        action: () => launchApp(app.id),
-        shortcut: app.shortcut
-      }));
+    ).map((app) => ({
+      id: app.id,
+      type: 'app' as const,
+      title: app.name,
+      description: app.description,
+      icon: app.icon,
+      action: () => launchApp(app.id),
+      shortcut: app.shortcut,
+    }));
 
     const fileResults = mockFiles
-      .filter(file => file.title.toLowerCase().includes(lowerQuery))
-      .map(file => ({
+      .filter((file) => file.title.toLowerCase().includes(lowerQuery))
+      .map((file) => ({
         ...file,
-        action: () => { /* Open file logic */ },
-        icon: 'FileText'
+        action: () => {
+          /* Open file logic */
+        },
+        icon: 'FileText',
       }));
 
     const actionResults = actions
-      .filter(action => action.title.toLowerCase().includes(lowerQuery))
-      .map(action => ({
+      .filter((action) => action.title.toLowerCase().includes(lowerQuery))
+      .map((action) => ({
         ...action,
-        shortcut: undefined
+        shortcut: undefined,
       }));
 
     return [...appResults, ...actionResults, ...fileResults].slice(0, 8);
@@ -98,7 +104,7 @@ export const Spotlight: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.code === 'Space') {
         e.preventDefault();
-        setIsOpen(prev => !prev);
+        setIsOpen((prev) => !prev);
       }
 
       if (!isOpen) return;
@@ -107,10 +113,10 @@ export const Spotlight: React.FC = () => {
         setIsOpen(false);
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelectedIndex(prev => (prev + 1) % results.length);
+        setSelectedIndex((prev) => (prev + 1) % results.length);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
+        setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (results[selectedIndex]) {
@@ -142,8 +148,9 @@ export const Spotlight: React.FC = () => {
     if (!iconName) return <LuCommand className="w-5 h-5" />;
 
     // Convert common names if needed or use direct mapping
-    const IconComponent = (Icons as any)[iconName] ||
-                          (Icons as any)['Lu' + iconName.charAt(0).toUpperCase() + iconName.slice(1)];
+    const IconComponent =
+      (Icons as any)[iconName] ||
+      (Icons as any)['Lu' + iconName.charAt(0).toUpperCase() + iconName.slice(1)];
 
     if (IconComponent) return <IconComponent className="w-5 h-5" />;
     return <LuCommand className="w-5 h-5" />;
@@ -173,7 +180,9 @@ export const Spotlight: React.FC = () => {
             transition={{ duration: 0.2 }}
           >
             {/* Search Bar */}
-            <div className={`flex items-center px-4 py-4 border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}`}>
+            <div
+              className={`flex items-center px-4 py-4 border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}`}
+            >
               <LuSearch className={`w-6 h-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
               <input
                 ref={inputRef}
@@ -186,11 +195,13 @@ export const Spotlight: React.FC = () => {
                 `}
               />
               <div className="flex items-center gap-1">
-                 <kbd className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-mono
+                <kbd
+                  className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-mono
                     ${isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500'}
-                 `}>
-                    <span className="text-xs">ESC</span>
-                 </kbd>
+                 `}
+                >
+                  <span className="text-xs">ESC</span>
+                </kbd>
               </div>
             </div>
 
@@ -202,9 +213,12 @@ export const Spotlight: React.FC = () => {
                     <div
                       key={result.id}
                       className={`flex items-center px-4 py-3 mx-2 rounded-lg cursor-pointer transition-colors
-                        ${index === selectedIndex
-                          ? (isDarkMode ? 'bg-blue-600/20' : 'bg-blue-50')
-                          : 'hover:bg-opacity-50'
+                        ${
+                          index === selectedIndex
+                            ? isDarkMode
+                              ? 'bg-blue-600/20'
+                              : 'bg-blue-50'
+                            : 'hover:bg-opacity-50'
                         }
                         ${index === selectedIndex && isDarkMode ? 'bg-blue-600 text-white' : ''}
                         ${index === selectedIndex && !isDarkMode ? 'bg-blue-100' : ''}
@@ -215,44 +229,54 @@ export const Spotlight: React.FC = () => {
                       }}
                       onMouseEnter={() => setSelectedIndex(index)}
                     >
-                      <div className={`flex items-center justify-center w-10 h-10 rounded-lg mr-4
+                      <div
+                        className={`flex items-center justify-center w-10 h-10 rounded-lg mr-4
                          ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'}
                          ${index === selectedIndex ? 'bg-opacity-0' : ''}
-                      `}>
+                      `}
+                      >
                         {renderIcon(result.icon)}
                       </div>
 
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                           <span className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}
+                          <span
+                            className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}
                               ${index === selectedIndex ? 'text-inherit' : ''}
-                           `}>
-                              {result.title}
-                           </span>
-                           <span className={`text-xs px-1.5 py-0.5 rounded-full uppercase
+                           `}
+                          >
+                            {result.title}
+                          </span>
+                          <span
+                            className={`text-xs px-1.5 py-0.5 rounded-full uppercase
                               ${result.type === 'app' ? 'bg-blue-500/20 text-blue-500' : ''}
                               ${result.type === 'file' ? 'bg-orange-500/20 text-orange-500' : ''}
                               ${result.type === 'action' ? 'bg-red-500/20 text-red-500' : ''}
                               ${index === selectedIndex ? 'bg-opacity-20 text-current' : ''}
-                           `}>
-                              {result.type}
-                           </span>
+                           `}
+                          >
+                            {result.type}
+                          </span>
                         </div>
                         {result.description && (
-                          <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}
+                          <div
+                            className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}
                              ${index === selectedIndex ? 'text-inherit opacity-80' : ''}
-                          `}>
+                          `}
+                          >
                             {result.description}
                           </div>
                         )}
                       </div>
 
                       {result.shortcut && (
-                         <div className={`text-xs font-mono opacity-50
+                        <div
+                          className={`text-xs font-mono opacity-50
                             ${index === selectedIndex ? 'opacity-80' : ''}
-                         `}>
-                            {result.shortcut}
-                         </div>
+                         `}
+                        >
+                          {result.shortcut}
+                        </div>
                       )}
 
                       {index === selectedIndex && (
@@ -262,33 +286,39 @@ export const Spotlight: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                 <div className={`flex flex-col items-center justify-center py-12 text-center opacity-50`}>
-                    {query ? (
-                       <>
-                          <LuSearch className="w-12 h-12 mb-4" />
-                          <p>No results found for "{query}"</p>
-                       </>
-                    ) : (
-                       <>
-                          <LuCommand className="w-12 h-12 mb-4" />
-                          <p>Type to search...</p>
-                       </>
-                    )}
-                 </div>
+                <div
+                  className={`flex flex-col items-center justify-center py-12 text-center opacity-50`}
+                >
+                  {query ? (
+                    <>
+                      <LuSearch className="w-12 h-12 mb-4" />
+                      <p>No results found for "{query}"</p>
+                    </>
+                  ) : (
+                    <>
+                      <LuCommand className="w-12 h-12 mb-4" />
+                      <p>Type to search...</p>
+                    </>
+                  )}
+                </div>
               )}
             </div>
 
             {/* Footer */}
-            <div className={`flex items-center justify-between px-4 py-2 text-xs border-t
+            <div
+              className={`flex items-center justify-between px-4 py-2 text-xs border-t
                ${isDarkMode ? 'bg-gray-800/50 border-gray-800 text-gray-500' : 'bg-gray-50 border-gray-100 text-gray-400'}
-            `}>
-                <div className="flex gap-4">
-                   <span>Select <kbd className="font-mono">↑↓</kbd></span>
-                   <span>Open <kbd className="font-mono">↵</kbd></span>
-                </div>
-                <div>
-                   PortfolioOS Spotlight
-                </div>
+            `}
+            >
+              <div className="flex gap-4">
+                <span>
+                  Select <kbd className="font-mono">↑↓</kbd>
+                </span>
+                <span>
+                  Open <kbd className="font-mono">↵</kbd>
+                </span>
+              </div>
+              <div>PortfolioOS Spotlight</div>
             </div>
           </motion.div>
         </>

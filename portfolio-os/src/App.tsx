@@ -1,29 +1,37 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import React, { useMemo } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { useOSStore } from './store/os.store';
+import { BootScreen } from './shell/shared/BootScreen';
+import { DesktopShell } from './shell/desktop/DesktopShell';
+import { MobileShell } from './shell/mobile/MobileShell';
+import { BootStatus } from './types/os.types';
 
 function App() {
-  const [count, setCount] = useState(0);
+  // Use store directly to avoid triggering boot sequence twice (BootScreen handles it)
+  const bootPhase = useOSStore((state) => state.bootStatus);
+  const deviceMode = useOSStore((state) => state.deviceMode);
+
+  const shouldRenderShell = useMemo(() => {
+    return bootPhase === BootStatus.LOADING_SHELL || bootPhase === BootStatus.READY;
+  }, [bootPhase]);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <BootScreen />
+
+      {shouldRenderShell && (deviceMode === 'mobile' ? <MobileShell /> : <DesktopShell />)}
+
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: '#333',
+            color: '#fff',
+            borderRadius: '12px',
+            fontSize: '14px',
+          },
+        }}
+      />
     </>
   );
 }

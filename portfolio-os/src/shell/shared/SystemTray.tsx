@@ -12,7 +12,7 @@ export interface SystemTrayProps {
 
 export const SystemTray: React.FC<SystemTrayProps> = ({
   onToggleNotifications,
-  className = ""
+  className = '',
 }) => {
   const { time } = useClock();
   const { unreadCount } = useNotificationStore();
@@ -26,7 +26,7 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
         whileTap={{ scale: 0.95 }}
         onClick={toggleDarkMode}
         className={`p-1.5 rounded-full transition-colors ${
-            isDarkMode ? 'hover:bg-white/10 text-gray-300' : 'hover:bg-black/5 text-gray-600'
+          isDarkMode ? 'hover:bg-white/10 text-gray-300' : 'hover:bg-black/5 text-gray-600'
         }`}
         title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
       >
@@ -35,20 +35,28 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
 
       {/* System Status Icons */}
       <div className="flex items-center gap-2">
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+        <div
+          className={`flex items-center justify-center w-8 h-8 rounded-full ${
             isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'
-        }`}>
-            <LuWifi className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+          }`}
+        >
+          <LuWifi className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
         </div>
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+        <div
+          className={`flex items-center justify-center w-8 h-8 rounded-full ${
             isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'
-        }`}>
-            <LuVolume2 className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+          }`}
+        >
+          <LuVolume2 className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
         </div>
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+        <div
+          className={`flex items-center justify-center w-8 h-8 rounded-full ${
             isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'
-        }`}>
-            <LuBatteryCharging className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} />
+          }`}
+        >
+          <LuBatteryCharging
+            className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+          />
         </div>
       </div>
 
@@ -58,7 +66,7 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
         whileTap={{ scale: 0.95 }}
         onClick={onToggleNotifications}
         className={`relative p-2 rounded-full transition-colors ${
-            isDarkMode ? 'hover:bg-white/10 text-gray-300' : 'hover:bg-black/5 text-gray-600'
+          isDarkMode ? 'hover:bg-white/10 text-gray-300' : 'hover:bg-black/5 text-gray-600'
         }`}
       >
         <LuBell className="w-5 h-5" />
@@ -74,7 +82,7 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
       {/* Clock */}
       <div
         className={`text-sm font-medium tabular-nums select-none cursor-default ${
-            isDarkMode ? 'text-gray-200' : 'text-gray-800'
+          isDarkMode ? 'text-gray-200' : 'text-gray-800'
         }`}
       >
         {time}

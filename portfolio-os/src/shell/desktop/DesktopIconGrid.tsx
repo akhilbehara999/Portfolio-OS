@@ -48,15 +48,18 @@ interface DesktopIconProps {
   onRemove: (id: string) => void;
 }
 
-const DesktopIcon = ({ id, name, icon, isSelected, onSelect, onLaunch, onRemove }: DesktopIconProps) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
+const DesktopIcon = ({
+  id,
+  name,
+  icon,
+  isSelected,
+  onSelect,
+  onLaunch,
+  onRemove,
+}: DesktopIconProps) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -92,7 +95,10 @@ const DesktopIcon = ({ id, name, icon, isSelected, onSelect, onLaunch, onRemove 
           <div className="w-12 h-12 flex items-center justify-center mb-1 text-white filter drop-shadow-md">
             <IconComponent size={32} />
           </div>
-          <span className="text-xs text-white text-center font-medium drop-shadow-md line-clamp-2 px-1 leading-tight w-full break-words" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>
+          <span
+            className="text-xs text-white text-center font-medium drop-shadow-md line-clamp-2 px-1 leading-tight w-full break-words"
+            style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+          >
             {name}
           </span>
         </div>
@@ -159,20 +165,20 @@ export const DesktopIconGrid: React.FC = () => {
         onDragEnd={handleDragEnd}
       >
         <div className="flex flex-col flex-wrap content-start h-full gap-2 w-fit">
-            <SortableContext items={items.map(i => i.id)} strategy={rectSortingStrategy}>
-              {items.map((app) => (
-                <DesktopIcon
-                  key={app.id}
-                  id={app.id}
-                  name={app.name}
-                  icon={app.icon}
-                  isSelected={selectedId === app.id}
-                  onSelect={setSelectedId}
-                  onLaunch={(id) => openWindow(id)}
-                  onRemove={(id) => setItems((prev) => prev.filter((i) => i.id !== id))}
-                />
-              ))}
-            </SortableContext>
+          <SortableContext items={items.map((i) => i.id)} strategy={rectSortingStrategy}>
+            {items.map((app) => (
+              <DesktopIcon
+                key={app.id}
+                id={app.id}
+                name={app.name}
+                icon={app.icon}
+                isSelected={selectedId === app.id}
+                onSelect={setSelectedId}
+                onLaunch={(id) => openWindow(id)}
+                onRemove={(id) => setItems((prev) => prev.filter((i) => i.id !== id))}
+              />
+            ))}
+          </SortableContext>
         </div>
 
         <DragOverlay>

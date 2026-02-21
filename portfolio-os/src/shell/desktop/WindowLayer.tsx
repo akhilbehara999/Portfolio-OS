@@ -18,23 +18,19 @@ export const WindowLayer: React.FC = () => {
 
           return (
             <motion.div
-               key={windowState.id}
-               initial={{ opacity: 0, scale: 0.95 }}
-               animate={{ opacity: 1, scale: 1 }}
-               exit={{ opacity: 0, scale: 0.95 }}
-               transition={{ duration: 0.2 }}
-               className="absolute inset-0 w-full h-full pointer-events-none"
-               style={{ zIndex: windowState.zIndex }}
+              key={windowState.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{ zIndex: windowState.zIndex }}
             >
-               <WindowFrame windowState={windowState}>
-                  <Suspense fallback={<LoadingScreen />}>
-                     {AppComponent && (
-                       <AppComponent
-                          windowId={windowState.id}
-                       />
-                     )}
-                  </Suspense>
-               </WindowFrame>
+              <WindowFrame windowState={windowState}>
+                <Suspense fallback={<LoadingScreen />}>
+                  {AppComponent && <AppComponent windowId={windowState.id} />}
+                </Suspense>
+              </WindowFrame>
             </motion.div>
           );
         })}

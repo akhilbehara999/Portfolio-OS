@@ -11,7 +11,9 @@ interface NotificationPanelProps {
   className?: string;
 }
 
-export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className = "top-12 right-4" }) => {
+export const NotificationPanel: React.FC<NotificationPanelProps> = ({
+  className = 'top-12 right-4',
+}) => {
   const { notificationHistory, dismissNotification, clearAll } = useNotificationStore();
   const { isDarkMode } = useThemeStore();
 
@@ -28,7 +30,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
     const today: typeof allNotifications = [];
     const earlier: typeof allNotifications = [];
 
-    allNotifications.forEach(n => {
+    allNotifications.forEach((n) => {
       if (isToday(n.timestamp)) {
         today.push(n);
       } else {
@@ -41,11 +43,12 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
 
   const renderIcon = (appId: string, iconName?: string) => {
     // Try to find app icon first
-    const app = APP_REGISTRY.find(a => a.id === appId);
+    const app = APP_REGISTRY.find((a) => a.id === appId);
     const iconToRender = iconName || app?.icon || 'Bell';
 
-    const IconComponent = (Icons as any)[iconToRender] ||
-                          (Icons as any)['Lu' + iconToRender.charAt(0).toUpperCase() + iconToRender.slice(1)];
+    const IconComponent =
+      (Icons as any)[iconToRender] ||
+      (Icons as any)['Lu' + iconToRender.charAt(0).toUpperCase() + iconToRender.slice(1)];
 
     if (IconComponent) return <IconComponent className="w-4 h-4" />;
     return <LuBell className="w-4 h-4" />;
@@ -56,18 +59,18 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
     visible: {
       x: 0,
       opacity: 1,
-      transition: { type: 'spring' as const, damping: 25, stiffness: 200 }
+      transition: { type: 'spring' as const, damping: 25, stiffness: 200 },
     },
-    exit: { x: '100%', opacity: 0 }
+    exit: { x: '100%', opacity: 0 },
   };
 
   const listVariants = {
-    visible: { transition: { staggerChildren: 0.05 } }
+    visible: { transition: { staggerChildren: 0.05 } },
   };
 
   const itemVariants = {
     hidden: { x: 20, opacity: 0 },
-    visible: { x: 0, opacity: 1 }
+    visible: { x: 0, opacity: 1 },
   };
 
   return (
@@ -81,9 +84,11 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
       exit="exit"
     >
       {/* Header */}
-      <div className={`flex items-center justify-between px-4 py-3 border-b
+      <div
+        className={`flex items-center justify-between px-4 py-3 border-b
          ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}
-      `}>
+      `}
+      >
         <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
           Notifications
         </h3>
@@ -112,20 +117,22 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
             {/* Today Section */}
             {groupedNotifications.today.length > 0 && (
               <div className="mb-4">
-                <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2 pl-1 opacity-50
+                <h4
+                  className={`text-xs font-semibold uppercase tracking-wider mb-2 pl-1 opacity-50
                    ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}
-                `}>
+                `}
+                >
                   Today
                 </h4>
                 <div className="space-y-2">
-                  {groupedNotifications.today.map(notification => (
+                  {groupedNotifications.today.map((notification) => (
                     <NotificationItem
-                        key={notification.id}
-                        notification={notification}
-                        isDarkMode={isDarkMode}
-                        renderIcon={renderIcon}
-                        onDismiss={() => dismissNotification(notification.id)}
-                        variants={itemVariants}
+                      key={notification.id}
+                      notification={notification}
+                      isDarkMode={isDarkMode}
+                      renderIcon={renderIcon}
+                      onDismiss={() => dismissNotification(notification.id)}
+                      variants={itemVariants}
                     />
                   ))}
                 </div>
@@ -135,20 +142,22 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
             {/* Earlier Section */}
             {groupedNotifications.earlier.length > 0 && (
               <div>
-                <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2 pl-1 opacity-50
+                <h4
+                  className={`text-xs font-semibold uppercase tracking-wider mb-2 pl-1 opacity-50
                    ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}
-                `}>
+                `}
+                >
                   Earlier
                 </h4>
                 <div className="space-y-2">
-                  {groupedNotifications.earlier.map(notification => (
+                  {groupedNotifications.earlier.map((notification) => (
                     <NotificationItem
-                        key={notification.id}
-                        notification={notification}
-                        isDarkMode={isDarkMode}
-                        renderIcon={renderIcon}
-                        onDismiss={() => dismissNotification(notification.id)}
-                        variants={itemVariants}
+                      key={notification.id}
+                      notification={notification}
+                      isDarkMode={isDarkMode}
+                      renderIcon={renderIcon}
+                      onDismiss={() => dismissNotification(notification.id)}
+                      variants={itemVariants}
                     />
                   ))}
                 </div>
@@ -163,56 +172,63 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({ className 
 
 // Helper Component for Notification Item
 const NotificationItem: React.FC<{
-    notification: any,
-    isDarkMode: boolean,
-    renderIcon: (appId: string, icon?: string) => React.ReactNode,
-    onDismiss: () => void,
-    variants: any
+  notification: any;
+  isDarkMode: boolean;
+  renderIcon: (appId: string, icon?: string) => React.ReactNode;
+  onDismiss: () => void;
+  variants: any;
 }> = ({ notification, isDarkMode, renderIcon, onDismiss, variants }) => {
-    return (
-        <motion.div
-            variants={variants}
-            layout
-            className={`relative group p-3 rounded-lg border transition-all cursor-default
-                ${isDarkMode
+  return (
+    <motion.div
+      variants={variants}
+      layout
+      className={`relative group p-3 rounded-lg border transition-all cursor-default
+                ${
+                  isDarkMode
                     ? 'bg-gray-800/50 border-gray-700 hover:bg-gray-800'
                     : 'bg-white border-gray-200 hover:border-blue-200 shadow-sm'
                 }
             `}
-        >
-            <div className="flex gap-3">
-                <div className={`mt-0.5 w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center
+    >
+      <div className="flex gap-3">
+        <div
+          className={`mt-0.5 w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center
                     ${isDarkMode ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-50 text-blue-500'}
-                `}>
-                    {renderIcon(notification.appId, notification.icon)}
-                </div>
-                <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-start">
-                        <h5 className={`text-sm font-medium truncate pr-6 ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>
-                            {notification.title}
-                        </h5>
-                        <span className="text-[10px] opacity-50 whitespace-nowrap ml-2">
-                            {formatDistanceToNow(notification.timestamp, { addSuffix: true })}
-                        </span>
-                    </div>
-                    <p className={`text-xs mt-0.5 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                        {notification.message}
-                    </p>
-                </div>
-            </div>
+                `}
+        >
+          {renderIcon(notification.appId, notification.icon)}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between items-start">
+            <h5
+              className={`text-sm font-medium truncate pr-6 ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}
+            >
+              {notification.title}
+            </h5>
+            <span className="text-[10px] opacity-50 whitespace-nowrap ml-2">
+              {formatDistanceToNow(notification.timestamp, { addSuffix: true })}
+            </span>
+          </div>
+          <p
+            className={`text-xs mt-0.5 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
+            {notification.message}
+          </p>
+        </div>
+      </div>
 
-            {/* Dismiss Button (Visible on Hover) */}
-            <button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onDismiss();
-                }}
-                className={`absolute top-2 right-2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity
+      {/* Dismiss Button (Visible on Hover) */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDismiss();
+        }}
+        className={`absolute top-2 right-2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity
                     ${isDarkMode ? 'hover:bg-white/10 text-gray-400' : 'hover:bg-black/5 text-gray-500'}
                 `}
-            >
-                <LuX className="w-3 h-3" />
-            </button>
-        </motion.div>
-    );
+      >
+        <LuX className="w-3 h-3" />
+      </button>
+    </motion.div>
+  );
 };

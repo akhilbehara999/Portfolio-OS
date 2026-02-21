@@ -70,7 +70,12 @@ export const DesktopShell: React.FC = () => {
   // Desktop Context Menu Items
   const desktopMenuItems = [
     { label: 'Refresh', action: () => window.location.reload(), icon: 'RefreshCw' },
-    { label: 'New Folder', action: () => console.log('New Folder'), icon: 'FolderPlus', disabled: true },
+    {
+      label: 'New Folder',
+      action: () => console.log('New Folder'),
+      icon: 'FolderPlus',
+      disabled: true,
+    },
     { separator: true as const },
     { label: 'Personalize', action: () => console.log('Personalize'), icon: 'Settings' },
     { label: 'Display Settings', action: () => console.log('Display'), icon: 'Monitor' },
@@ -85,11 +90,11 @@ export const DesktopShell: React.FC = () => {
       {/* 1. Wallpaper Layer (Bottom) */}
       {/* Wrapped in ContextMenu for desktop right-click */}
       <ContextMenu items={desktopMenuItems} className="absolute inset-0 z-0">
-         <WallpaperLayer />
+        <WallpaperLayer />
 
-         {/* 2. Desktop Icon Grid */}
-         {/* It has z-10 internally, so it sits above wallpaper */}
-         <DesktopIconGrid />
+        {/* 2. Desktop Icon Grid */}
+        {/* It has z-10 internally, so it sits above wallpaper */}
+        <DesktopIconGrid />
       </ContextMenu>
 
       {/* 3. Window Layer (z-20) */}
@@ -103,11 +108,11 @@ export const DesktopShell: React.FC = () => {
 
       {/* 6. Notification Layer */}
       <div className="absolute bottom-14 right-4 z-[2000] pointer-events-none">
-         <div className="pointer-events-auto">
-            <AnimatePresence>
-              {isNotificationsOpen && <NotificationPanel className="bottom-0 right-0 top-auto" />}
-            </AnimatePresence>
-         </div>
+        <div className="pointer-events-auto">
+          <AnimatePresence>
+            {isNotificationsOpen && <NotificationPanel className="bottom-0 right-0 top-auto" />}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* 7. Spotlight Layer */}
@@ -116,7 +121,7 @@ export const DesktopShell: React.FC = () => {
       {/* 8. Lock Screen Layer */}
       {isLocked && (
         <div className="absolute inset-0 z-[5000]">
-           <LockScreen />
+          <LockScreen />
         </div>
       )}
     </div>
