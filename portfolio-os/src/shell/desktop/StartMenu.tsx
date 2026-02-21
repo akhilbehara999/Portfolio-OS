@@ -31,14 +31,18 @@ export const StartMenu: React.FC<StartMenuProps> = ({ isOpen, onClose }) => {
   // Pinned apps (subset of registry)
   const pinnedAppIds = [
     'about',
+    'skills',
+    'education',
+    'experience',
     'projects',
-    'terminal',
+    'certifications',
+    'contact',
+    'gallery',
     'resume',
+    'terminal',
     'settings',
     'file-explorer',
     'browser',
-    'skills',
-    'contact',
   ];
   const pinnedApps = pinnedAppIds
     .map((id) => APP_REGISTRY.find((a) => a.id === id))
