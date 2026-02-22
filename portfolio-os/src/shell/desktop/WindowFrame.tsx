@@ -84,6 +84,23 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
     }
   }, [position, size, isMaximized]);
 
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    if (!isFocused) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+W: Close Window
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'w') {
+        e.preventDefault();
+        e.stopPropagation();
+        closeWindow(id);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFocused, closeWindow, id]);
+
   // Handle focus
   const handleMouseDown = () => {
     if (!isFocused) focusWindow(id);
