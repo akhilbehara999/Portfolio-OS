@@ -53,8 +53,7 @@ export const useDeviceDetection = (): DeviceDetection => {
     window.addEventListener('resize', handleResize);
     window.addEventListener('orientationchange', handleResize);
 
-    // Initial check
-    setScreenSize(getWindowDimensions());
+    // Initial check handled in useState
 
     return () => {
       window.removeEventListener('resize', handleResize);

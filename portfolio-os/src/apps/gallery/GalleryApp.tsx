@@ -6,7 +6,7 @@ import {
   LuChevronRight,
   LuExternalLink,
   LuGithub,
-  LuFilter
+  LuFilter,
 } from 'react-icons/lu';
 import { PORTFOLIO_DATA, type Project } from '../../config/portfolio-data';
 
@@ -26,31 +26,36 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const categories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
+  const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category)))];
 
-  const filteredProjects = selectedCategory === 'All'
-    ? projects
-    : projects.filter(p => p.category === selectedCategory);
+  const filteredProjects =
+    selectedCategory === 'All' ? projects : projects.filter((p) => p.category === selectedCategory);
 
   const handleClose = () => {
     setSelectedProject(null);
   };
 
-  const handleNext = useCallback((e?: React.MouseEvent | KeyboardEvent) => {
-    e?.stopPropagation();
-    if (!selectedProject) return;
-    const currentIndex = filteredProjects.findIndex(p => p.title === selectedProject.title);
-    const nextIndex = (currentIndex + 1) % filteredProjects.length;
-    setSelectedProject(filteredProjects[nextIndex]);
-  }, [selectedProject, filteredProjects]);
+  const handleNext = useCallback(
+    (e?: React.MouseEvent | KeyboardEvent) => {
+      e?.stopPropagation();
+      if (!selectedProject) return;
+      const currentIndex = filteredProjects.findIndex((p) => p.title === selectedProject.title);
+      const nextIndex = (currentIndex + 1) % filteredProjects.length;
+      setSelectedProject(filteredProjects[nextIndex]);
+    },
+    [selectedProject, filteredProjects]
+  );
 
-  const handlePrev = useCallback((e?: React.MouseEvent | KeyboardEvent) => {
-    e?.stopPropagation();
-    if (!selectedProject) return;
-    const currentIndex = filteredProjects.findIndex(p => p.title === selectedProject.title);
-    const prevIndex = (currentIndex - 1 + filteredProjects.length) % filteredProjects.length;
-    setSelectedProject(filteredProjects[prevIndex]);
-  }, [selectedProject, filteredProjects]);
+  const handlePrev = useCallback(
+    (e?: React.MouseEvent | KeyboardEvent) => {
+      e?.stopPropagation();
+      if (!selectedProject) return;
+      const currentIndex = filteredProjects.findIndex((p) => p.title === selectedProject.title);
+      const prevIndex = (currentIndex - 1 + filteredProjects.length) % filteredProjects.length;
+      setSelectedProject(filteredProjects[prevIndex]);
+    },
+    [selectedProject, filteredProjects]
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -84,7 +89,7 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
           className="flex gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:hidden"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {categories.map(category => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -120,17 +125,31 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
                 {/* Image or Placeholder */}
                 <div
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  style={{ background: project.image && !project.image.includes('placeholder') ? `url(${project.image}) center/cover` : getGradient(project.title) }}
+                  style={{
+                    background:
+                      project.image && !project.image.includes('placeholder')
+                        ? `url(${project.image}) center/cover`
+                        : getGradient(project.title),
+                  }}
                 >
                   {project.image && !project.image.includes('placeholder') && (
-                     <img src={project.image} alt={project.title} className="w-full h-full object-cover opacity-0" onLoad={(e) => (e.target as HTMLImageElement).classList.remove('opacity-0')} />
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover opacity-0"
+                      onLoad={(e) => (e.target as HTMLImageElement).classList.remove('opacity-0')}
+                    />
                   )}
                 </div>
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                  <h3 className="font-bold text-white text-lg translate-y-2 group-hover:translate-y-0 transition-transform duration-300">{project.title}</h3>
-                  <p className="text-sm text-gray-300 line-clamp-2 translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">{project.description}</p>
+                  <h3 className="font-bold text-white text-lg translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-300 line-clamp-2 translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                    {project.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -150,7 +169,8 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
             {/* Toolbar */}
             <div className="flex justify-between items-center p-4 shrink-0">
               <span className="text-gray-400 text-sm">
-                {filteredProjects.findIndex(p => p.title === selectedProject.title) + 1} / {filteredProjects.length}
+                {filteredProjects.findIndex((p) => p.title === selectedProject.title) + 1} /{' '}
+                {filteredProjects.length}
               </span>
               <button
                 onClick={handleClose}
@@ -184,7 +204,7 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
                   initial={{ scale: 0.9, opacity: 0, x: 100 }}
                   animate={{ scale: 1, opacity: 1, x: 0 }}
                   exit={{ scale: 0.9, opacity: 0, x: -100 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={1}
@@ -198,22 +218,27 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
                   }}
                   className="relative w-full max-w-5xl flex-1 flex items-center justify-center mb-6 cursor-grab active:cursor-grabbing"
                 >
-                   <div
+                  <div
                     className="rounded-lg shadow-2xl overflow-hidden max-h-[60vh] sm:max-h-[70vh] w-auto max-w-full pointer-events-none"
-                    style={{ background: selectedProject.image && !selectedProject.image.includes('placeholder') ? 'transparent' : getGradient(selectedProject.title) }}
-                   >
-                     {selectedProject.image && !selectedProject.image.includes('placeholder') ? (
-                       <img
-                         src={selectedProject.image}
-                         alt={selectedProject.title}
-                         className="max-h-full max-w-full object-contain"
-                       />
-                     ) : (
-                        <div className="w-[600px] h-[400px] max-w-full max-h-full flex items-center justify-center text-gray-500 font-bold text-2xl">
-                          {selectedProject.title}
-                        </div>
-                     )}
-                   </div>
+                    style={{
+                      background:
+                        selectedProject.image && !selectedProject.image.includes('placeholder')
+                          ? 'transparent'
+                          : getGradient(selectedProject.title),
+                    }}
+                  >
+                    {selectedProject.image && !selectedProject.image.includes('placeholder') ? (
+                      <img
+                        src={selectedProject.image}
+                        alt={selectedProject.title}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    ) : (
+                      <div className="w-[600px] h-[400px] max-w-full max-h-full flex items-center justify-center text-gray-500 font-bold text-2xl">
+                        {selectedProject.title}
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
 
                 {/* Details */}

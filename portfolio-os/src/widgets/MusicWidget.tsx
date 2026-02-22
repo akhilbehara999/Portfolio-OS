@@ -24,27 +24,31 @@ export const MusicWidget = ({ size = 'medium' }: MusicWidgetProps) => {
       </div>
 
       <div className="flex flex-col items-center w-full z-10 flex-1 justify-center min-h-0">
-         {/* Album Art */}
-         <div
-           className={`${size === 'small' ? 'w-20 h-20' : 'w-24 h-24 md:w-32 md:h-32'} shrink-0 rounded-full bg-gradient-to-tr from-slate-800 via-slate-900 to-black shadow-xl border-4 border-slate-700/50 flex items-center justify-center mb-4 relative animate-[spin_8s_linear_infinite]`}
-           style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
-         >
-            {/* Vinyl effect */}
-            <div className="absolute inset-0 rounded-full border border-white/5" />
-            <div className="absolute inset-2 rounded-full border border-white/5" />
-            <div className="absolute inset-4 rounded-full border border-white/5" />
-            <div className="absolute inset-8 rounded-full border border-white/5 opacity-50" />
+        {/* Album Art */}
+        <div
+          className={`${size === 'small' ? 'w-20 h-20' : 'w-24 h-24 md:w-32 md:h-32'} shrink-0 rounded-full bg-gradient-to-tr from-slate-800 via-slate-900 to-black shadow-xl border-4 border-slate-700/50 flex items-center justify-center mb-4 relative animate-[spin_8s_linear_infinite]`}
+          style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
+        >
+          {/* Vinyl effect */}
+          <div className="absolute inset-0 rounded-full border border-white/5" />
+          <div className="absolute inset-2 rounded-full border border-white/5" />
+          <div className="absolute inset-4 rounded-full border border-white/5" />
+          <div className="absolute inset-8 rounded-full border border-white/5 opacity-50" />
 
-            {/* Center Label */}
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-inner">
-               <div className="w-1.5 h-1.5 bg-black rounded-full" />
-            </div>
-         </div>
+          {/* Center Label */}
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-inner">
+            <div className="w-1.5 h-1.5 bg-black rounded-full" />
+          </div>
+        </div>
 
-         <div className="text-center w-full px-4">
-           <h3 className="font-bold text-slate-800 dark:text-white truncate text-base md:text-lg">Building Dreams</h3>
-           <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 truncate mt-1">{name}</p>
-         </div>
+        <div className="text-center w-full px-4">
+          <h3 className="font-bold text-slate-800 dark:text-white truncate text-base md:text-lg">
+            Building Dreams
+          </h3>
+          <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 truncate mt-1">
+            {name}
+          </p>
+        </div>
       </div>
 
       <div className="w-full mt-2 md:mt-4 z-10">
@@ -55,7 +59,7 @@ export const MusicWidget = ({ size = 'medium' }: MusicWidgetProps) => {
             className="h-full bg-gradient-to-r from-pink-500 to-purple-500 relative"
             initial={{ width: '60%' }}
           >
-             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity" />
           </motion.div>
         </div>
 
@@ -73,7 +77,11 @@ export const MusicWidget = ({ size = 'medium' }: MusicWidgetProps) => {
             onClick={() => setIsPlaying(!isPlaying)}
             className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-800 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105 transition-all"
           >
-            {isPlaying ? <LuPause size={18} className="md:w-5 md:h-5" fill="currentColor" /> : <LuPlay size={18} className="ml-1 md:w-5 md:h-5" fill="currentColor" />}
+            {isPlaying ? (
+              <LuPause size={18} className="md:w-5 md:h-5" fill="currentColor" />
+            ) : (
+              <LuPlay size={18} className="ml-1 md:w-5 md:h-5" fill="currentColor" />
+            )}
           </motion.button>
 
           <motion.button

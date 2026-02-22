@@ -17,6 +17,18 @@ interface SearchResult {
   shortcut?: string;
 }
 
+// Mock Files
+const mockFiles = [
+  { id: 'resume.pdf', title: 'Resume.pdf', description: 'Documents', type: 'file' as const },
+  {
+    id: 'project-specs.docx',
+    title: 'Project Specs.docx',
+    description: 'Work',
+    type: 'file' as const,
+  },
+  { id: 'budget.xlsx', title: 'Budget 2024.xlsx', description: 'Finance', type: 'file' as const },
+];
+
 export const Spotlight: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -28,36 +40,27 @@ export const Spotlight: React.FC = () => {
   const { isDarkMode } = useThemeStore();
   const { lock } = useOSStore(); // boot used for restart/shutdown simulation
 
-  // Mock Files and Actions
-  const mockFiles = [
-    { id: 'resume.pdf', title: 'Resume.pdf', description: 'Documents', type: 'file' as const },
-    {
-      id: 'project-specs.docx',
-      title: 'Project Specs.docx',
-      description: 'Work',
-      type: 'file' as const,
-    },
-    { id: 'budget.xlsx', title: 'Budget 2024.xlsx', description: 'Finance', type: 'file' as const },
-  ];
-
-  const actions = [
-    {
-      id: 'lock',
-      title: 'Lock Screen',
-      description: 'System',
-      type: 'action' as const,
-      icon: 'Lock',
-      action: () => lock(),
-    },
-    {
-      id: 'reload',
-      title: 'Reload System',
-      description: 'System',
-      type: 'action' as const,
-      icon: 'RefreshCw',
-      action: () => window.location.reload(),
-    },
-  ];
+  const actions = useMemo(
+    () => [
+      {
+        id: 'lock',
+        title: 'Lock Screen',
+        description: 'System',
+        type: 'action' as const,
+        icon: 'Lock',
+        action: () => lock(),
+      },
+      {
+        id: 'reload',
+        title: 'Reload System',
+        description: 'System',
+        type: 'action' as const,
+        icon: 'RefreshCw',
+        action: () => window.location.reload(),
+      },
+    ],
+    [lock]
+  );
 
   // Filter Results
   const results: SearchResult[] = useMemo(() => {
@@ -97,14 +100,17 @@ export const Spotlight: React.FC = () => {
       }));
 
     return [...appResults, ...actionResults, ...fileResults].slice(0, 8);
-  }, [query, launchApp, lock]);
+  }, [query, launchApp, actions]);
 
   // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.code === 'Space') {
         e.preventDefault();
-        setIsOpen((prev) => !prev);
+        setIsOpen((prev) => {
+          if (!prev) setQuery('');
+          return !prev;
+        });
       }
 
       if (!isOpen) return;
@@ -130,15 +136,9 @@ export const Spotlight: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, results, selectedIndex]);
 
-  // Reset selection on query change
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
-
   // Auto focus input
   useEffect(() => {
     if (isOpen) {
-      setQuery('');
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
@@ -188,7 +188,10 @@ export const Spotlight: React.FC = () => {
                 ref={inputRef}
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setSelectedIndex(0);
+                }}
                 placeholder="Search apps, files, and commands..."
                 className={`flex-1 ml-3 bg-transparent text-lg outline-none placeholder:text-opacity-50
                    ${isDarkMode ? 'text-white placeholder:text-gray-400' : 'text-gray-900 placeholder:text-gray-500'}
@@ -292,7 +295,7 @@ export const Spotlight: React.FC = () => {
                   {query ? (
                     <>
                       <LuSearch className="w-12 h-12 mb-4" />
-                      <p>No results found for "{query}"</p>
+                      <p>No results found for &quot;{query}&quot;</p>
                     </>
                   ) : (
                     <>

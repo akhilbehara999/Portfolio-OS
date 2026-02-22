@@ -9,6 +9,30 @@ const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
+  build: {
+    outDir: 'dist',
+    assetsInlineLimit: 4096, // 4KB
+    sourcemap: 'hidden', // Generate source maps for production (hidden)
+    minify: 'esbuild', // Default, fast
+    target: 'es2020', // Modern browsers
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom', 'zustand', 'immer', 'framer-motion'],
+          ui: [
+            '@dnd-kit/core',
+            '@dnd-kit/sortable',
+            'react-rnd',
+            '@react-spring/web',
+            'react-hot-toast',
+          ],
+          icons: ['react-icons'],
+          utils: ['date-fns', 'howler'],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({

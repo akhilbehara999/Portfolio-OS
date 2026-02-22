@@ -35,11 +35,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onAppLaunch }) => {
 
   const pages = [
     // Page 0: Main
-    <motion.div
-      key="page-0"
-      className="flex flex-col gap-8 h-full"
-      initial={{ x: 0 }}
-    >
+    <motion.div key="page-0" className="flex flex-col gap-8 h-full" initial={{ x: 0 }}>
       {/* Date/Greeting Widget */}
       <div className="flex flex-col gap-1 pt-12 px-6">
         <div className="text-sm font-medium uppercase tracking-wider opacity-60">
@@ -61,11 +57,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onAppLaunch }) => {
       </div>
     </motion.div>,
     // Page 1: Utilities
-    <motion.div
-      key="page-1"
-      className="flex flex-col gap-8 h-full pt-12 px-4"
-      initial={{ x: 0 }}
-    >
+    <motion.div key="page-1" className="flex flex-col gap-8 h-full pt-12 px-4" initial={{ x: 0 }}>
       {/* Quick Stats Widget */}
       <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex justify-around shadow-lg border border-white/10">
         <div className="text-center">
@@ -162,8 +154,14 @@ interface AppIconProps {
   delay?: number;
 }
 
-const AppIcon: React.FC<AppIconProps> = ({ app, onClick, showLabel = true, size = 'md', delay = 0 }) => {
-  const Icon = getIconComponent(app.icon);
+const AppIcon: React.FC<AppIconProps> = ({
+  app,
+  onClick,
+  showLabel = true,
+  size = 'md',
+  delay = 0,
+}) => {
+  const IconComponent = React.useMemo(() => getIconComponent(app.icon), [app.icon]);
 
   return (
     <div className="flex flex-col items-center gap-1">
@@ -174,7 +172,7 @@ const AppIcon: React.FC<AppIconProps> = ({ app, onClick, showLabel = true, size 
           delay,
           type: 'spring',
           stiffness: 260,
-          damping: 20
+          damping: 20,
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.85 }}
@@ -191,7 +189,10 @@ const AppIcon: React.FC<AppIconProps> = ({ app, onClick, showLabel = true, size 
         {/* Subtle shine effect */}
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
 
-        <Icon size={size === 'lg' ? 28 : 24} className="text-white drop-shadow-md" />
+        {React.createElement(IconComponent, {
+          size: size === 'lg' ? 28 : 24,
+          className: 'text-white drop-shadow-md',
+        })}
       </motion.button>
       {showLabel && (
         <motion.span

@@ -21,14 +21,14 @@ export const AppView: React.FC<AppViewProps> = ({ app, onClose }) => {
   return (
     <motion.div
       className="fixed inset-0 z-[50] bg-white dark:bg-gray-900 overflow-hidden flex flex-col"
-      initial={{ scale: 0.8, opacity: 0, borderRadius: "40px" }}
-      animate={{ scale: 1, opacity: 1, borderRadius: "0px" }}
-      exit={{ scale: 0.8, opacity: 0, borderRadius: "40px", y: 100 }}
+      initial={{ scale: 0.8, opacity: 0, borderRadius: '40px' }}
+      animate={{ scale: 1, opacity: 1, borderRadius: '0px' }}
+      exit={{ scale: 0.8, opacity: 0, borderRadius: '40px', y: 100 }}
       transition={{
         type: 'spring',
         stiffness: 300,
         damping: 30,
-        mass: 0.8
+        mass: 0.8,
       }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
@@ -67,11 +67,11 @@ export const AppView: React.FC<AppViewProps> = ({ app, onClose }) => {
           }
         >
           <motion.div
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ delay: 0.1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
           >
-             <Component />
+            <Component />
           </motion.div>
         </Suspense>
       </div>

@@ -30,44 +30,44 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ appId, message = '
     `}
     >
       <div className="relative mb-8">
-         {/* Icon Container with Pulse */}
-         <motion.div
-            className={`p-6 rounded-2xl shadow-lg relative z-10
+        {/* Icon Container with Pulse */}
+        <motion.div
+          className={`p-6 rounded-2xl shadow-lg relative z-10
                ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}
             `}
-            animate={{
-               scale: [1, 1.05, 1],
-               boxShadow: [
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  "0 10px 15px -3px rgba(59, 130, 246, 0.3)",
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-               ]
-            }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-         >
-            {app ? renderIcon(app.icon) : <div className="w-12 h-12 bg-gray-200 rounded-full" />}
-         </motion.div>
+          animate={{
+            scale: [1, 1.05, 1],
+            boxShadow: [
+              '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              '0 10px 15px -3px rgba(59, 130, 246, 0.3)',
+              '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            ],
+          }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          {app ? renderIcon(app.icon) : <div className="w-12 h-12 bg-gray-200 rounded-full" />}
+        </motion.div>
 
-         {/* Background Glow */}
-         <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full scale-150 animate-pulse" />
+        {/* Background Glow */}
+        <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full scale-150 animate-pulse" />
       </div>
 
       {/* Skeleton Text Lines */}
       <div className="w-full max-w-xs space-y-3">
-         <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto overflow-hidden relative">
-            <motion.div
-               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12"
-               animate={{ x: ['-100%', '200%'] }}
-               transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            />
-         </div>
-         <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto overflow-hidden relative">
-            <motion.div
-               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12"
-               animate={{ x: ['-100%', '200%'] }}
-               transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.2 }}
-            />
-         </div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto overflow-hidden relative">
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12"
+            animate={{ x: ['-100%', '200%'] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto overflow-hidden relative">
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12"
+            animate={{ x: ['-100%', '200%'] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear', delay: 0.2 }}
+          />
+        </div>
       </div>
 
       <motion.p

@@ -1,0 +1,352 @@
+
+> portfolio-os@0.0.0 lint
+> eslint .
+
+Warning: React version not specified in eslint-plugin-react settings. See https://github.com/jsx-eslint/eslint-plugin-react#configuration .
+
+/app/portfolio-os/src/__tests__/components/BootScreen.test.tsx
+  27:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  74:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/__tests__/components/Terminal.test.tsx
+  28:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/__tests__/store/window.store.test.ts
+  37:5  error  'windowId' is never reassigned. Use 'const' instead  prefer-const
+
+/app/portfolio-os/src/apps/certifications/CertificationsApp.tsx
+  56:14  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/app/portfolio-os/src/apps/certifications/CertificationsApp.tsx:56:14
+  54 |         <div className="mb-6 flex items-start justify-between">
+  55 |           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-50 p-3 shadow-inner ring-1 ring-gray-100 transition-transform group-hover:scale-110">
+> 56 |             <IssuerIcon
+     |              ^^^^^^^^^^ This component is created during render
+  57 |               className={`h-full w-full ${cert.issuer.includes('AWS') ? 'text-orange-500' : 'text-gray-700'}`}
+  58 |             />
+  59 |           </div>
+
+/app/portfolio-os/src/apps/certifications/CertificationsApp.tsx:36:22
+  34 |
+  35 | const CertificationCard = ({ cert, index }: { cert: Certification; index: number }) => {
+> 36 |   const IssuerIcon = getIssuerIcon(cert.issuer);
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^ The component is created during render here
+  37 |
+  38 |   return (
+  39 |     <motion.div  react-hooks/static-components
+
+/app/portfolio-os/src/apps/contact/ContactApp.tsx
+  160:72  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  162:18  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/app/portfolio-os/src/apps/file-explorer/FileExplorerApp.tsx
+   82:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   86:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   94:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  114:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/apps/projects/ProjectsApp.tsx
+  477:70  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/app/portfolio-os/src/apps/settings/SettingsApp.tsx
+  407:69  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  407:76  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/app/portfolio-os/src/apps/skills/SkillsApp.tsx
+  283:10  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/app/portfolio-os/src/apps/skills/SkillsApp.tsx:283:10
+  281 |         }`}
+  282 |       >
+> 283 |         <Icon
+      |          ^^^^ This component is created during render
+  284 |           className={`${isGrid ? 'h-7 w-7' : 'h-6 w-6'} text-gray-700 group-hover:text-blue-600 transition-colors`}
+  285 |         />
+  286 |       </div>
+
+/app/portfolio-os/src/apps/skills/SkillsApp.tsx:264:16
+  262 |
+  263 | const SkillCard: React.FC<SkillCardProps> = ({ skill, viewMode, getIcon, getProficiencyLabel }) => {
+> 264 |   const Icon = getIcon(skill.icon, skill.category);
+      |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ The component is created during render here
+  265 |   const isGrid = viewMode === 'grid';
+  266 |
+  267 |   return (  react-hooks/static-components
+
+/app/portfolio-os/src/apps/terminal/TerminalApp.tsx
+  137:23  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  175:54  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  175:71  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  181:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+  319:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+  325:37  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  342:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+  343:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+  357:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+  370:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+  374:9   error    Unexpected lexical declaration in case block                     no-case-declarations
+
+/app/portfolio-os/src/components/effects/RippleEffect.tsx
+  25:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:74  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/core/file-system/virtual-fs.ts
+  173:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/core/input-handler/gesture-handler.ts
+  188:6  warning  React Hook useEffect has missing dependencies: 'LONG_PRESS_DELAY' and 'SWIPE_THRESHOLD'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/app/portfolio-os/src/core/kernel/event-bus.ts
+  36:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  91:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/hooks/useAnimationConfig.ts
+  22:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/portfolio-os/src/hooks/useAnimationConfig.ts:22:5
+  20 |
+  21 |     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+> 22 |     setPrefersReducedMotion(mediaQuery.matches);
+     |     ^^^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  23 |
+  24 |     const listener = (event: MediaQueryListEvent) => {
+  25 |       setPrefersReducedMotion(event.matches);  react-hooks/set-state-in-effect
+
+/app/portfolio-os/src/hooks/useClock.ts
+  22:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/portfolio-os/src/hooks/useClock.ts:22:5
+  20 |   useEffect(() => {
+  21 |     // Initial update to sync
+> 22 |     setNow(new Date());
+     |     ^^^^^^ Avoid calling setState() directly within an effect
+  23 |
+  24 |     const timer = setInterval(() => {
+  25 |       setNow(new Date());  react-hooks/set-state-in-effect
+
+/app/portfolio-os/src/hooks/useDeviceDetection.ts
+  57:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/portfolio-os/src/hooks/useDeviceDetection.ts:57:5
+  55 |
+  56 |     // Initial check
+> 57 |     setScreenSize(getWindowDimensions());
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  58 |
+  59 |     return () => {
+  60 |       window.removeEventListener('resize', handleResize);  react-hooks/set-state-in-effect
+
+/app/portfolio-os/src/hooks/useGestures.ts
+  121:6  warning  React Hook useEffect has a missing dependency: 'THRESHOLD'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/app/portfolio-os/src/hooks/useLocalStorage.ts
+  57:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/hooks/useSound.ts
+  32:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:16  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+
+/app/portfolio-os/src/shell/desktop/CustomCursor.tsx
+  22:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/portfolio-os/src/shell/desktop/CustomCursor.tsx:22:5
+  20 |     if (!mediaQuery.matches) return;
+  21 |
+> 22 |     setIsVisible(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  23 |
+  24 |     const moveCursor = (e: MouseEvent) => {
+  25 |       cursorX.set(e.clientX - 16);  react-hooks/set-state-in-effect
+  63:6  warning  React Hook useEffect has missing dependencies: 'cursorX' and 'cursorY'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/exhaustive-deps
+
+/app/portfolio-os/src/shell/desktop/DesktopIconGrid.tsx
+  38:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  96:14  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/app/portfolio-os/src/shell/desktop/DesktopIconGrid.tsx:96:14
+  94 |         >
+  95 |           <div className="w-12 h-12 flex items-center justify-center mb-1 text-white filter drop-shadow-md">
+> 96 |             <IconComponent size={32} />
+     |              ^^^^^^^^^^^^^ This component is created during render
+  97 |           </div>
+  98 |           <span
+  99 |             className="text-xs text-white text-center font-medium drop-shadow-md line-clamp-2 px-1 leading-tight w-full break-words"
+
+/app/portfolio-os/src/shell/desktop/DesktopIconGrid.tsx:70:25
+  68 |   };
+  69 |
+> 70 |   const IconComponent = getIconComponent(icon);
+     |                         ^^^^^^^^^^^^^^^^^^^^^^ The component is created during render here
+  71 |
+  72 |   const contextMenuItems = [
+  73 |     { label: 'Open', action: () => onLaunch(id), icon: 'Maximize' },  react-hooks/static-components
+
+/app/portfolio-os/src/shell/desktop/StartMenu.tsx
+  21:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/desktop/Taskbar.tsx
+   19:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+   34:4   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+   94:12  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+/app/portfolio-os/src/shell/desktop/Taskbar.tsx:94:12
+  92 |           whileTap={{ scale: 0.9 }}
+  93 |         >
+> 94 |           <Icon
+     |            ^^^^ This component is created during render
+  95 |             className={`w-3/5 h-3/5 transition-all duration-200
+  96 |                ${item.minimized ? 'opacity-50 grayscale' : 'opacity-100'}
+  97 |              `}
+
+/app/portfolio-os/src/shell/desktop/Taskbar.tsx:47:16
+  45 |   const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
+  46 |
+> 47 |   const Icon = getIconComponent(item.app!.icon);
+     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ The component is created during render here
+  48 |
+  49 |   // Detect touch capability to disable hover effects
+  50 |   const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;  react-hooks/static-components
+  186:6   warning  React Hook useMemo has a missing dependency: 'pinnedAppIds'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/exhaustive-deps
+  188:33  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+  197:32  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/desktop/WallpaperLayer.tsx
+  37:9  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+/app/portfolio-os/src/shell/desktop/WindowFrame.tsx
+   22:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+   76:6   warning  React Hook useEffect has missing dependencies: 'playSound', 'position.x', 'position.y', 'size.height', and 'size.width'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/exhaustive-deps
+   81:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/portfolio-os/src/shell/desktop/WindowFrame.tsx:81:7
+  79 |   useEffect(() => {
+  80 |     if (!isDraggingRef.current && !isMaximized) {
+> 81 |       setLocalPos(position);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  82 |       setLocalSize(size);
+  83 |     }
+  84 |   }, [position, size, isMaximized]);  react-hooks/set-state-in-effect
+   96:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+   96:34  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  119:31  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  119:39  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  137:33  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  137:50  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  137:60  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  137:73  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  137:88  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/mobile/AppView.tsx
+  15:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/mobile/HomeScreen.tsx
+  15:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/mobile/NotificationShade.tsx
+  21:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  35:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/shared/ContextMenu.tsx
+  36:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  37:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/shared/LoadingScreen.tsx
+  19:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/shared/LockScreen.tsx
+  26:20  warning  '_setPassword' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  27:24  warning  '_setShowPassword' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  43:29  warning  Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/shared/NotificationPanel.tsx
+   50:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  175:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  179:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/shell/shared/Spotlight.tsx
+  152:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/store/app.store.ts
+   17:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  137:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/store/window.store.ts
+   15:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  288:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  293:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/types/app.types.ts
+  28:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:70  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/types/filesystem.types.ts
+  38:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/types/input.types.ts
+  35:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/types/widget.types.ts
+  16:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/types/window.types.ts
+  49:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/portfolio-os/src/widgets/QuickStatsWidget.tsx
+  16:9  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 106 problems (26 errors, 80 warnings)

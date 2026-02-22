@@ -12,14 +12,13 @@ export const CustomCursor: React.FC = () => {
 
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(pointer: fine)').matches;
+  });
 
   useEffect(() => {
-    // Only enable custom cursor if device has a fine pointer (mouse)
-    const mediaQuery = window.matchMedia('(pointer: fine)');
-    if (!mediaQuery.matches) return;
-
-    setIsVisible(true);
+    if (!isVisible) return;
 
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);

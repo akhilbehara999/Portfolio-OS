@@ -38,7 +38,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
 
   const { isDarkMode } = useThemeStore();
   const { playSound } = useSound();
-  const Icon = getIconComponent(icon);
+  const IconComponent = React.useMemo(() => getIconComponent(icon), [icon]);
 
   // Local state for smooth dragging
   const [localPos, setLocalPos] = useState(position);
@@ -65,19 +65,20 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
     const centerY = position.y + size.height / 2;
 
     const event = new CustomEvent('window-open-ripple', {
-        detail: { x: centerX, y: centerY }
+      detail: { x: centerX, y: centerY },
     });
     window.dispatchEvent(event);
 
     return () => {
-        // Cleanup sound
-        playSound('window-close');
+      // Cleanup sound
+      playSound('window-close');
     };
   }, []); // Only on mount
 
   // Sync from store when not dragging
   useEffect(() => {
     if (!isDraggingRef.current && !isMaximized) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocalPos(position);
       setLocalSize(size);
     }
@@ -206,9 +207,14 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
           <div
             className={`window-titlebar h-12 flex items-center justify-between px-3 select-none flex-shrink-0
                  transition-colors duration-300
-                 ${isDarkMode
-                    ? (isFocused ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-black/20')
-                    : (isFocused ? 'bg-gradient-to-r from-gray-100 to-white' : 'bg-black/5')
+                 ${
+                   isDarkMode
+                     ? isFocused
+                       ? 'bg-gradient-to-r from-gray-800 to-gray-900'
+                       : 'bg-black/20'
+                     : isFocused
+                       ? 'bg-gradient-to-r from-gray-100 to-white'
+                       : 'bg-black/5'
                  }
                  border-b ${isDarkMode ? 'border-white/10' : 'border-black/5'}
               `}
@@ -220,7 +226,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
                      ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}
                   `}
               >
-                <Icon size={16} />
+                {React.createElement(IconComponent, { size: 16 })}
               </div>
               <span
                 className={`text-xs font-medium truncate ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}

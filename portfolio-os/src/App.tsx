@@ -65,14 +65,20 @@ function App() {
       meta.setAttribute('name', 'viewport');
       document.head.appendChild(meta);
     }
-    meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+    meta.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+    );
 
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
     };
   }, []);
 
-  const showBootScreen = bootPhase === BootStatus.BOOTING || bootPhase === BootStatus.LOADING_SHELL || bootPhase === BootStatus.COLD_START;
+  const showBootScreen =
+    bootPhase === BootStatus.BOOTING ||
+    bootPhase === BootStatus.LOADING_SHELL ||
+    bootPhase === BootStatus.COLD_START;
   const isReady = bootPhase === BootStatus.READY;
   const isLoadingShell = bootPhase === BootStatus.LOADING_SHELL;
 
@@ -88,7 +94,7 @@ function App() {
         {/* Main Shell */}
         {shouldRenderShell && (
           <div className={showBootScreen ? 'invisible absolute inset-0' : 'block h-full w-full'}>
-             <DeviceRouter />
+            <DeviceRouter />
           </div>
         )}
 

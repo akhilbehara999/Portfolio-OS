@@ -1,0 +1,39 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: portfolio-os/package-lock.json
+
+    - name: Install dependencies
+      working-directory: portfolio-os
+      run: npm ci
+
+    - name: Lint
+      working-directory: portfolio-os
+      run: npm run lint
+
+    - name: Type Check
+      working-directory: portfolio-os
+      run: tsc --noEmit --project tsconfig.app.json
+
+    - name: Test
+      working-directory: portfolio-os
+      run: npm run test
+
+    - name: Build Verification
+      working-directory: portfolio-os
+      run: npm run build

@@ -28,7 +28,8 @@ const MatrixRain = () => {
     let drops: number[] = new Array(columns).fill(1);
 
     // Characters: Katakana + Latin
-    const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const chars =
+      'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     const draw = () => {
       // Semi-transparent black to create trail effect
@@ -66,7 +67,7 @@ const MatrixRain = () => {
         const newDrops = new Array(newColumns).fill(1);
         // Copy old drops to new array to avoid full reset
         for (let i = 0; i < Math.min(columns, newColumns); i++) {
-           newDrops[i] = drops[i];
+          newDrops[i] = drops[i];
         }
         drops = newDrops;
         columns = newColumns;
@@ -101,7 +102,12 @@ const TypewriterText = ({ text }: { text: string }) => {
     return () => clearInterval(interval);
   }, [text]);
 
-  return <span>{displayedText}<span className="animate-pulse">_</span></span>;
+  return (
+    <span>
+      {displayedText}
+      <span className="animate-pulse">_</span>
+    </span>
+  );
 };
 
 export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
@@ -110,32 +116,31 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
   const { playSound } = useSound();
 
   const [show, setShow] = useState(true);
-  const [isFastBoot, setIsFastBoot] = useState(false);
-
-  useEffect(() => {
+  const [isFastBoot] = useState(() => {
     // Check for returning user
     const hasBooted = localStorage.getItem('hasBootedBefore');
-    if (hasBooted) {
-       setIsFastBoot(true);
-    } else {
-       localStorage.setItem('hasBootedBefore', 'true');
+    if (!hasBooted) {
+      localStorage.setItem('hasBootedBefore', 'true');
     }
+    return !!hasBooted;
+  });
 
+  useEffect(() => {
     // Check for fast boot (already ready when mounted or returning user)
-    if (bootPhase === BootStatus.READY || hasBooted) {
+    if (bootPhase === BootStatus.READY || isFastBoot) {
       // Fast boot: show for 1.5s then hide
       const timer = setTimeout(() => {
         setShow(false);
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [bootPhase]);
+  }, [bootPhase, isFastBoot]);
 
   useEffect(() => {
     // Normal boot: hide when ready
     if (bootPhase === BootStatus.READY && !isFastBoot) {
       if (soundEnabled) {
-         playSound('startup');
+        playSound('startup');
       }
 
       // Small delay to ensure 100% is seen
@@ -192,14 +197,14 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
               </motion.div>
             </div>
             {isFastBoot && (
-               <motion.div
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ delay: 0.5 }}
-                 className="mt-4 text-xl text-gray-400"
-               >
-                 Welcome back, Visitor
-               </motion.div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-4 text-xl text-gray-400"
+              >
+                Welcome back, Visitor
+              </motion.div>
             )}
           </motion.div>
 
@@ -219,7 +224,7 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
                   animate={{ width: `${progress}%` }}
                   transition={{ type: 'spring', stiffness: 50, damping: 20 }}
                   style={{
-                    boxShadow: '0 0 20px 2px rgba(59, 130, 246, 0.5)'
+                    boxShadow: '0 0 20px 2px rgba(59, 130, 246, 0.5)',
                   }}
                 />
                 {/* Glowing Lead Tip */}

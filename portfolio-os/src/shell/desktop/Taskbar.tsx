@@ -30,7 +30,7 @@ const DockIcon = ({
   onMouseEnter,
   onMouseLeave,
   hoveredAppId,
-  isDarkMode
+  isDarkMode,
 }: any) => {
   const ref = useRef<HTMLDivElement>(null);
   const { enableHoverEffects } = useSettingsStore();
@@ -44,7 +44,7 @@ const DockIcon = ({
   const widthSync = useTransform(distance, [-150, 0, 150], [50, 70, 50]);
   const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
-  const Icon = getIconComponent(item.app!.icon);
+  const Icon = React.useMemo(() => getIconComponent(item.app!.icon), [item.app]);
 
   // Detect touch capability to disable hover effects
   const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
@@ -55,26 +55,26 @@ const DockIcon = ({
 
   return (
     <div className="flex flex-col items-center justify-end h-full gap-1">
-       {/* Tooltip */}
-       <AnimatePresence>
-          {hoveredAppId === item.id && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.8 }}
-              animate={{ opacity: 1, y: -50, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.8 }}
-              className={`absolute bottom-12 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap shadow-xl z-50 pointer-events-none
+      {/* Tooltip */}
+      <AnimatePresence>
+        {hoveredAppId === item.id && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: -50, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.8 }}
+            className={`absolute bottom-12 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap shadow-xl z-50 pointer-events-none
                  ${isDarkMode ? 'bg-gray-800 text-white border border-gray-700' : 'bg-white text-gray-900 border border-gray-200'}
                `}
-            >
-              {item.app!.name}
-              {item.running && (
-                <div className="flex gap-1 mt-1 justify-center opacity-60 text-[10px]">
-                  {item.windows.length} window{item.windows.length > 1 ? 's' : ''}
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+          >
+            {item.app!.name}
+            {item.running && (
+              <div className="flex gap-1 mt-1 justify-center opacity-60 text-[10px]">
+                {item.windows.length} window{item.windows.length > 1 ? 's' : ''}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <motion.div
         ref={ref}
@@ -91,11 +91,11 @@ const DockIcon = ({
           onMouseLeave={onMouseLeave}
           whileTap={{ scale: 0.9 }}
         >
-          <Icon
-            className={`w-3/5 h-3/5 transition-all duration-200
+          {React.createElement(Icon, {
+            className: `w-3/5 h-3/5 transition-all duration-200
                ${item.minimized ? 'opacity-50 grayscale' : 'opacity-100'}
-             `}
-          />
+             `,
+          })}
 
           {/* Active Dot */}
           {item.running && (
@@ -105,7 +105,7 @@ const DockIcon = ({
               animate={{
                 scale: item.active ? 1.2 : 1,
                 width: item.active ? 16 : 4,
-                backgroundColor: item.active ? '#60A5FA' : '#9CA3AF'
+                backgroundColor: item.active ? '#60A5FA' : '#9CA3AF',
               }}
               className={`absolute -bottom-1 h-1 rounded-full`}
             />
@@ -113,7 +113,7 @@ const DockIcon = ({
 
           {/* Notification Badge (Simulated) */}
           {item.id === 'contact' && (
-             <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border border-gray-900" />
+            <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border border-gray-900" />
           )}
         </motion.button>
       </motion.div>
@@ -223,8 +223,8 @@ export const Taskbar: React.FC<TaskbarProps> = ({ onToggleNotifications }) => {
                ${isStartOpen ? 'bg-white/20' : 'hover:bg-white/10'}
              `}
             onClick={() => {
-                playSound('click');
-                setIsStartOpen(!isStartOpen);
+              playSound('click');
+              setIsStartOpen(!isStartOpen);
             }}
             whileHover={{ rotate: 90 }}
             whileTap={{ scale: 0.9 }}
@@ -237,14 +237,14 @@ export const Taskbar: React.FC<TaskbarProps> = ({ onToggleNotifications }) => {
         <div className="flex items-end gap-2 h-full pb-2">
           {taskbarItems.map((item) => (
             <DockIcon
-                key={item.id}
-                item={item}
-                mouseX={mouseX}
-                onClick={() => handleAppClick(item)}
-                onMouseEnter={() => setHoveredAppId(item.id)}
-                onMouseLeave={() => setHoveredAppId(null)}
-                hoveredAppId={hoveredAppId}
-                isDarkMode={isDarkMode}
+              key={item.id}
+              item={item}
+              mouseX={mouseX}
+              onClick={() => handleAppClick(item)}
+              onMouseEnter={() => setHoveredAppId(item.id)}
+              onMouseLeave={() => setHoveredAppId(null)}
+              hoveredAppId={hoveredAppId}
+              isDarkMode={isDarkMode}
             />
           ))}
         </div>

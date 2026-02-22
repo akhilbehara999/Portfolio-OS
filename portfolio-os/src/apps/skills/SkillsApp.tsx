@@ -121,11 +121,8 @@ const SkillsApp: React.FC<SkillsAppProps> = ({ mode }) => {
 
   const filteredSkills = useMemo(() => {
     return PORTFOLIO_DATA.skills.filter((skill) => {
-      const matchesCategory =
-        activeCategory === 'All' || skill.category === activeCategory;
-      const matchesSearch = skill.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      const matchesCategory = activeCategory === 'All' || skill.category === activeCategory;
+      const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
@@ -198,9 +195,7 @@ const SkillsApp: React.FC<SkillsAppProps> = ({ mode }) => {
               key={category}
               onClick={() => setActiveCategory(category)}
               className={`relative whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                activeCategory === category
-                  ? 'text-blue-600'
-                  : 'text-gray-600 hover:bg-gray-100'
+                activeCategory === category ? 'text-blue-600' : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               {category}
@@ -265,13 +260,11 @@ interface SkillCardProps {
   getProficiencyLabel: (p: number) => string;
 }
 
-const SkillCard: React.FC<SkillCardProps> = ({
-  skill,
-  viewMode,
-  getIcon,
-  getProficiencyLabel,
-}) => {
-  const Icon = getIcon(skill.icon, skill.category);
+const SkillCard: React.FC<SkillCardProps> = ({ skill, viewMode, getIcon, getProficiencyLabel }) => {
+  const Icon = React.useMemo(
+    () => getIcon(skill.icon, skill.category),
+    [skill.icon, skill.category, getIcon]
+  );
   const isGrid = viewMode === 'grid';
 
   return (
@@ -290,7 +283,9 @@ const SkillCard: React.FC<SkillCardProps> = ({
           isGrid ? 'h-12 w-12' : 'h-10 w-10'
         }`}
       >
-        <Icon className={`${isGrid ? 'h-7 w-7' : 'h-6 w-6'} text-gray-700 group-hover:text-blue-600 transition-colors`} />
+        {React.createElement(Icon, {
+          className: `${isGrid ? 'h-7 w-7' : 'h-6 w-6'} text-gray-700 group-hover:text-blue-600 transition-colors`,
+        })}
       </div>
 
       <div className={`flex-1 ${isGrid ? '' : 'flex items-center justify-between gap-8'}`}>
@@ -308,7 +303,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${skill.proficiency}%` }}
-              transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+              transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
               className="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
             />
           </div>

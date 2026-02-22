@@ -20,7 +20,9 @@ const EducationApp: React.FC<EducationAppProps> = ({ mode }) => {
   const isMobile = mode === 'mobile';
 
   return (
-    <div className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-4' : 'p-8'}`}>
+    <div
+      className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-4' : 'p-8'}`}
+    >
       <div className="mx-auto max-w-4xl space-y-12">
         {/* Header */}
         <motion.div

@@ -65,7 +65,9 @@ describe('BootScreen', () => {
       vi.advanceTimersByTime(2000);
     });
 
-    expect(screen.getByText((content) => content.includes('Loading kernel...'))).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes('Loading kernel...'))
+    ).toBeInTheDocument();
   });
 
   it('completes boot sequence', () => {

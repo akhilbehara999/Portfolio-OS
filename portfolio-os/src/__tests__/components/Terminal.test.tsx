@@ -14,7 +14,7 @@ vi.mock('../../core/file-system/virtual-fs', () => ({
   virtualFs: {
     getNodeByPath: vi.fn(),
     getNode: vi.fn(),
-  }
+  },
 }));
 
 // Setup default mock values
