@@ -17,7 +17,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({ color = 'white' }) => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-[44px] px-6 flex items-center justify-between z-[100]"
+      className="fixed top-0 left-0 right-0 h-[calc(44px+var(--sat))] pt-[var(--sat)] px-6 flex items-center justify-between z-[100]"
       style={{ color }}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}

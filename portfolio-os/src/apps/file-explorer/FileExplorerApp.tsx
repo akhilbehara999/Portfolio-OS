@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { virtualFs } from '@core/file-system/virtual-fs';
 import { useAppStore } from '@store/app.store';
 import {
@@ -17,7 +17,7 @@ import {
   LuDownload,
   LuBriefcase
 } from 'react-icons/lu';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 type ViewMode = 'grid' | 'list';
 

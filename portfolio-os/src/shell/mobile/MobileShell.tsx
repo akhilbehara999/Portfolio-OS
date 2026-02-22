@@ -26,10 +26,6 @@ export const MobileShell: React.FC = () => {
     setCurrentApp(null);
   };
 
-  // Gesture handling for edge swipes (simplified)
-  // In a real scenario, we might use a dedicated gesture library or touch events on a container.
-  // Here we rely on components' own drag handlers or specific areas.
-
   return (
     <div className="relative w-screen h-screen overflow-hidden select-none font-sans text-gray-900 dark:text-white">
       {/* 1. Wallpaper (Bottom) */}
@@ -44,7 +40,7 @@ export const MobileShell: React.FC = () => {
         <AnimatePresence>
           {!currentApp && (
             <motion.div
-              className="flex-1 pt-[44px] pb-[34px] h-full"
+              className="flex-1 pt-[calc(44px+var(--sat))] pb-[calc(34px+var(--sab))] h-full"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}

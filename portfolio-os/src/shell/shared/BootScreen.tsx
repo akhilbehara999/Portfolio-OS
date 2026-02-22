@@ -91,7 +91,7 @@ const TypewriterText = ({ text }: { text: string }) => {
     let i = 0;
     const interval = setInterval(() => {
       if (i < text.length) {
-        setDisplayedText((prev) => text.substring(0, i + 1));
+        setDisplayedText(() => text.substring(0, i + 1));
         i++;
       } else {
         clearInterval(interval);
@@ -167,7 +167,7 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
           <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
 
           {/* Sound Toggle */}
-          <div className="absolute top-8 right-8 z-50">
+          <div className="absolute top-[calc(var(--sat)+2rem)] right-8 z-50">
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
               className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors text-gray-400 hover:text-white"

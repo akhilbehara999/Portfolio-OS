@@ -27,6 +27,24 @@ const WallpaperRenderer = ({ wallpaper }: { wallpaper: WallpaperConfig }) => {
 export const WallpaperLayer: React.FC = () => {
   const currentWallpaper = useThemeStore((state) => state.currentWallpaper);
 
+  // Performance optimization: Disable parallax on low-end devices or if reduced motion is preferred
+  const [disableParallax, setDisableParallax] = React.useState(false);
+
+  useEffect(() => {
+    const checkPerformance = () => {
+      const isLowEnd =
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+        // @ts-ignore - deviceMemory is experimental
+        (navigator.deviceMemory && navigator.deviceMemory <= 4);
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      setDisableParallax(isLowEnd || prefersReducedMotion);
+    };
+
+    checkPerformance();
+  }, []);
+
   // Parallax effect
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -38,6 +56,8 @@ export const WallpaperLayer: React.FC = () => {
   const yMove = useTransform(smoothY, [0, window.innerHeight], [-15, 15]);
 
   useEffect(() => {
+    if (disableParallax) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
@@ -45,13 +65,13 @@ export const WallpaperLayer: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [x, y]);
+  }, [x, y, disableParallax]);
 
   return (
     <div className="absolute inset-0 overflow-hidden -z-50 bg-black">
       <motion.div
         className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-        style={{ x: xMove, y: yMove }}
+        style={{ x: disableParallax ? 0 : xMove, y: disableParallax ? 0 : yMove }}
       >
         <AnimatePresence mode="popLayout">
           <motion.div

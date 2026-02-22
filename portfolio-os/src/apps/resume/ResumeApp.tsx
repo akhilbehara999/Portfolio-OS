@@ -21,7 +21,7 @@ interface ResumeAppProps {
 }
 
 const ResumeContent: React.FC<{ data: typeof PORTFOLIO_DATA }> = ({ data }) => {
-  const { personal, education, experience, skills, projects, certifications } = data;
+  const { personal, contact, education, experience, skills, projects, certifications } = data;
 
   return (
     <div className="p-8 sm:p-12 space-y-8 h-full bg-white text-gray-900">
@@ -33,12 +33,12 @@ const ResumeContent: React.FC<{ data: typeof PORTFOLIO_DATA }> = ({ data }) => {
         <div className="flex flex-wrap gap-4 text-sm text-gray-600">
           <div className="flex items-center gap-1.5">
             <LuMail className="w-4 h-4" />
-            <span>{personal.contact?.email || 'email@example.com'}</span>
+            <span>{contact.email || 'email@example.com'}</span>
           </div>
-          {personal.contact?.phone && (
+          {contact.phone && (
             <div className="flex items-center gap-1.5">
               <LuPhone className="w-4 h-4" />
-              <span>{personal.contact.phone}</span>
+              <span>{contact.phone}</span>
             </div>
           )}
           <div className="flex items-center gap-1.5">
@@ -216,7 +216,7 @@ const ResumeApp: React.FC<ResumeAppProps> = ({ mode }) => {
     return `
 # ${personal.name}
 ${personal.title}
-${personal.location} | ${personal.contact?.email} | ${personal.contact?.phone || ''}
+${personal.location} | ${PORTFOLIO_DATA.contact.email} | ${PORTFOLIO_DATA.contact.phone || ''}
 
 ## Summary
 ${personal.bio}

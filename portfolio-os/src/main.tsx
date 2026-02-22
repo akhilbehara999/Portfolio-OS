@@ -4,7 +4,6 @@ import { enableMapSet } from 'immer';
 
 // Import Global Styles
 import './styles/globals.css';
-import './styles/tailwind-extensions.css';
 
 import App from './App.tsx';
 
@@ -22,28 +21,6 @@ if (rootElement) {
     </StrictMode>
   );
 
-  // Performance Monitoring (Placeholder for Web Vitals)
-  const reportWebVitals = (onPerfEntry?: any) => {
-    if (onPerfEntry && onPerfEntry instanceof Function) {
-      import('web-vitals').then(({ onCLS, onFID, onFCP, onLCP, onTTFB }) => {
-        onCLS(onPerfEntry);
-        onFID(onPerfEntry);
-        onFCP(onPerfEntry);
-        onLCP(onPerfEntry);
-        onTTFB(onPerfEntry);
-      }).catch((err) => {
-        console.warn('Web Vitals not installed', err);
-      });
-    }
-  };
-
-  // Usage: reportWebVitals(console.log);
-
-  // Service Worker Registration (Placeholder)
-  if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-    window.addEventListener('load', () => {
-      // navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registration skipped (not implemented)');
-    });
-  }
+  // Service Worker Registration
+  // Handled by vite-plugin-pwa automatically, but we can add custom logic here if needed.
 }
