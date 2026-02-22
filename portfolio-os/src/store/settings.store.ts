@@ -8,6 +8,10 @@ interface SettingsState {
   enableHoverEffects: boolean;
   timeFormat: '12h' | '24h';
 
+  // Sound
+  soundEnabled: boolean;
+  soundVolume: number; // 0 to 1
+
   // Desktop
   taskbarPosition: 'bottom' | 'left' | 'right' | 'top';
   iconSize: 'small' | 'medium' | 'large';
@@ -24,6 +28,8 @@ interface SettingsActions {
   setWindowAnimations: (enabled: boolean) => void;
   setHoverEffects: (enabled: boolean) => void;
   setTimeFormat: (format: '12h' | '24h') => void;
+  setSoundEnabled: (enabled: boolean) => void;
+  setSoundVolume: (volume: number) => void;
   setTaskbarPosition: (pos: 'bottom' | 'left' | 'right' | 'top') => void;
   setIconSize: (size: 'small' | 'medium' | 'large') => void;
   setShowDesktopIcons: (show: boolean) => void;
@@ -31,13 +37,15 @@ interface SettingsActions {
   setMobileGridDensity: (density: 'comfortable' | 'compact') => void;
   setAppDrawerStyle: (style: 'grid' | 'list') => void;
   setGestureSensitivity: (sensitivity: 'low' | 'medium' | 'high') => void;
-  resetDefaults: (category?: 'appearance' | 'animations' | 'desktop' | 'mobile') => void;
+  resetDefaults: (category?: 'appearance' | 'animations' | 'sound' | 'desktop' | 'mobile') => void;
 }
 
 const DEFAULT_SETTINGS: SettingsState = {
   enableWindowAnimations: true,
   enableHoverEffects: true,
   timeFormat: '12h',
+  soundEnabled: false,
+  soundVolume: 0.5,
   taskbarPosition: 'bottom',
   iconSize: 'medium',
   showDesktopIcons: true,
@@ -54,6 +62,8 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       setWindowAnimations: (enabled) => set((state) => { state.enableWindowAnimations = enabled; }),
       setHoverEffects: (enabled) => set((state) => { state.enableHoverEffects = enabled; }),
       setTimeFormat: (format) => set((state) => { state.timeFormat = format; }),
+      setSoundEnabled: (enabled) => set((state) => { state.soundEnabled = enabled; }),
+      setSoundVolume: (volume) => set((state) => { state.soundVolume = Math.max(0, Math.min(1, volume)); }),
       setTaskbarPosition: (pos) => set((state) => { state.taskbarPosition = pos; }),
       setIconSize: (size) => set((state) => { state.iconSize = size; }),
       setShowDesktopIcons: (show) => set((state) => { state.showDesktopIcons = show; }),
@@ -69,6 +79,10 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
              case 'animations':
                state.enableWindowAnimations = DEFAULT_SETTINGS.enableWindowAnimations;
                state.enableHoverEffects = DEFAULT_SETTINGS.enableHoverEffects;
+               break;
+             case 'sound':
+               state.soundEnabled = DEFAULT_SETTINGS.soundEnabled;
+               state.soundVolume = DEFAULT_SETTINGS.soundVolume;
                break;
              case 'appearance':
                state.timeFormat = DEFAULT_SETTINGS.timeFormat;

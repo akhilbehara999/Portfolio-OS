@@ -10,6 +10,8 @@ import { Spotlight } from '../shared/Spotlight';
 import { LockScreen } from '../shared/LockScreen';
 import { useWindowStore } from '../../store/window.store';
 import { useOSStore } from '../../store/os.store';
+import { RippleEffect } from '../../components/effects/RippleEffect';
+import { CustomCursor } from './CustomCursor';
 
 export const DesktopShell: React.FC = () => {
   const { focusWindow } = useWindowStore();
@@ -113,6 +115,14 @@ export const DesktopShell: React.FC = () => {
             {isNotificationsOpen && <NotificationPanel className="bottom-0 right-0 top-auto" />}
           </AnimatePresence>
         </div>
+      </div>
+
+      {/* Ripple Effect Layer */}
+      <RippleEffect />
+
+      {/* Custom Cursor (Desktop Only) */}
+      <div className="hidden md:block">
+        <CustomCursor />
       </div>
 
       {/* 7. Spotlight Layer */}

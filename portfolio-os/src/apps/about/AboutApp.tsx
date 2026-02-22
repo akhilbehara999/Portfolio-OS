@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LuMapPin,
   LuGithub,
@@ -13,35 +13,13 @@ import {
   LuExternalLink,
 } from 'react-icons/lu';
 import { PORTFOLIO_DATA } from '../../config/portfolio-data';
+import { StaggerContainer, StaggerItem } from '../../components/animations/StaggerContainer';
+import { CountUp } from '../../components/animations/CountUp';
 
 interface AboutAppProps {
   windowId: string;
   mode: 'desktop' | 'mobile';
 }
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 15,
-    },
-  },
-};
 
 const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
   const { personal, projects, skills, certifications, experience } = PORTFOLIO_DATA;
@@ -81,7 +59,7 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
       label: 'Experience',
       value: experience.length,
       icon: LuBriefcase,
-      suffix: ' Yrs', // Simplified for now, could calculate actual years
+      suffix: ' Yrs',
       color: 'bg-green-500/10 text-green-600',
     },
   ];
@@ -104,20 +82,10 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
   const isMobile = mode === 'mobile';
 
   return (
-    <motion.div
-      className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${
-        isMobile ? 'p-6 pb-24' : 'p-8'
-      }`}
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <div className={`mx-auto flex flex-col gap-8 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
+    <div className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-6 pb-24' : 'p-8'}`}>
+      <StaggerContainer className={`mx-auto flex flex-col gap-8 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
         {/* Top Section */}
-        <motion.div
-          className={`flex ${isMobile ? 'flex-col items-center text-center' : 'flex-row items-center text-left'} gap-8`}
-          variants={itemVariants}
-        >
+        <StaggerItem className={`flex ${isMobile ? 'flex-col items-center text-center' : 'flex-row items-center text-left'} gap-8`}>
           {/* Profile Photo */}
           <div className="relative group">
             <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-75 blur transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
@@ -130,10 +98,7 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
                 />
               ) : (
                 <span className="text-4xl font-bold text-gray-400">
-                  {personal.name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')}
+                  {personal.name.charAt(0)}
                 </span>
               )}
             </div>
@@ -167,18 +132,15 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
               </AnimatePresence>
             </div>
           </div>
-        </motion.div>
+        </StaggerItem>
 
         {/* Bio Section */}
-        <motion.div variants={itemVariants} className="prose prose-lg max-w-none text-gray-600">
+        <StaggerItem className="prose prose-lg max-w-none text-gray-600">
           <p className="leading-relaxed">{personal.bio}</p>
-        </motion.div>
+        </StaggerItem>
 
         {/* Quick Stats Row */}
-        <motion.div
-          variants={itemVariants}
-          className="grid grid-cols-2 gap-4 md:grid-cols-4"
-        >
+        <StaggerItem className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
@@ -194,10 +156,10 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
               <div className="text-sm font-medium text-gray-500">{stat.label}</div>
             </motion.div>
           ))}
-        </motion.div>
+        </StaggerItem>
 
         {/* Social Links Section */}
-        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
+        <StaggerItem className="flex flex-wrap justify-center gap-4">
           {personal.socials.map((social) => {
             const Icon = getSocialIcon(social.platform);
             return (
@@ -215,10 +177,10 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
               </motion.a>
             );
           })}
-        </motion.div>
+        </StaggerItem>
 
         {/* Interests/Hobbies Section */}
-        <motion.div variants={itemVariants} className="space-y-4">
+        <StaggerItem className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-900">Interests & Hobbies</h3>
           <div className="flex flex-wrap gap-2">
             {personal.interests.map((interest) => (
@@ -231,40 +193,10 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
               </motion.span>
             ))}
           </div>
-        </motion.div>
-      </div>
-    </motion.div>
+        </StaggerItem>
+      </StaggerContainer>
+    </div>
   );
-};
-
-// Simple CountUp component for stats animation
-const CountUp = ({ end, duration = 2, suffix = '' }: { end: number; duration?: number; suffix?: string }) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let startTime: number;
-    let animationFrame: number;
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = timestamp - startTime;
-      const percentage = Math.min(progress / (duration * 1000), 1);
-
-      // Easing function: easeOutExpo
-      const ease = percentage === 1 ? 1 : 1 - Math.pow(2, -10 * percentage);
-
-      setCount(Math.floor(end * ease));
-
-      if (progress < duration * 1000) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [end, duration]);
-
-  return <>{count}{suffix}</>;
 };
 
 export default AboutApp;

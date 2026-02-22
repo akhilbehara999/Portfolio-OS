@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Rnd } from 'react-rnd';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { useWindowStore } from '../../store/window.store';
 import { useThemeStore } from '../../store/theme.store';
+import { useSound } from '../../hooks/useSound';
 import type { WindowState } from '../../types/window.types';
 import * as LucideIcons from 'react-icons/lu';
 import type { IconType } from 'react-icons';
@@ -36,18 +37,44 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
   } = useWindowStore();
 
   const { isDarkMode } = useThemeStore();
+  const { playSound } = useSound();
   const Icon = getIconComponent(icon);
 
   // Local state for smooth dragging
   const [localPos, setLocalPos] = useState(position);
   const [localSize, setLocalSize] = useState(size);
   const isDraggingRef = useRef(false);
+
+  // Drag Tilt Logic
+  const x = useMotionValue(0);
+  const rotateY = useTransform(x, [-50, 50], [-2, 2]); // Tilt left/right
+  const rotateX = useMotionValue(0); // Could do up/down tilt too but let's keep it subtle horizontally
+
   const [snapPreview, setSnapPreview] = useState<{
     x: number;
     y: number;
     width: number;
     height: number;
   } | null>(null);
+
+  // Initial Open Sound & Ripple
+  useEffect(() => {
+    playSound('window-open');
+
+    // Dispatch ripple event from center of window (best effort)
+    const centerX = position.x + size.width / 2;
+    const centerY = position.y + size.height / 2;
+
+    const event = new CustomEvent('window-open-ripple', {
+        detail: { x: centerX, y: centerY }
+    });
+    window.dispatchEvent(event);
+
+    return () => {
+        // Cleanup sound
+        playSound('window-close');
+    };
+  }, []); // Only on mount
 
   // Sync from store when not dragging
   useEffect(() => {
@@ -70,6 +97,10 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
   const handleDrag = (e: any, d: any) => {
     setLocalPos({ x: d.x, y: d.y });
 
+    // Calculate drag velocity proxy for tilt
+    const velocity = d.deltaX * 2; // amplify
+    x.set(velocity);
+
     const screenW = window.innerWidth;
     const screenH = window.innerHeight - 48;
     const margin = 10;
@@ -88,6 +119,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
 
   const handleDragStop = (_e: any, d: any) => {
     isDraggingRef.current = false;
+    x.set(0); // Reset tilt
 
     if (snapPreview) {
       if (snapPreview.width === window.innerWidth) {
@@ -115,9 +147,6 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
   };
 
   // Determine Rnd props
-  // If maximized, we force position/size.
-  // If minimized, we keep position/size but animate via framer-motion inside.
-
   const rndSize = isMaximized ? { width: '100%', height: 'calc(100vh - 48px)' } : localSize;
   const rndPosition = isMaximized ? { x: 0, y: 0 } : localPos;
 
@@ -156,7 +185,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
         style={{ zIndex }}
         dragHandleClassName="window-titlebar"
         className={`flex flex-col rounded-lg overflow-hidden transition-all duration-200 pointer-events-auto
-          ${isFocused ? 'shadow-[0_20px_50px_rgba(0,0,0,0.3)]' : 'shadow-xl opacity-95'}
+          ${isFocused ? 'shadow-[0_25px_60px_rgba(0,0,0,0.5)] scale-[1.002]' : 'shadow-xl opacity-95 scale-100'}
           ${isDarkMode ? 'bg-gray-900/85 border-gray-700' : 'bg-white/85 border-white/40'}
           backdrop-blur-xl border
           ${isMaximized ? '!rounded-none !border-none !transition-none' : ''}
@@ -165,18 +194,24 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
       >
         <motion.div
           className="flex flex-col w-full h-full"
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{
             opacity: isMinimized ? 0 : 1,
             scale: isMinimized ? 0.8 : 1,
             y: isMinimized ? 200 : 0,
+            rotateY: isDraggingRef.current ? rotateY : 0,
           }}
+          style={{ rotateY }}
           transition={{ duration: 0.2 }}
         >
           {/* Title Bar */}
           <div
             className={`window-titlebar h-10 flex items-center justify-between px-3 select-none flex-shrink-0
-                 ${isDarkMode ? 'bg-white/5' : 'bg-black/5'}
+                 transition-colors duration-300
+                 ${isDarkMode
+                    ? (isFocused ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-black/20')
+                    : (isFocused ? 'bg-gradient-to-r from-gray-100 to-white' : 'bg-black/5')
+                 }
                  border-b ${isDarkMode ? 'border-white/10' : 'border-black/5'}
               `}
             onDoubleClick={() => maximizeWindow(id)}
@@ -197,17 +232,21 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
             </div>
 
             <div className="flex items-center gap-2">
-              <button
-                className={`p-1 rounded-md hover:bg-white/10 transition-colors group`}
+              <motion.button
+                whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                whileTap={{ scale: 0.95 }}
+                className={`p-1 rounded-md transition-colors group`}
                 onClick={(e) => {
                   e.stopPropagation();
                   minimizeWindow(id);
                 }}
               >
                 <LucideIcons.LuMinus size={14} className="opacity-50 group-hover:opacity-100" />
-              </button>
-              <button
-                className={`p-1 rounded-md hover:bg-white/10 transition-colors group`}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                whileTap={{ scale: 0.95 }}
+                className={`p-1 rounded-md transition-colors group`}
                 onClick={(e) => {
                   e.stopPropagation();
                   maximizeWindow(id);
@@ -224,8 +263,10 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
                     className="opacity-50 group-hover:opacity-100"
                   />
                 )}
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1, backgroundColor: '#ef4444', color: 'white', rotate: 90 }}
+                whileTap={{ scale: 0.95 }}
                 className={`p-1 rounded-md hover:bg-red-500 hover:text-white transition-colors group`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -233,7 +274,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
                 }}
               >
                 <LucideIcons.LuX size={14} className="opacity-50 group-hover:opacity-100" />
-              </button>
+              </motion.button>
             </div>
           </div>
 
