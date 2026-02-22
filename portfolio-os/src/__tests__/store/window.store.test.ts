@@ -27,14 +27,13 @@ describe('Window Store', () => {
 
   it('should close a window', () => {
     const { result } = renderHook(() => useWindowStore());
-    let windowId: string;
 
     act(() => {
       result.current.openWindow('terminal');
     });
 
     // Get the ID
-    windowId = Array.from(result.current.windows.keys())[0];
+    const windowId = Array.from(result.current.windows.keys())[0];
 
     // Check it's there
     expect(result.current.windows.size).toBe(1);
@@ -84,8 +83,8 @@ describe('Window Store', () => {
     });
 
     const windows = Array.from(result.current.windows.values());
-    const w1 = windows.find(w => w.appId === 'terminal')!;
-    const w2 = windows.find(w => w.appId === 'file-explorer')!;
+    const w1 = windows.find((w) => w.appId === 'terminal')!;
+    const w2 = windows.find((w) => w.appId === 'file-explorer')!;
 
     // w2 opened later, should have higher z-index
     expect(w2.zIndex).toBeGreaterThan(w1.zIndex);

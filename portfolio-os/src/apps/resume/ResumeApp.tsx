@@ -11,7 +11,7 @@ import {
   LuMapPin,
   LuPhone,
   LuGlobe,
-  LuLoader
+  LuLoader,
 } from 'react-icons/lu';
 import { PORTFOLIO_DATA } from '../../config/portfolio-data';
 
@@ -27,7 +27,9 @@ const ResumeContent: React.FC<{ data: typeof PORTFOLIO_DATA }> = ({ data }) => {
     <div className="p-8 sm:p-12 space-y-8 h-full bg-white text-gray-900">
       {/* Header */}
       <header className="border-b-2 border-gray-900 pb-6 mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 uppercase tracking-tight mb-2">{personal.name}</h1>
+        <h1 className="text-4xl font-bold text-gray-900 uppercase tracking-tight mb-2">
+          {personal.name}
+        </h1>
         <p className="text-xl text-gray-600 mb-4">{personal.title}</p>
 
         <div className="flex flex-wrap gap-4 text-sm text-gray-600">
@@ -58,9 +60,7 @@ const ResumeContent: React.FC<{ data: typeof PORTFOLIO_DATA }> = ({ data }) => {
           <span className="w-full h-px bg-blue-100"></span>
           Summary
         </h2>
-        <p className="text-gray-700 leading-relaxed text-sm text-justify">
-          {personal.bio}
-        </p>
+        <p className="text-gray-700 leading-relaxed text-sm text-justify">{personal.bio}</p>
       </section>
 
       {/* Experience */}
@@ -83,8 +83,11 @@ const ResumeContent: React.FC<{ data: typeof PORTFOLIO_DATA }> = ({ data }) => {
                 ))}
               </ul>
               <div className="mt-2 flex flex-wrap gap-1">
-                {exp.techUsed.map(tech => (
-                  <span key={tech} className="text-xs px-2 py-0.5 bg-gray-100 rounded text-gray-600">
+                {exp.techUsed.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-xs px-2 py-0.5 bg-gray-100 rounded text-gray-600"
+                  >
                     {tech}
                   </span>
                 ))}
@@ -139,15 +142,18 @@ const ResumeContent: React.FC<{ data: typeof PORTFOLIO_DATA }> = ({ data }) => {
           Key Projects
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {projects.filter(p => p.featured).slice(0, 4).map((project, index) => (
-            <div key={index} className="border border-gray-100 rounded p-3 bg-gray-50/50">
-              <h3 className="font-bold text-gray-900 text-sm mb-1">{project.title}</h3>
-              <p className="text-xs text-gray-600 mb-2 line-clamp-2">{project.description}</p>
-              <div className="text-xs text-blue-600 font-medium">
-                {project.techStack.slice(0, 3).join(', ')}
+          {projects
+            .filter((p) => p.featured)
+            .slice(0, 4)
+            .map((project, index) => (
+              <div key={index} className="border border-gray-100 rounded p-3 bg-gray-50/50">
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{project.title}</h3>
+                <p className="text-xs text-gray-600 mb-2 line-clamp-2">{project.description}</p>
+                <div className="text-xs text-blue-600 font-medium">
+                  {project.techStack.slice(0, 3).join(', ')}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </section>
 
@@ -222,32 +228,45 @@ ${personal.location} | ${PORTFOLIO_DATA.contact.email} | ${PORTFOLIO_DATA.contac
 ${personal.bio}
 
 ## Experience
-${experience.map(exp => `
+${experience
+  .map(
+    (exp) => `
 ### ${exp.role} at ${exp.company}
 ${exp.duration}
-${exp.description.map(d => `- ${d}`).join('\n')}
+${exp.description.map((d) => `- ${d}`).join('\n')}
 Technologies: ${exp.techUsed.join(', ')}
-`).join('\n')}
+`
+  )
+  .join('\n')}
 
 ## Education
-${education.map(edu => `
+${education
+  .map(
+    (edu) => `
 ### ${edu.degree}
 ${edu.university} | ${edu.timeline} | GPA: ${edu.cgpa}
 ${edu.description}
-`).join('\n')}
+`
+  )
+  .join('\n')}
 
 ## Skills
-${skills.map(skill => `- ${skill.name} (${skill.category})`).join('\n')}
+${skills.map((skill) => `- ${skill.name} (${skill.category})`).join('\n')}
 
 ## Projects
-${projects.filter(p => p.featured).map(p => `
+${projects
+  .filter((p) => p.featured)
+  .map(
+    (p) => `
 ### ${p.title}
 ${p.description}
 Tech: ${p.techStack.join(', ')}
-`).join('\n')}
+`
+  )
+  .join('\n')}
 
 ## Certifications
-${certifications.map(cert => `- ${cert.title} (${cert.issuer}, ${cert.date})`).join('\n')}
+${certifications.map((cert) => `- ${cert.title} (${cert.issuer}, ${cert.date})`).join('\n')}
     `.trim();
   };
 
@@ -312,7 +331,11 @@ ${certifications.map(cert => `- ${cert.title} (${cert.issuer}, ${cert.date})`).j
             disabled={isDownloading}
             className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-70 disabled:cursor-wait"
           >
-            {isDownloading ? <LuLoader className="w-4 h-4 animate-spin" /> : <LuDownload className="w-4 h-4" />}
+            {isDownloading ? (
+              <LuLoader className="w-4 h-4 animate-spin" />
+            ) : (
+              <LuDownload className="w-4 h-4" />
+            )}
             <span className="hidden sm:inline">Download PDF</span>
           </button>
         </div>
@@ -329,7 +352,7 @@ ${certifications.map(cert => `- ${cert.title} (${cert.issuer}, ${cert.date})`).j
               minHeight: isMobile ? 'auto' : '297mm', // A4 height
               transform: isMobile ? 'none' : `scale(${zoom / 100})`,
               transformOrigin: 'top center',
-              marginBottom: isMobile ? '0' : `${(zoom / 100) * 20}px`
+              marginBottom: isMobile ? '0' : `${(zoom / 100) * 20}px`,
             }}
             className={`bg-white shadow-xl ${isMobile ? 'rounded-none' : 'rounded-sm'} overflow-hidden print-full-width`}
           >
@@ -346,7 +369,7 @@ ${certifications.map(cert => `- ${cert.title} (${cert.issuer}, ${cert.date})`).j
 
       {/* Hidden Print Area */}
       <div className="hidden print:block print:w-full print:absolute print:top-0 print:left-0 print:z-50 bg-white">
-          <ResumeContent data={PORTFOLIO_DATA} />
+        <ResumeContent data={PORTFOLIO_DATA} />
       </div>
     </div>
   );

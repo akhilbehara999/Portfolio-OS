@@ -13,7 +13,7 @@ import {
   LuMessageSquare,
   LuType,
   LuLoader,
-  LuExternalLink
+  LuExternalLink,
 } from 'react-icons/lu';
 import { PORTFOLIO_DATA } from '../../config/portfolio-data';
 
@@ -31,7 +31,7 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -60,13 +60,13 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
         }
         break;
     }
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
     return error;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       validateField(name, value);
     }
@@ -90,7 +90,7 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
     setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     setIsSubmitting(false);
     setIsSuccess(true);
@@ -102,17 +102,22 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
 
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
-      case 'github': return LuGithub;
-      case 'linkedin': return LuLinkedin;
-      case 'twitter': return LuTwitter;
-      default: return LuExternalLink;
+      case 'github':
+        return LuGithub;
+      case 'linkedin':
+        return LuLinkedin;
+      case 'twitter':
+        return LuTwitter;
+      default:
+        return LuExternalLink;
     }
   };
 
   return (
-    <div className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-4' : 'p-0'}`}>
+    <div
+      className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-4' : 'p-0'}`}
+    >
       <div className={`mx-auto h-full flex ${isMobile ? 'flex-col gap-8' : 'flex-row'}`}>
-
         {/* Left Panel - Info */}
         <motion.div
           initial={{ x: -50, opacity: 0 }}
@@ -126,18 +131,18 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
               animate={{
                 y: [0, -20, 0],
                 rotate: [0, 5, 0],
-                scale: [1, 1.1, 1]
+                scale: [1, 1.1, 1],
               }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute top-10 right-10 w-64 h-64 bg-blue-200/20 rounded-full blur-3xl"
             />
             <motion.div
               animate={{
                 y: [0, 30, 0],
                 rotate: [0, -10, 0],
-                scale: [1, 1.2, 1]
+                scale: [1, 1.2, 1],
               }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute bottom-10 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl"
             />
           </div>
@@ -147,14 +152,14 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 10 }}
                 className="inline-block mb-4 p-3 bg-blue-100 rounded-2xl text-2xl"
               >
                 👋
               </motion.div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">Let's Connect</h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">Let&apos;s Connect</h1>
               <p className="text-lg text-gray-600">
-                I'm always open to new opportunities and collaborations.
+                I&apos;m always open to new opportunities and collaborations.
               </p>
             </div>
 
@@ -165,7 +170,10 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
                 </div>
                 <div>
                   <div className="text-sm text-gray-500 font-medium">Email</div>
-                  <a href={`mailto:${contact.email}`} className="text-gray-900 font-medium hover:text-blue-600 transition-colors">
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="text-gray-900 font-medium hover:text-blue-600 transition-colors"
+                  >
                     {contact.email}
                   </a>
                 </div>
@@ -205,7 +213,9 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
             </div>
 
             <div className="pt-8 border-t border-gray-200/50">
-              <h3 className="text-sm font-semibold text-gray-500 mb-4 uppercase tracking-wider">Follow Me</h3>
+              <h3 className="text-sm font-semibold text-gray-500 mb-4 uppercase tracking-wider">
+                Follow Me
+              </h3>
               <div className="flex gap-4">
                 {contact.socials.map((social) => {
                   const Icon = getSocialIcon(social.platform);
@@ -348,9 +358,13 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
                       <div>
                         <h4 className="font-medium text-green-900">Simulation Successful</h4>
                         <p className="text-sm text-green-700 mt-1">
-                          This is a demo. In production, this would send an email to {contact.email}.
+                          This is a demo. In production, this would send an email to {contact.email}
+                          .
                         </p>
-                        <a href={`mailto:${contact.email}`} className="text-sm font-medium text-green-800 underline mt-2 inline-block">
+                        <a
+                          href={`mailto:${contact.email}`}
+                          className="text-sm font-medium text-green-800 underline mt-2 inline-block"
+                        >
                           Open in Mail App
                         </a>
                       </div>

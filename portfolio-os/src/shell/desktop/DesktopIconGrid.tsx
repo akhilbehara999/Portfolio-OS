@@ -67,7 +67,7 @@ const DesktopIcon = ({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const IconComponent = getIconComponent(icon);
+  const IconComponent = React.useMemo(() => getIconComponent(icon), [icon]);
 
   const contextMenuItems = [
     { label: 'Open', action: () => onLaunch(id), icon: 'Maximize' },
@@ -93,7 +93,7 @@ const DesktopIcon = ({
           }}
         >
           <div className="w-12 h-12 flex items-center justify-center mb-1 text-white filter drop-shadow-md">
-            <IconComponent size={32} />
+            {React.createElement(IconComponent, { size: 32 })}
           </div>
           <span
             className="text-xs text-white text-center font-medium drop-shadow-md line-clamp-2 px-1 leading-tight w-full break-words"

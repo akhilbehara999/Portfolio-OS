@@ -14,7 +14,7 @@ vi.mock('../../core/file-system/virtual-fs', () => ({
   virtualFs: {
     getNodeByPath: vi.fn(),
     getNode: vi.fn(),
-  }
+  },
 }));
 
 // Setup default mock values
@@ -25,10 +25,12 @@ const mockSetWallpaper = vi.fn();
 beforeEach(() => {
   vi.restoreAllMocks();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (useAppStore as any).mockReturnValue({
     launchApp: mockLaunchApp,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (useThemeStore as any).mockReturnValue({
     setTheme: mockSetTheme,
     setWallpaper: mockSetWallpaper,
@@ -36,10 +38,12 @@ beforeEach(() => {
   });
 
   // Also need getState for theme store as it is used directly in some places
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (useThemeStore as any).getState = () => ({
     currentTheme: { name: 'Default' },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (useOSStore as any).mockReturnValue({
     uptime: 100,
     deviceMode: 'desktop',

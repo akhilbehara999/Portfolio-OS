@@ -38,10 +38,10 @@ export const RippleEffect: React.FC = () => {
             animate={{
               opacity: 0,
               scale: 4,
-              borderWidth: '0px'
+              borderWidth: '0px',
             }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="absolute rounded-full border-white bg-white/10"
             style={{
               left: ripple.x - 50, // Center the 100px ripple

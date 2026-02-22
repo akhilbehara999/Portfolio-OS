@@ -35,10 +35,14 @@ const Clock = () => {
   return (
     <div className="flex font-mono text-sm font-bold tracking-widest">
       {chars.map((char, i) => {
-         if (char === ':' || char === ' ') {
-            return <span key={i} className="opacity-50">{char}</span>;
-         }
-         return <Digit key={`${i}-${char}`} value={char} />;
+        if (char === ':' || char === ' ') {
+          return (
+            <span key={i} className="opacity-50">
+              {char}
+            </span>
+          );
+        }
+        return <Digit key={`${i}-${char}`} value={char} />;
       })}
     </div>
   );
@@ -117,9 +121,7 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
 
       {/* Clock */}
       <div
-        className={`select-none cursor-default ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-800'
-        }`}
+        className={`select-none cursor-default ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}
       >
         <Clock />
       </div>

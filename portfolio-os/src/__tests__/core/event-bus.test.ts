@@ -47,8 +47,8 @@ describe('Event Bus', () => {
         appId: 'test',
         type: 'info',
         timestamp: Date.now(),
-        isRead: false
-      }
+        isRead: false,
+      },
     });
 
     const history = eventBus.getHistory();

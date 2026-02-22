@@ -15,11 +15,10 @@ interface FormattedTime {
  * Updates every second.
  */
 export const useClock = (use24HourFormat: boolean = false): FormattedTime => {
-  const [now, setNow] = useState(new Date());
+  const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    // Initial update to sync
-    setNow(new Date());
+    // Initial update handled in useState
 
     const timer = setInterval(() => {
       setNow(new Date());

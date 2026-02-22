@@ -55,7 +55,7 @@ describe('Virtual File System', () => {
       // home parent: root
 
       const breadcrumb = virtualFs.getBreadcrumb('resume');
-      const names = breadcrumb.map(node => node.name);
+      const names = breadcrumb.map((node) => node.name);
 
       expect(names).toEqual(['root', 'home', 'user', 'Documents', 'Resume.pdf']);
     });

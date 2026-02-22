@@ -34,7 +34,7 @@ export const WallpaperLayer: React.FC = () => {
     const checkPerformance = () => {
       const isLowEnd =
         (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-        // @ts-ignore - deviceMemory is experimental
+        // @ts-expect-error -- deviceMemory is experimental
         (navigator.deviceMemory && navigator.deviceMemory <= 4);
 
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

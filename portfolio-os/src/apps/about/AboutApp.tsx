@@ -82,10 +82,16 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
   const isMobile = mode === 'mobile';
 
   return (
-    <div className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-6 pb-24' : 'p-8'}`}>
-      <StaggerContainer className={`mx-auto flex flex-col gap-8 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}>
+    <div
+      className={`h-full w-full overflow-y-auto bg-gray-50 text-gray-900 ${isMobile ? 'p-6 pb-24' : 'p-8'}`}
+    >
+      <StaggerContainer
+        className={`mx-auto flex flex-col gap-8 ${isMobile ? 'max-w-full' : 'max-w-4xl'}`}
+      >
         {/* Top Section */}
-        <StaggerItem className={`flex ${isMobile ? 'flex-col items-center text-center' : 'flex-row items-center text-left'} gap-8`}>
+        <StaggerItem
+          className={`flex ${isMobile ? 'flex-col items-center text-center' : 'flex-row items-center text-left'} gap-8`}
+        >
           {/* Profile Photo */}
           <div className="relative group">
             <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-75 blur transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
@@ -97,21 +103,19 @@ const AboutApp: React.FC<AboutAppProps> = ({ mode }) => {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <span className="text-4xl font-bold text-gray-400">
-                  {personal.name.charAt(0)}
-                </span>
+                <span className="text-4xl font-bold text-gray-400">{personal.name.charAt(0)}</span>
               )}
             </div>
           </div>
 
           {/* Profile Info */}
           <div className="flex-1 space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              {personal.name}
-            </h1>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900">{personal.name}</h1>
             <h2 className="text-xl font-medium text-gray-600">{personal.title}</h2>
 
-            <div className={`flex items-center gap-2 text-gray-500 ${isMobile ? 'justify-center' : 'justify-start'}`}>
+            <div
+              className={`flex items-center gap-2 text-gray-500 ${isMobile ? 'justify-center' : 'justify-start'}`}
+            >
               <LuMapPin className="h-4 w-4" />
               <span>{personal.location}</span>
             </div>

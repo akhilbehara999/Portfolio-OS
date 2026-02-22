@@ -40,28 +40,28 @@ export const useWindowResizeHandler = () => {
           hasChanged = true;
         }
         if (newX < 0) {
-            newX = 0;
-            hasChanged = true;
+          newX = 0;
+          hasChanged = true;
         }
 
         // Constraint: Keep on screen (Y)
         if (newY + newHeight > maxH) {
-            newY = Math.max(0, maxH - newHeight);
-            hasChanged = true;
+          newY = Math.max(0, maxH - newHeight);
+          hasChanged = true;
         }
         if (newY < 0) {
-            newY = 0;
-            hasChanged = true;
+          newY = 0;
+          hasChanged = true;
         }
 
         if (hasChanged) {
           // We must be careful not to trigger cascading updates if not needed.
           // But since we are inside an event handler, we are just dispatching actions.
           if (newWidth !== w.size.width || newHeight !== w.size.height) {
-             state.resizeWindow(w.id, { width: newWidth, height: newHeight });
+            state.resizeWindow(w.id, { width: newWidth, height: newHeight });
           }
           if (newX !== w.position.x || newY !== w.position.y) {
-             state.moveWindow(w.id, { x: newX, y: newY });
+            state.moveWindow(w.id, { x: newX, y: newY });
           }
         }
       });
@@ -70,14 +70,14 @@ export const useWindowResizeHandler = () => {
     // Debounce or throttle could be added here if resize events are too frequent
     let timeoutId: ReturnType<typeof setTimeout>;
     const debouncedResize = () => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(handleResize, 100);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleResize, 100);
     };
 
     window.addEventListener('resize', debouncedResize);
     return () => {
-        window.removeEventListener('resize', debouncedResize);
-        clearTimeout(timeoutId);
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(timeoutId);
     };
   }, []);
 };

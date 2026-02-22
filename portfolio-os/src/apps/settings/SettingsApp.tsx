@@ -15,7 +15,7 @@ import {
   LuLayoutGrid,
   LuMoon,
   LuSun,
-  LuRotateCcw
+  LuRotateCcw,
 } from 'react-icons/lu';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -39,23 +39,27 @@ const SettingsApp: React.FC = () => {
   return (
     <div className="flex h-full w-full bg-white dark:bg-slate-900 text-slate-900 dark:text-white overflow-hidden">
       {/* Sidebar / Navigation */}
-      <div className={`${isMobile ? 'w-16' : 'w-64'} flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col`}>
+      <div
+        className={`${isMobile ? 'w-16' : 'w-64'} flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col`}
+      >
         <div className="p-4 font-bold text-xl hidden md:block">Settings</div>
         <nav className="flex-1 overflow-y-auto py-2">
-          {tabs.filter(t => !t.hidden).map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as SettingsTab)}
-              className={`w-full flex items-center px-4 py-3 transition-colors ${
-                activeTab === tab.id
-                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-r-2 border-blue-500'
-                  : 'hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
-              }`}
-            >
-              <tab.icon size={20} className={isMobile ? 'mx-auto' : 'mr-3'} />
-              <span className={isMobile ? 'hidden' : 'block'}>{tab.label}</span>
-            </button>
-          ))}
+          {tabs
+            .filter((t) => !t.hidden)
+            .map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as SettingsTab)}
+                className={`w-full flex items-center px-4 py-3 transition-colors ${
+                  activeTab === tab.id
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-r-2 border-blue-500'
+                    : 'hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
+                }`}
+              >
+                <tab.icon size={20} className={isMobile ? 'mx-auto' : 'mr-3'} />
+                <span className={isMobile ? 'hidden' : 'block'}>{tab.label}</span>
+              </button>
+            ))}
         </nav>
       </div>
 
@@ -88,17 +92,29 @@ const SettingsApp: React.FC = () => {
 
 const AppearanceSettings: React.FC = () => {
   const {
-    currentTheme, setTheme,
-    currentWallpaper, setWallpaper,
-    isDarkMode, toggleDarkMode,
-    accentColor, setAccentColor,
-    transparency, setTransparency,
-    fontScale, setFontScale
+    currentTheme,
+    setTheme,
+    currentWallpaper,
+    setWallpaper,
+    isDarkMode,
+    toggleDarkMode,
+    accentColor,
+    setAccentColor,
+    transparency,
+    setTransparency,
+    fontScale,
+    setFontScale,
   } = useThemeStore();
 
   const colors = [
-    '#3b82f6', '#ef4444', '#10b981', '#f59e0b',
-    '#8b5cf6', '#ec4899', '#06b6d4', '#64748b'
+    '#3b82f6',
+    '#ef4444',
+    '#10b981',
+    '#f59e0b',
+    '#8b5cf6',
+    '#ec4899',
+    '#06b6d4',
+    '#64748b',
   ];
 
   return (
@@ -119,8 +135,14 @@ const AppearanceSettings: React.FC = () => {
             >
               <div className="h-20 w-full" style={{ background: preset.colors.background }}>
                 <div className="h-full w-full flex items-center justify-center space-x-2 opacity-50">
-                  <div className="w-8 h-8 rounded-lg shadow-sm" style={{ background: preset.colors.surface }} />
-                  <div className="w-8 h-8 rounded-full shadow-sm" style={{ background: preset.colors.accent }} />
+                  <div
+                    className="w-8 h-8 rounded-lg shadow-sm"
+                    style={{ background: preset.colors.surface }}
+                  />
+                  <div
+                    className="w-8 h-8 rounded-full shadow-sm"
+                    style={{ background: preset.colors.accent }}
+                  />
                 </div>
               </div>
               <div className="p-3 bg-white dark:bg-slate-800">
@@ -135,7 +157,9 @@ const AppearanceSettings: React.FC = () => {
       <section className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
         <div>
           <h3 className="font-semibold">Color Mode</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Switch between light and dark appearance</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Switch between light and dark appearance
+          </p>
         </div>
         <button
           onClick={toggleDarkMode}
@@ -155,7 +179,9 @@ const AppearanceSettings: React.FC = () => {
               key={color}
               onClick={() => setAccentColor(color)}
               className={`w-10 h-10 rounded-full transition-transform hover:scale-110 flex items-center justify-center ${
-                accentColor === color ? 'ring-2 ring-offset-2 ring-offset-slate-50 dark:ring-offset-slate-900 ring-blue-500' : ''
+                accentColor === color
+                  ? 'ring-2 ring-offset-2 ring-offset-slate-50 dark:ring-offset-slate-900 ring-blue-500'
+                  : ''
               }`}
               style={{ backgroundColor: color }}
             >
@@ -188,17 +214,18 @@ const AppearanceSettings: React.FC = () => {
               <div
                 className="w-full h-full bg-cover bg-center"
                 style={{
-                  background: wp.type === 'static' || wp.type === 'gradient'
-                    ? wp.source
-                    : `url(${wp.thumbnail})`, // Fallback/Thumbnail logic ideally
-                  backgroundColor: '#333'
+                  background:
+                    wp.type === 'static' || wp.type === 'gradient'
+                      ? wp.source
+                      : `url(${wp.thumbnail})`, // Fallback/Thumbnail logic ideally
+                  backgroundColor: '#333',
                 }}
               >
                 {/* For SVG data URIs, we can use img */}
                 <img src={wp.source} alt={wp.name} className="w-full h-full object-cover" />
               </div>
               <div className="absolute inset-0 bg-black/40 flex items-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                 <span className="text-white text-xs font-medium">{wp.name}</span>
+                <span className="text-white text-xs font-medium">{wp.name}</span>
               </div>
             </button>
           ))}
@@ -245,21 +272,26 @@ const AppearanceSettings: React.FC = () => {
 const AnimationSettings: React.FC = () => {
   const { animationSpeed, setAnimationSpeed } = useThemeStore();
   const {
-    enableWindowAnimations, setWindowAnimations,
-    enableHoverEffects, setHoverEffects,
-    resetDefaults
+    enableWindowAnimations,
+    setWindowAnimations,
+    enableHoverEffects,
+    setHoverEffects,
+    resetDefaults,
   } = useSettingsStore();
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-         <h3 className="text-lg font-semibold">Animation Preferences</h3>
-         <button onClick={() => {
-           setAnimationSpeed(1);
-           resetDefaults('animations');
-         }} className="text-sm text-blue-500 hover:underline flex items-center">
-           <LuRotateCcw size={14} className="mr-1"/> Reset
-         </button>
+        <h3 className="text-lg font-semibold">Animation Preferences</h3>
+        <button
+          onClick={() => {
+            setAnimationSpeed(1);
+            resetDefaults('animations');
+          }}
+          className="text-sm text-blue-500 hover:underline flex items-center"
+        >
+          <LuRotateCcw size={14} className="mr-1" /> Reset
+        </button>
       </div>
 
       <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-6">
@@ -285,44 +317,44 @@ const AnimationSettings: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between">
-           <div>
-             <div className="font-medium">Window Animations</div>
-             <div className="text-sm text-slate-500">Animate windows when opening and closing</div>
-           </div>
-           <Switch checked={enableWindowAnimations} onChange={setWindowAnimations} />
+          <div>
+            <div className="font-medium">Window Animations</div>
+            <div className="text-sm text-slate-500">Animate windows when opening and closing</div>
+          </div>
+          <Switch checked={enableWindowAnimations} onChange={setWindowAnimations} />
         </div>
 
         <div className="flex items-center justify-between">
-           <div>
-             <div className="font-medium">Hover Effects</div>
-             <div className="text-sm text-slate-500">Enable visual feedback on hover</div>
-           </div>
-           <Switch checked={enableHoverEffects} onChange={setHoverEffects} />
+          <div>
+            <div className="font-medium">Hover Effects</div>
+            <div className="text-sm text-slate-500">Enable visual feedback on hover</div>
+          </div>
+          <Switch checked={enableHoverEffects} onChange={setHoverEffects} />
         </div>
       </section>
 
       {/* Preview Box */}
       <section>
-         <h3 className="text-lg font-semibold mb-4">Preview</h3>
-         <div className="h-40 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden relative">
-            <motion.div
-              className="w-20 h-20 bg-blue-500 rounded-lg shadow-lg"
-              animate={{
-                rotate: 360,
-                scale: [1, 1.2, 1],
-                borderRadius: ["20%", "50%", "20%"]
-              }}
-              transition={{
-                duration: animationSpeed > 0 ? 2 / animationSpeed : 0,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              whileHover={enableHoverEffects ? { scale: 1.1, backgroundColor: '#60a5fa' } : {}}
-            />
-            <div className="absolute bottom-2 text-xs text-slate-400">
-              Animation Speed: {animationSpeed}x
-            </div>
-         </div>
+        <h3 className="text-lg font-semibold mb-4">Preview</h3>
+        <div className="h-40 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden relative">
+          <motion.div
+            className="w-20 h-20 bg-blue-500 rounded-lg shadow-lg"
+            animate={{
+              rotate: 360,
+              scale: [1, 1.2, 1],
+              borderRadius: ['20%', '50%', '20%'],
+            }}
+            transition={{
+              duration: animationSpeed > 0 ? 2 / animationSpeed : 0,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            whileHover={enableHoverEffects ? { scale: 1.1, backgroundColor: '#60a5fa' } : {}}
+          />
+          <div className="absolute bottom-2 text-xs text-slate-400">
+            Animation Speed: {animationSpeed}x
+          </div>
+        </div>
       </section>
     </div>
   );
@@ -330,77 +362,86 @@ const AnimationSettings: React.FC = () => {
 
 const DesktopSettings: React.FC = () => {
   const {
-    taskbarPosition, setTaskbarPosition,
-    iconSize, setIconSize,
-    showDesktopIcons, setShowDesktopIcons,
-    enableWindowSnap, setWindowSnap,
-    resetDefaults
+    taskbarPosition,
+    setTaskbarPosition,
+    iconSize,
+    setIconSize,
+    showDesktopIcons,
+    setShowDesktopIcons,
+    enableWindowSnap,
+    setWindowSnap,
+    resetDefaults,
   } = useSettingsStore();
 
   return (
     <div className="space-y-6">
-       <div className="flex justify-between items-center">
-         <h3 className="text-lg font-semibold">Desktop Configuration</h3>
-         <button onClick={() => resetDefaults('desktop')} className="text-sm text-blue-500 hover:underline flex items-center">
-           <LuRotateCcw size={14} className="mr-1"/> Reset
-         </button>
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold">Desktop Configuration</h3>
+        <button
+          onClick={() => resetDefaults('desktop')}
+          className="text-sm text-blue-500 hover:underline flex items-center"
+        >
+          <LuRotateCcw size={14} className="mr-1" /> Reset
+        </button>
       </div>
 
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-6">
-         <div>
-            <label className="block font-medium mb-2">Taskbar Position</label>
-            <div className="grid grid-cols-4 gap-2">
-               {(['bottom', 'top', 'left', 'right'] as const).map(pos => (
-                 <button
-                   key={pos}
-                   onClick={() => setTaskbarPosition(pos)}
-                   disabled={pos !== 'bottom'} // Future support
-                   className={`px-4 py-2 rounded-lg border text-sm capitalize ${
-                     taskbarPosition === pos
-                       ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-600 dark:text-blue-400'
-                       : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 opacity-50 cursor-not-allowed'
-                   } ${pos === 'bottom' ? '!opacity-100 !cursor-pointer' : ''}`}
-                 >
-                   {pos}
-                 </button>
-               ))}
-            </div>
-            <p className="text-xs text-slate-400 mt-1">Currently only 'bottom' is supported.</p>
-         </div>
+        <div>
+          <label className="block font-medium mb-2">Taskbar Position</label>
+          <div className="grid grid-cols-4 gap-2">
+            {(['bottom', 'top', 'left', 'right'] as const).map((pos) => (
+              <button
+                key={pos}
+                onClick={() => setTaskbarPosition(pos)}
+                disabled={pos !== 'bottom'} // Future support
+                className={`px-4 py-2 rounded-lg border text-sm capitalize ${
+                  taskbarPosition === pos
+                    ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 opacity-50 cursor-not-allowed'
+                } ${pos === 'bottom' ? '!opacity-100 !cursor-pointer' : ''}`}
+              >
+                {pos}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-slate-400 mt-1">
+            Currently only &apos;bottom&apos; is supported.
+          </p>
+        </div>
 
-         <div>
-            <label className="block font-medium mb-2">Icon Size</label>
-            <div className="flex space-x-4">
-               {(['small', 'medium', 'large'] as const).map(size => (
-                  <label key={size} className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="iconSize"
-                      checked={iconSize === size}
-                      onChange={() => setIconSize(size)}
-                      className="text-blue-500 focus:ring-blue-500"
-                    />
-                    <span className="capitalize">{size}</span>
-                  </label>
-               ))}
-            </div>
-         </div>
+        <div>
+          <label className="block font-medium mb-2">Icon Size</label>
+          <div className="flex space-x-4">
+            {(['small', 'medium', 'large'] as const).map((size) => (
+              <label key={size} className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="iconSize"
+                  checked={iconSize === size}
+                  onChange={() => setIconSize(size)}
+                  className="text-blue-500 focus:ring-blue-500"
+                />
+                <span className="capitalize">{size}</span>
+              </label>
+            ))}
+          </div>
+        </div>
 
-         <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
-           <div>
-             <div className="font-medium">Show Desktop Icons</div>
-             <div className="text-sm text-slate-500">Toggle visibility of icons on the desktop</div>
-           </div>
-           <Switch checked={showDesktopIcons} onChange={setShowDesktopIcons} />
-         </div>
+        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
+          <div>
+            <div className="font-medium">Show Desktop Icons</div>
+            <div className="text-sm text-slate-500">Toggle visibility of icons on the desktop</div>
+          </div>
+          <Switch checked={showDesktopIcons} onChange={setShowDesktopIcons} />
+        </div>
 
-         <div className="flex items-center justify-between">
-           <div>
-             <div className="font-medium">Window Snapping</div>
-             <div className="text-sm text-slate-500">Snap windows to screen edges</div>
-           </div>
-           <Switch checked={enableWindowSnap} onChange={setWindowSnap} />
-         </div>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-medium">Window Snapping</div>
+            <div className="text-sm text-slate-500">Snap windows to screen edges</div>
+          </div>
+          <Switch checked={enableWindowSnap} onChange={setWindowSnap} />
+        </div>
       </div>
     </div>
   );
@@ -408,77 +449,85 @@ const DesktopSettings: React.FC = () => {
 
 const MobileSettings: React.FC = () => {
   const {
-    mobileGridDensity, setMobileGridDensity,
-    appDrawerStyle, setAppDrawerStyle,
-    gestureSensitivity, setGestureSensitivity,
-    resetDefaults
+    mobileGridDensity,
+    setMobileGridDensity,
+    appDrawerStyle,
+    setAppDrawerStyle,
+    gestureSensitivity,
+    setGestureSensitivity,
+    resetDefaults,
   } = useSettingsStore();
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-         <h3 className="text-lg font-semibold">Mobile Experience</h3>
-         <button onClick={() => resetDefaults('mobile')} className="text-sm text-blue-500 hover:underline flex items-center">
-           <LuRotateCcw size={14} className="mr-1"/> Reset
-         </button>
+        <h3 className="text-lg font-semibold">Mobile Experience</h3>
+        <button
+          onClick={() => resetDefaults('mobile')}
+          className="text-sm text-blue-500 hover:underline flex items-center"
+        >
+          <LuRotateCcw size={14} className="mr-1" /> Reset
+        </button>
       </div>
 
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-6">
         <div>
-           <label className="block font-medium mb-2">Home Screen Grid</label>
-           <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setMobileGridDensity('comfortable')}
-                className={`p-3 rounded-lg border text-left ${mobileGridDensity === 'comfortable' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700'}`}
-              >
-                <div className="font-medium">Comfortable</div>
-                <div className="text-xs text-slate-500">4 columns</div>
-              </button>
-              <button
-                onClick={() => setMobileGridDensity('compact')}
-                className={`p-3 rounded-lg border text-left ${mobileGridDensity === 'compact' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700'}`}
-              >
-                <div className="font-medium">Compact</div>
-                <div className="text-xs text-slate-500">5 columns</div>
-              </button>
-           </div>
+          <label className="block font-medium mb-2">Home Screen Grid</label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setMobileGridDensity('comfortable')}
+              className={`p-3 rounded-lg border text-left ${mobileGridDensity === 'comfortable' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700'}`}
+            >
+              <div className="font-medium">Comfortable</div>
+              <div className="text-xs text-slate-500">4 columns</div>
+            </button>
+            <button
+              onClick={() => setMobileGridDensity('compact')}
+              className={`p-3 rounded-lg border text-left ${mobileGridDensity === 'compact' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700'}`}
+            >
+              <div className="font-medium">Compact</div>
+              <div className="text-xs text-slate-500">5 columns</div>
+            </button>
+          </div>
         </div>
 
         <div>
-           <label className="block font-medium mb-2">App Drawer Style</label>
-           <div className="flex bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
-              <button
-                onClick={() => setAppDrawerStyle('grid')}
-                className={`flex-1 py-1 text-sm rounded-md transition-all ${appDrawerStyle === 'grid' ? 'bg-white dark:bg-slate-600 shadow-sm font-medium' : 'text-slate-500'}`}
-              >
-                Grid
-              </button>
-              <button
-                onClick={() => setAppDrawerStyle('list')}
-                className={`flex-1 py-1 text-sm rounded-md transition-all ${appDrawerStyle === 'list' ? 'bg-white dark:bg-slate-600 shadow-sm font-medium' : 'text-slate-500'}`}
-              >
-                List
-              </button>
-           </div>
+          <label className="block font-medium mb-2">App Drawer Style</label>
+          <div className="flex bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
+            <button
+              onClick={() => setAppDrawerStyle('grid')}
+              className={`flex-1 py-1 text-sm rounded-md transition-all ${appDrawerStyle === 'grid' ? 'bg-white dark:bg-slate-600 shadow-sm font-medium' : 'text-slate-500'}`}
+            >
+              Grid
+            </button>
+            <button
+              onClick={() => setAppDrawerStyle('list')}
+              className={`flex-1 py-1 text-sm rounded-md transition-all ${appDrawerStyle === 'list' ? 'bg-white dark:bg-slate-600 shadow-sm font-medium' : 'text-slate-500'}`}
+            >
+              List
+            </button>
+          </div>
         </div>
 
         <div>
-           <label className="block font-medium mb-2">Gesture Sensitivity</label>
-           <input
-             type="range"
-             min="0" max="2" step="1"
-             value={gestureSensitivity === 'low' ? 0 : gestureSensitivity === 'medium' ? 1 : 2}
-             onChange={(e) => {
-               const val = parseInt(e.target.value);
-               setGestureSensitivity(val === 0 ? 'low' : val === 1 ? 'medium' : 'high');
-             }}
-             className="w-full"
-           />
-           <div className="flex justify-between text-xs text-slate-500 mt-1">
-             <span>Low</span>
-             <span>Medium</span>
-             <span>High</span>
-           </div>
+          <label className="block font-medium mb-2">Gesture Sensitivity</label>
+          <input
+            type="range"
+            min="0"
+            max="2"
+            step="1"
+            value={gestureSensitivity === 'low' ? 0 : gestureSensitivity === 'medium' ? 1 : 2}
+            onChange={(e) => {
+              const val = parseInt(e.target.value);
+              setGestureSensitivity(val === 0 ? 'low' : val === 1 ? 'medium' : 'high');
+            }}
+            className="w-full"
+          />
+          <div className="flex justify-between text-xs text-slate-500 mt-1">
+            <span>Low</span>
+            <span>Medium</span>
+            <span>High</span>
+          </div>
         </div>
       </div>
     </div>
@@ -493,12 +542,10 @@ const ShortcutsSettings: React.FC = () => {
     { keys: ['Alt', 'Tab'], description: 'Switch windows' },
   ];
 
-  const appShortcuts = APP_REGISTRY
-    .filter(app => app.shortcut)
-    .map(app => ({
-      keys: app.shortcut!.split('+'),
-      description: `Launch ${app.name}`
-    }));
+  const appShortcuts = APP_REGISTRY.filter((app) => app.shortcut).map((app) => ({
+    keys: app.shortcut!.split('+'),
+    description: `Launch ${app.name}`,
+  }));
 
   return (
     <div className="space-y-6">
@@ -518,7 +565,10 @@ const ShortcutsSettings: React.FC = () => {
                 <td className="px-6 py-3">
                   <div className="flex gap-1">
                     {s.keys.map((k, j) => (
-                      <kbd key={j} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600 text-xs font-sans text-slate-600 dark:text-slate-300 shadow-sm">
+                      <kbd
+                        key={j}
+                        className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600 text-xs font-sans text-slate-600 dark:text-slate-300 shadow-sm"
+                      >
                         {k}
                       </kbd>
                     ))}
@@ -547,9 +597,9 @@ const AboutSettings: React.FC<{ uptime: number }> = ({ uptime }) => {
   return (
     <div className="space-y-8 text-center max-w-lg mx-auto pt-8">
       <div className="flex justify-center">
-         <div className="w-24 h-24 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
-            <LuLayoutGrid className="text-white w-12 h-12" />
-         </div>
+        <div className="w-24 h-24 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
+          <LuLayoutGrid className="text-white w-12 h-12" />
+        </div>
       </div>
 
       <div>
@@ -571,19 +621,27 @@ const AboutSettings: React.FC<{ uptime: number }> = ({ uptime }) => {
           <span className="font-medium font-mono">{formatUptime(uptime)}</span>
         </div>
         <div className="flex justify-between py-2">
-           <span className="text-slate-500">Source</span>
-           <a href="https://github.com/jules/portfolio-os" target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">GitHub</a>
+          <span className="text-slate-500">Source</span>
+          <a
+            href="https://github.com/jules/portfolio-os"
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            GitHub
+          </a>
         </div>
       </div>
 
-      <div className="text-xs text-slate-400">
-        © 2024 PortfolioOS. All rights reserved.
-      </div>
+      <div className="text-xs text-slate-400">© 2024 PortfolioOS. All rights reserved.</div>
     </div>
   );
 };
 
-const Switch: React.FC<{ checked: boolean; onChange: (checked: boolean) => void }> = ({ checked, onChange }) => (
+const Switch: React.FC<{ checked: boolean; onChange: (checked: boolean) => void }> = ({
+  checked,
+  onChange,
+}) => (
   <button
     onClick={() => onChange(!checked)}
     className={`w-12 h-6 rounded-full transition-colors relative ${

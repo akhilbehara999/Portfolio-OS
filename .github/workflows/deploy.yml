@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: portfolio-os/package-lock.json
+
+    - name: Install dependencies
+      working-directory: portfolio-os
+      run: npm ci
+
+    - name: Lint
+      working-directory: portfolio-os
+      run: npm run lint
+
+    - name: Test
+      working-directory: portfolio-os
+      run: npm run test
+
+    - name: Build
+      working-directory: portfolio-os
+      run: npm run build
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: portfolio-os/dist

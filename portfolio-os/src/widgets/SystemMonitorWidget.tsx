@@ -23,7 +23,7 @@ export const SystemMonitorWidget = ({ size = 'medium' }: SystemMonitorWidgetProp
       const load = Math.min(100, Math.max(5, baseLoad + Math.random() * 30 + windowCount * 2));
 
       setCpuUsage(Math.floor(load));
-      setCpuHistory(prev => {
+      setCpuHistory((prev) => {
         const newHistory = [...prev.slice(1), load];
         return newHistory;
       });
@@ -33,7 +33,7 @@ export const SystemMonitorWidget = ({ size = 'medium' }: SystemMonitorWidgetProp
       const mem = Math.min(95, baseMem + windowCount * 4 + Math.random() * 2);
       setMemoryUsage(Math.floor(mem));
 
-      setUptime(prev => prev + 2);
+      setUptime((prev) => prev + 2);
     }, 2000);
 
     return () => clearInterval(interval);
@@ -69,7 +69,9 @@ export const SystemMonitorWidget = ({ size = 'medium' }: SystemMonitorWidgetProp
       className={`glass-panel w-full h-full rounded-2xl flex flex-col justify-between overflow-hidden ${size === 'small' ? 'p-3' : 'p-4'}`}
     >
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">System Status</h3>
+        <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          System Status
+        </h3>
         <span className="text-xs font-mono text-slate-600 dark:text-slate-300 bg-slate-200 dark:bg-white/10 px-2 py-0.5 rounded">
           UP: {formatUptime(uptime)}
         </span>
@@ -79,8 +81,8 @@ export const SystemMonitorWidget = ({ size = 'medium' }: SystemMonitorWidgetProp
         {/* CPU Bar */}
         <div className="flex flex-col">
           <div className="flex justify-between text-xs mb-1">
-             <span className="text-slate-600 dark:text-slate-300 font-medium">CPU</span>
-             <span className="font-bold text-blue-500">{cpuUsage}%</span>
+            <span className="text-slate-600 dark:text-slate-300 font-medium">CPU</span>
+            <span className="font-bold text-blue-500">{cpuUsage}%</span>
           </div>
           <div className="h-1.5 w-full bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
             <motion.div
@@ -94,8 +96,8 @@ export const SystemMonitorWidget = ({ size = 'medium' }: SystemMonitorWidgetProp
         {/* Memory Bar */}
         <div className="flex flex-col">
           <div className="flex justify-between text-xs mb-1">
-             <span className="text-slate-600 dark:text-slate-300 font-medium">MEM</span>
-             <span className="font-bold text-purple-500">{memoryUsage}%</span>
+            <span className="text-slate-600 dark:text-slate-300 font-medium">MEM</span>
+            <span className="font-bold text-purple-500">{memoryUsage}%</span>
           </div>
           <div className="h-1.5 w-full bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
             <motion.div
@@ -109,22 +111,26 @@ export const SystemMonitorWidget = ({ size = 'medium' }: SystemMonitorWidgetProp
 
       {/* Graph Area */}
       <div className="flex-1 relative min-h-[40px] w-full bg-slate-50 dark:bg-black/20 rounded border border-slate-200 dark:border-white/5 overflow-hidden">
-        <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="w-full h-full absolute inset-0">
-            <motion.path
-              d={getPathData(cpuHistory, true)}
-              className="fill-blue-500/20"
-              animate={{ d: getPathData(cpuHistory, true) }}
-              transition={{ duration: 0.5, ease: "linear" }}
-            />
-            <motion.path
-              d={getPathData(cpuHistory, false)}
-              fill="none"
-              className="stroke-blue-500"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-              animate={{ d: getPathData(cpuHistory, false) }}
-              transition={{ duration: 0.5, ease: "linear" }}
-            />
+        <svg
+          viewBox="0 0 100 40"
+          preserveAspectRatio="none"
+          className="w-full h-full absolute inset-0"
+        >
+          <motion.path
+            d={getPathData(cpuHistory, true)}
+            className="fill-blue-500/20"
+            animate={{ d: getPathData(cpuHistory, true) }}
+            transition={{ duration: 0.5, ease: 'linear' }}
+          />
+          <motion.path
+            d={getPathData(cpuHistory, false)}
+            fill="none"
+            className="stroke-blue-500"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+            animate={{ d: getPathData(cpuHistory, false) }}
+            transition={{ duration: 0.5, ease: 'linear' }}
+          />
         </svg>
       </div>
 

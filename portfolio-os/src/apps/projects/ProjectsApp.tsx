@@ -103,7 +103,10 @@ const ProjectCard = ({
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
+      whileHover={{
+        y: -4,
+        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+      }}
       className={`group relative overflow-hidden rounded-xl border border-white/40 bg-white/60 shadow-sm backdrop-blur-md transition-all hover:border-blue-500/50 ${
         isGrid ? 'flex flex-col' : 'flex flex-row items-center gap-4 p-4'
       }`}
@@ -265,11 +268,7 @@ const ProjectDetails = ({ project, onClose }: { project: Project; onClose: () =>
         {/* Header Image */}
         <div className="relative mb-8 h-64 w-full overflow-hidden rounded-2xl bg-gray-100 md:h-96">
           {project.image && !project.image.includes('placeholder') ? (
-            <img
-              src={project.image}
-              alt={project.title}
-              className="h-full w-full object-cover"
-            />
+            <img src={project.image} alt={project.title} className="h-full w-full object-cover" />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-6xl font-bold text-gray-400">
               {project.title
@@ -320,30 +319,32 @@ const ProjectDetails = ({ project, onClose }: { project: Project; onClose: () =>
         </div>
 
         <div className="mt-12 border-t border-gray-200 pt-8">
-           <h3 className="mb-6 text-xl font-bold text-gray-900">More Projects</h3>
-           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-             {PORTFOLIO_DATA.projects
-               .filter(p => p.title !== project.title)
-               .slice(0, 2)
-               .map(related => (
-                 <div key={related.title} className="flex items-center gap-4 rounded-xl border border-gray-200 p-4 transition-colors hover:bg-gray-50">
-                    <div className="h-16 w-16 shrink-0 rounded-lg bg-gray-200 overflow-hidden">
-                       {related.image && !related.image.includes('placeholder') ? (
-                          <img src={related.image} className="w-full h-full object-cover" />
-                       ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-blue-100 text-blue-500 font-bold">
-                            {related.title.substring(0,2)}
-                          </div>
-                       )}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{related.title}</h4>
-                      <p className="text-sm text-gray-500 line-clamp-1">{related.description}</p>
-                    </div>
-                 </div>
-               ))
-             }
-           </div>
+          <h3 className="mb-6 text-xl font-bold text-gray-900">More Projects</h3>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {PORTFOLIO_DATA.projects
+              .filter((p) => p.title !== project.title)
+              .slice(0, 2)
+              .map((related) => (
+                <div
+                  key={related.title}
+                  className="flex items-center gap-4 rounded-xl border border-gray-200 p-4 transition-colors hover:bg-gray-50"
+                >
+                  <div className="h-16 w-16 shrink-0 rounded-lg bg-gray-200 overflow-hidden">
+                    {related.image && !related.image.includes('placeholder') ? (
+                      <img src={related.image} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-blue-100 text-blue-500 font-bold">
+                        {related.title.substring(0, 2)}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">{related.title}</h4>
+                    <p className="text-sm text-gray-500 line-clamp-1">{related.description}</p>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </motion.div>
@@ -374,19 +375,26 @@ const ProjectsApp: React.FC<ProjectsAppProps> = ({ mode }) => {
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-gray-50/50">
-      <div className={`flex h-full flex-col ${selectedProject ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+      <div
+        className={`flex h-full flex-col ${selectedProject ? 'overflow-hidden' : 'overflow-y-auto'}`}
+      >
         {/* Header */}
         <div className="sticky top-0 z-20 border-b border-gray-200/50 bg-white/80 p-6 backdrop-blur-md">
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-gray-900">
-                My Projects <span className="ml-2 text-lg font-normal text-gray-500">({filteredProjects.length})</span>
+                My Projects{' '}
+                <span className="ml-2 text-lg font-normal text-gray-500">
+                  ({filteredProjects.length})
+                </span>
               </h1>
               <div className="flex gap-2">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`rounded-lg p-2 transition-colors ${
-                    viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'
+                    viewMode === 'grid'
+                      ? 'bg-blue-100 text-blue-600'
+                      : 'text-gray-500 hover:bg-gray-100'
                   }`}
                 >
                   <LuLayoutGrid className="h-5 w-5" />
@@ -394,7 +402,9 @@ const ProjectsApp: React.FC<ProjectsAppProps> = ({ mode }) => {
                 <button
                   onClick={() => setViewMode('list')}
                   className={`rounded-lg p-2 transition-colors ${
-                    viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'
+                    viewMode === 'list'
+                      ? 'bg-blue-100 text-blue-600'
+                      : 'text-gray-500 hover:bg-gray-100'
                   }`}
                 >
                   <LuList className="h-5 w-5" />
@@ -464,7 +474,7 @@ const ProjectsApp: React.FC<ProjectsAppProps> = ({ mode }) => {
               </div>
               <h3 className="text-xl font-bold text-gray-900">No projects found</h3>
               <p className="mt-2 text-gray-500">
-                Try adjusting your search or filters to find what you're looking for.
+                Try adjusting your search or filters to find what you&apos;re looking for.
               </p>
               <button
                 onClick={() => {
@@ -483,10 +493,7 @@ const ProjectsApp: React.FC<ProjectsAppProps> = ({ mode }) => {
       {/* Detail View Overlay */}
       <AnimatePresence>
         {selectedProject && (
-          <ProjectDetails
-            project={selectedProject}
-            onClose={() => setSelectedProject(null)}
-          />
+          <ProjectDetails project={selectedProject} onClose={() => setSelectedProject(null)} />
         )}
       </AnimatePresence>
     </div>

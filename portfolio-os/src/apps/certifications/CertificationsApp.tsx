@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  LuAward,
-  LuExternalLink,
-  LuCalendar,
-  LuCheck,
-  LuSearch,
-} from 'react-icons/lu';
+import { LuAward, LuExternalLink, LuCalendar, LuCheck, LuSearch } from 'react-icons/lu';
 import {
   SiAmazon,
   SiGoogle,
@@ -39,7 +33,7 @@ interface CertificationsAppProps {
 }
 
 const CertificationCard = ({ cert, index }: { cert: Certification; index: number }) => {
-  const IssuerIcon = getIssuerIcon(cert.issuer);
+  const IssuerIcon = React.useMemo(() => getIssuerIcon(cert.issuer), [cert.issuer]);
 
   return (
     <motion.div
@@ -59,7 +53,9 @@ const CertificationCard = ({ cert, index }: { cert: Certification; index: number
       <div>
         <div className="mb-6 flex items-start justify-between">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-50 p-3 shadow-inner ring-1 ring-gray-100 transition-transform group-hover:scale-110">
-            <IssuerIcon className={`h-full w-full ${cert.issuer.includes('AWS') ? 'text-orange-500' : 'text-gray-700'}`} />
+            {React.createElement(IssuerIcon, {
+              className: `h-full w-full ${cert.issuer.includes('AWS') ? 'text-orange-500' : 'text-gray-700'}`,
+            })}
           </div>
           {cert.credentialId && (
             <div className="rounded-full bg-gray-100 px-3 py-1 text-[10px] font-mono font-medium text-gray-500">
@@ -111,9 +107,10 @@ const CertificationsApp: React.FC<CertificationsAppProps> = ({ mode }) => {
   const { certifications } = PORTFOLIO_DATA;
   const [filter, setFilter] = useState('');
 
-  const filteredCerts = certifications.filter(c =>
-    c.title.toLowerCase().includes(filter.toLowerCase()) ||
-    c.issuer.toLowerCase().includes(filter.toLowerCase())
+  const filteredCerts = certifications.filter(
+    (c) =>
+      c.title.toLowerCase().includes(filter.toLowerCase()) ||
+      c.issuer.toLowerCase().includes(filter.toLowerCase())
   );
 
   const isMobile = mode === 'mobile';
@@ -125,20 +122,18 @@ const CertificationsApp: React.FC<CertificationsAppProps> = ({ mode }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Certifications</h1>
-            <p className="mt-2 text-gray-600">
-              Verified skills and professional achievements.
-            </p>
+            <p className="mt-2 text-gray-600">Verified skills and professional achievements.</p>
           </div>
 
           <div className="relative">
-             <LuSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-             <input
-                type="text"
-                placeholder="Search certifications..."
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="pl-10 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 w-full md:w-64"
-             />
+            <LuSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search certifications..."
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="pl-10 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 w-full md:w-64"
+            />
           </div>
         </div>
 
@@ -172,9 +167,7 @@ const CertificationsApp: React.FC<CertificationsAppProps> = ({ mode }) => {
               <LuAward className="h-12 w-12 text-gray-400" />
             </div>
             <h3 className="text-xl font-bold text-gray-900">No certifications found</h3>
-            <p className="mt-2 text-gray-500">
-              Try adjusting your search criteria.
-            </p>
+            <p className="mt-2 text-gray-500">Try adjusting your search criteria.</p>
           </motion.div>
         )}
       </div>

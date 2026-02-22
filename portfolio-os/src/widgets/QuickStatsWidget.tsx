@@ -7,7 +7,17 @@ interface QuickStatsWidgetProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-const StatItem = ({ icon: Icon, count, label, delay }: { icon: any; count: number; label: string; delay: number }) => {
+const StatItem = ({
+  icon: Icon,
+  count,
+  label,
+  delay,
+}: {
+  icon: any;
+  count: number;
+  label: string;
+  delay: number;
+}) => {
   const ref = useRef(null);
   const isInView = useInView(ref);
 
@@ -47,9 +57,13 @@ export const QuickStatsWidget = ({ size = 'medium' }: QuickStatsWidgetProps) => 
   const experienceCount = PORTFOLIO_DATA.experience.length;
 
   return (
-    <div className={`glass-panel w-full h-full rounded-2xl flex flex-col ${size === 'small' ? 'p-3' : 'p-5'}`}>
+    <div
+      className={`glass-panel w-full h-full rounded-2xl flex flex-col ${size === 'small' ? 'p-3' : 'p-5'}`}
+    >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Overview</h3>
+        <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          Overview
+        </h3>
         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
       </div>
 

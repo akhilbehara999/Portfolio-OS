@@ -33,7 +33,10 @@ export const ClockWidget = ({ size = 'medium', mode = 'desktop' }: ClockWidgetPr
         animate="visible"
         className="flex flex-col items-center justify-center p-4 text-white w-full h-full"
       >
-        <h1 className="font-thin tracking-wider whitespace-nowrap" style={{ fontSize: '48px', fontWeight: 100, lineHeight: 1 }}>
+        <h1
+          className="font-thin tracking-wider whitespace-nowrap"
+          style={{ fontSize: '48px', fontWeight: 100, lineHeight: 1 }}
+        >
           {timeStr}
         </h1>
         <p className="mt-2 text-lg text-white/80">{dateStr}</p>
@@ -61,10 +64,7 @@ export const ClockWidget = ({ size = 'medium', mode = 'desktop' }: ClockWidgetPr
       animate="visible"
       className="glass-panel w-full h-full flex flex-col items-center justify-center p-4 rounded-2xl relative overflow-hidden text-slate-800 dark:text-slate-100"
     >
-      <div
-        className="relative w-32 h-32 mb-4 shrink-0"
-        style={{ transform: `scale(${scale})` }}
-      >
+      <div className="relative w-32 h-32 mb-4 shrink-0" style={{ transform: `scale(${scale})` }}>
         {/* Clock Face */}
         <div className="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-white/20 bg-white/50 dark:bg-white/5 backdrop-blur-sm shadow-inner" />
 
@@ -75,7 +75,7 @@ export const ClockWidget = ({ size = 'medium', mode = 'desktop' }: ClockWidgetPr
             className="absolute top-0 left-1/2 w-0.5 h-2 bg-slate-400 dark:bg-white/40 origin-bottom -translate-x-1/2"
             style={{
               transform: `translateX(-50%) rotate(${i * 30}deg) translateY(4px)`,
-              transformOrigin: '50% 64px'
+              transformOrigin: '50% 64px',
             }}
           />
         ))}
@@ -88,7 +88,7 @@ export const ClockWidget = ({ size = 'medium', mode = 'desktop' }: ClockWidgetPr
           className="absolute top-1/2 left-1/2 w-1.5 h-8 bg-slate-800 dark:bg-white/80 origin-bottom -translate-x-1/2 rounded-full z-10"
           style={{
             transform: `translateX(-50%) translateY(-100%) rotate(${hoursDegrees}deg)`,
-            transformOrigin: 'bottom center'
+            transformOrigin: 'bottom center',
           }}
         />
 
@@ -97,7 +97,7 @@ export const ClockWidget = ({ size = 'medium', mode = 'desktop' }: ClockWidgetPr
           className="absolute top-1/2 left-1/2 w-1 h-12 bg-slate-600 dark:bg-white/90 origin-bottom -translate-x-1/2 rounded-full z-10"
           style={{
             transform: `translateX(-50%) translateY(-100%) rotate(${minutesDegrees}deg)`,
-            transformOrigin: 'bottom center'
+            transformOrigin: 'bottom center',
           }}
         />
 
@@ -107,14 +107,16 @@ export const ClockWidget = ({ size = 'medium', mode = 'desktop' }: ClockWidgetPr
           style={{
             transform: `translateX(-50%) translateY(-100%) rotate(${secondsDegrees}deg)`,
             transformOrigin: 'bottom center',
-            transition: 'transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44)'
+            transition: 'transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
           }}
         />
       </div>
 
       <div className="text-center z-10">
         <h2 className="text-2xl font-bold tracking-wide font-mono">{timeStr}</h2>
-        <p className="text-xs text-slate-500 dark:text-white/60 uppercase tracking-widest mt-1">{dateStr}</p>
+        <p className="text-xs text-slate-500 dark:text-white/60 uppercase tracking-widest mt-1">
+          {dateStr}
+        </p>
       </div>
     </motion.div>
   );

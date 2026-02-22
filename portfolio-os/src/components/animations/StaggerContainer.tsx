@@ -31,7 +31,11 @@ const itemVariants: Variants = {
   },
 };
 
-export const StaggerContainer: React.FC<StaggerContainerProps> = ({ children, delay = 0, className = '' }) => {
+export const StaggerContainer: React.FC<StaggerContainerProps> = ({
+  children,
+  delay = 0,
+  className = '',
+}) => {
   return (
     <motion.div
       variants={containerVariants}

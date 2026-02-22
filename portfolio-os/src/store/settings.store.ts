@@ -59,48 +59,85 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
   persist(
     immer((set) => ({
       ...DEFAULT_SETTINGS,
-      setWindowAnimations: (enabled) => set((state) => { state.enableWindowAnimations = enabled; }),
-      setHoverEffects: (enabled) => set((state) => { state.enableHoverEffects = enabled; }),
-      setTimeFormat: (format) => set((state) => { state.timeFormat = format; }),
-      setSoundEnabled: (enabled) => set((state) => { state.soundEnabled = enabled; }),
-      setSoundVolume: (volume) => set((state) => { state.soundVolume = Math.max(0, Math.min(1, volume)); }),
-      setTaskbarPosition: (pos) => set((state) => { state.taskbarPosition = pos; }),
-      setIconSize: (size) => set((state) => { state.iconSize = size; }),
-      setShowDesktopIcons: (show) => set((state) => { state.showDesktopIcons = show; }),
-      setWindowSnap: (enabled) => set((state) => { state.enableWindowSnap = enabled; }),
-      setMobileGridDensity: (density) => set((state) => { state.mobileGridDensity = density; }),
-      setAppDrawerStyle: (style) => set((state) => { state.appDrawerStyle = style; }),
-      setGestureSensitivity: (sensitivity) => set((state) => { state.gestureSensitivity = sensitivity; }),
-      resetDefaults: (category) => set((state) => {
-        if (!category) {
-           Object.assign(state, DEFAULT_SETTINGS);
-        } else {
-           switch(category) {
-             case 'animations':
-               state.enableWindowAnimations = DEFAULT_SETTINGS.enableWindowAnimations;
-               state.enableHoverEffects = DEFAULT_SETTINGS.enableHoverEffects;
-               break;
-             case 'sound':
-               state.soundEnabled = DEFAULT_SETTINGS.soundEnabled;
-               state.soundVolume = DEFAULT_SETTINGS.soundVolume;
-               break;
-             case 'appearance':
-               state.timeFormat = DEFAULT_SETTINGS.timeFormat;
-               break;
-             case 'desktop':
-               state.taskbarPosition = DEFAULT_SETTINGS.taskbarPosition;
-               state.iconSize = DEFAULT_SETTINGS.iconSize;
-               state.showDesktopIcons = DEFAULT_SETTINGS.showDesktopIcons;
-               state.enableWindowSnap = DEFAULT_SETTINGS.enableWindowSnap;
-               break;
-             case 'mobile':
-               state.mobileGridDensity = DEFAULT_SETTINGS.mobileGridDensity;
-               state.appDrawerStyle = DEFAULT_SETTINGS.appDrawerStyle;
-               state.gestureSensitivity = DEFAULT_SETTINGS.gestureSensitivity;
-               break;
-           }
-        }
-      }),
+      setWindowAnimations: (enabled) =>
+        set((state) => {
+          state.enableWindowAnimations = enabled;
+        }),
+      setHoverEffects: (enabled) =>
+        set((state) => {
+          state.enableHoverEffects = enabled;
+        }),
+      setTimeFormat: (format) =>
+        set((state) => {
+          state.timeFormat = format;
+        }),
+      setSoundEnabled: (enabled) =>
+        set((state) => {
+          state.soundEnabled = enabled;
+        }),
+      setSoundVolume: (volume) =>
+        set((state) => {
+          state.soundVolume = Math.max(0, Math.min(1, volume));
+        }),
+      setTaskbarPosition: (pos) =>
+        set((state) => {
+          state.taskbarPosition = pos;
+        }),
+      setIconSize: (size) =>
+        set((state) => {
+          state.iconSize = size;
+        }),
+      setShowDesktopIcons: (show) =>
+        set((state) => {
+          state.showDesktopIcons = show;
+        }),
+      setWindowSnap: (enabled) =>
+        set((state) => {
+          state.enableWindowSnap = enabled;
+        }),
+      setMobileGridDensity: (density) =>
+        set((state) => {
+          state.mobileGridDensity = density;
+        }),
+      setAppDrawerStyle: (style) =>
+        set((state) => {
+          state.appDrawerStyle = style;
+        }),
+      setGestureSensitivity: (sensitivity) =>
+        set((state) => {
+          state.gestureSensitivity = sensitivity;
+        }),
+      resetDefaults: (category) =>
+        set((state) => {
+          if (!category) {
+            Object.assign(state, DEFAULT_SETTINGS);
+          } else {
+            switch (category) {
+              case 'animations':
+                state.enableWindowAnimations = DEFAULT_SETTINGS.enableWindowAnimations;
+                state.enableHoverEffects = DEFAULT_SETTINGS.enableHoverEffects;
+                break;
+              case 'sound':
+                state.soundEnabled = DEFAULT_SETTINGS.soundEnabled;
+                state.soundVolume = DEFAULT_SETTINGS.soundVolume;
+                break;
+              case 'appearance':
+                state.timeFormat = DEFAULT_SETTINGS.timeFormat;
+                break;
+              case 'desktop':
+                state.taskbarPosition = DEFAULT_SETTINGS.taskbarPosition;
+                state.iconSize = DEFAULT_SETTINGS.iconSize;
+                state.showDesktopIcons = DEFAULT_SETTINGS.showDesktopIcons;
+                state.enableWindowSnap = DEFAULT_SETTINGS.enableWindowSnap;
+                break;
+              case 'mobile':
+                state.mobileGridDensity = DEFAULT_SETTINGS.mobileGridDensity;
+                state.appDrawerStyle = DEFAULT_SETTINGS.appDrawerStyle;
+                state.gestureSensitivity = DEFAULT_SETTINGS.gestureSensitivity;
+                break;
+            }
+          }
+        }),
     })),
     {
       name: 'portfolio-settings-storage',

@@ -57,9 +57,11 @@ export const GreetingWidget = ({ size = 'medium' }: GreetingWidgetProps) => {
       }`}
     >
       <div className="flex items-center mb-2 min-h-[2.5rem]">
-        <h1 className={`font-bold tracking-tight text-slate-800 dark:text-slate-100 whitespace-nowrap ${
-          size === 'small' ? 'text-xl' : 'text-3xl'
-        }`}>
+        <h1
+          className={`font-bold tracking-tight text-slate-800 dark:text-slate-100 whitespace-nowrap ${
+            size === 'small' ? 'text-xl' : 'text-3xl'
+          }`}
+        >
           {displayedText}
         </h1>
         {isTyping && (
@@ -73,7 +75,9 @@ export const GreetingWidget = ({ size = 'medium' }: GreetingWidgetProps) => {
         )}
       </div>
 
-      <div className={`text-slate-600 dark:text-slate-300 ${size === 'small' ? 'text-sm' : 'text-lg'}`}>
+      <div
+        className={`text-slate-600 dark:text-slate-300 ${size === 'small' ? 'text-sm' : 'text-lg'}`}
+      >
         <p className="font-medium text-slate-900 dark:text-white">{name}</p>
         <p className="text-sm opacity-70 mt-1">{dateStr}</p>
       </div>

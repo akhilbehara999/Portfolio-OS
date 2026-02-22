@@ -1,7 +1,13 @@
 import { useCallback } from 'react';
 import { useSettingsStore } from '../store/settings.store';
 
-export type SoundType = 'window-open' | 'window-close' | 'notification' | 'click' | 'error' | 'startup';
+export type SoundType =
+  | 'window-open'
+  | 'window-close'
+  | 'notification'
+  | 'click'
+  | 'error'
+  | 'startup';
 
 class SoundManager {
   private static instance: SoundManager;
@@ -169,31 +175,34 @@ class SoundManager {
   }
 
   private playStartup(ctx: AudioContext, time: number, vol: number) {
-     // A simple major chord arpeggio
-     const notes = [440, 554.37, 659.25, 880]; // A4, C#5, E5, A5
-     notes.forEach((freq, i) => {
-        const t = time + i * 0.1;
-        const dur = 1.5;
-        const osc = ctx.createOscillator();
-        const gain = this.createGain(ctx, t, dur, vol * 0.4);
+    // A simple major chord arpeggio
+    const notes = [440, 554.37, 659.25, 880]; // A4, C#5, E5, A5
+    notes.forEach((freq, i) => {
+      const t = time + i * 0.1;
+      const dur = 1.5;
+      const osc = ctx.createOscillator();
+      const gain = this.createGain(ctx, t, dur, vol * 0.4);
 
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, t);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
 
-        osc.connect(gain);
-        osc.start(t);
-        osc.stop(t + dur);
-     });
+      osc.connect(gain);
+      osc.start(t);
+      osc.stop(t + dur);
+    });
   }
 }
 
 export const useSound = () => {
   const { soundEnabled, soundVolume } = useSettingsStore();
 
-  const playSound = useCallback((type: SoundType) => {
-    if (!soundEnabled) return;
-    SoundManager.getInstance().play(type, soundVolume);
-  }, [soundEnabled, soundVolume]);
+  const playSound = useCallback(
+    (type: SoundType) => {
+      if (!soundEnabled) return;
+      SoundManager.getInstance().play(type, soundVolume);
+    },
+    [soundEnabled, soundVolume]
+  );
 
   return { playSound };
 };

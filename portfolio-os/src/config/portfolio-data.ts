@@ -196,8 +196,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
   projects: [
     {
       title: 'AI Portfolio OS',
-      description:
-        'A web-based operating system interface for showcasing portfolio content.',
+      description: 'A web-based operating system interface for showcasing portfolio content.',
       longDescription:
         'Developed a comprehensive React-based operating system simulation that serves as an interactive portfolio. Features include a window management system, taskbar, start menu, and fully functional applications including a terminal, file explorer, and settings manager. Implemented using TypeScript, Tailwind CSS, and Zustand for state management.',
       techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Zustand', 'Vite'],
@@ -209,8 +208,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     },
     {
       title: 'Neural Style Transfer App',
-      description:
-        'Application that applies artistic styles to images using deep learning.',
+      description: 'Application that applies artistic styles to images using deep learning.',
       longDescription:
         'Built a web application that uses a pre-trained VGG19 network to perform neural style transfer. Users can upload a content image and a style image to generate unique artwork. The backend is powered by Flask and TensorFlow, with a React frontend.',
       techStack: ['Python', 'TensorFlow', 'Flask', 'React'],
@@ -221,8 +219,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     },
     {
       title: 'E-commerce Analytics Dashboard',
-      description:
-        'Real-time analytics dashboard for tracking sales and user behavior.',
+      description: 'Real-time analytics dashboard for tracking sales and user behavior.',
       longDescription:
         'Designed and implemented a dashboard for e-commerce platforms to visualize sales data, user demographics, and inventory levels. Utilized D3.js for interactive charts and Firebase for real-time data synchronization.',
       techStack: ['React', 'D3.js', 'Firebase', 'Material UI'],
@@ -244,8 +241,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     },
     {
       title: 'Task Management CLI',
-      description:
-        'A command-line interface tool for managing developer tasks efficiently.',
+      description: 'A command-line interface tool for managing developer tasks efficiently.',
       longDescription:
         'Developed a CLI tool using Rust that helps developers manage their todo lists, track time spent on tasks, and generate productivity reports. optimized for performance and ease of use.',
       techStack: ['Rust', 'CLI', 'SQLite'],
@@ -256,8 +252,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     },
     {
       title: 'Medical Image Diagnosis',
-      description:
-        'Deep learning model for detecting pneumonia from X-ray images.',
+      description: 'Deep learning model for detecting pneumonia from X-ray images.',
       longDescription:
         'Trained a Convolutional Neural Network (CNN) on the Chest X-Ray dataset to classify images as normal or pneumonia-affected. Achieved 95% accuracy and deployed the model as a REST API.',
       techStack: ['Python', 'Keras', 'FastAPI', 'Docker'],

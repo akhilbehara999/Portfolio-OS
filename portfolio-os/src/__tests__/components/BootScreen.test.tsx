@@ -24,10 +24,11 @@ vi.mock('framer-motion', async () => {
   const actual = await vi.importActual('framer-motion');
   return {
     ...actual,
-    AnimatePresence: ({ children }: any) => {
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => {
       return <div data-testid="animate-presence">{children}</div>;
     },
     motion: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     },
   };
@@ -36,10 +37,12 @@ vi.mock('framer-motion', async () => {
 describe('BootScreen', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (useSettingsStore as any).mockReturnValue({
       soundEnabled: true,
       setSoundEnabled: vi.fn(),
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (useSound as any).mockReturnValue({
       playSound: vi.fn(),
     });
@@ -51,6 +54,7 @@ describe('BootScreen', () => {
   });
 
   it('renders progress bar and status messages', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (useBootSequence as any).mockReturnValue({
       progress: 50,
       statusMessage: 'Loading kernel...',
@@ -65,10 +69,13 @@ describe('BootScreen', () => {
       vi.advanceTimersByTime(2000);
     });
 
-    expect(screen.getByText((content) => content.includes('Loading kernel...'))).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes('Loading kernel...'))
+    ).toBeInTheDocument();
   });
 
   it('completes boot sequence', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (useBootSequence as any).mockReturnValue({
       progress: 100,
       statusMessage: 'Ready',
