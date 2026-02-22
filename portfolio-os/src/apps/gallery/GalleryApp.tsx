@@ -8,7 +8,7 @@ import {
   LuGithub,
   LuFilter
 } from 'react-icons/lu';
-import { PORTFOLIO_DATA, Project } from '../../config/portfolio-data';
+import { PORTFOLIO_DATA, type Project } from '../../config/portfolio-data';
 
 interface GalleryAppProps {
   windowId: string;
@@ -188,7 +188,7 @@ const GalleryApp: React.FC<GalleryAppProps> = () => {
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={1}
-                  onDragEnd={(e, { offset, velocity }) => {
+                  onDragEnd={(_, { offset, velocity }) => {
                     const swipe = swipePower(offset.x, velocity.x);
                     if (swipe < -swipeConfidenceThreshold) {
                       handleNext();

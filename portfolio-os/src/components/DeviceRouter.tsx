@@ -1,14 +1,14 @@
-import React, { useEffect, lazy } from 'react';
+import { useEffect, lazy } from 'react';
 import { useDeviceDetection } from '../hooks/useDeviceDetection';
 import { useOSStore } from '../store/os.store';
-import { AnimatePresence, motion } from 'framer-motion';
 
 // Lazy load shells for code splitting
+import MobileShell from '../shell/mobile/MobileShell';
 const DesktopShell = lazy(() => import('../shell/desktop/DesktopShell'));
-const MobileShell = lazy(() => import('../shell/mobile/MobileShell'));
+// const MobileShell = lazy(() => import('../shell/mobile/MobileShell'));
 
 export const DeviceRouter = () => {
-  const { isMobile, deviceMode } = useDeviceDetection();
+  const { isMobile, isTablet, deviceMode } = useDeviceDetection();
   // We sync device mode with store for global access
   const setDeviceMode = useOSStore((state) => state.setDeviceMode);
 
@@ -16,31 +16,21 @@ export const DeviceRouter = () => {
     setDeviceMode(deviceMode);
   }, [deviceMode, setDeviceMode]);
 
+  // Use Mobile Shell for both mobile and tablet portrait (width < 1024px)
+  // Tablet landscape (>= 1024px) is treated as desktop by useDeviceDetection
+  const shouldUseMobileShell = isMobile || isTablet;
+
   return (
-    <AnimatePresence mode="wait">
-      {isMobile ? (
-        <motion.div
-          key="mobile-shell"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="h-full w-full"
-        >
+    <>
+      {shouldUseMobileShell ? (
+        <div className="h-full w-full">
           <MobileShell />
-        </motion.div>
+        </div>
       ) : (
-        <motion.div
-          key="desktop-shell"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="h-full w-full"
-        >
+        <div className="h-full w-full">
           <DesktopShell />
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 };

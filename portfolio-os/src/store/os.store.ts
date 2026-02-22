@@ -9,6 +9,7 @@ interface OSState {
   bootProgress: number;
   bootMessage: string;
   deviceMode: DeviceMode;
+  isLowPowerMode: boolean;
   isLocked: boolean;
   uptime: number;
   currentTime: Date;
@@ -34,6 +35,7 @@ export const useOSStore = create<OSState & OSActions>()(
       bootProgress: 0,
       bootMessage: 'Initializing...',
       deviceMode: 'desktop',
+      isLowPowerMode: false,
       isLocked: false,
       uptime: 0,
       currentTime: new Date(),
@@ -119,6 +121,14 @@ if (typeof window !== 'undefined') {
   };
 
   window.addEventListener('resize', handleResize);
+
+  // Detect low power mode or reduced motion preference
+  const isLowPower =
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  useOSStore.setState({ isLowPowerMode: isLowPower });
+
   // Initial check
   handleResize();
 

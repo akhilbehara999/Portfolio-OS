@@ -48,7 +48,6 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
   // Drag Tilt Logic
   const x = useMotionValue(0);
   const rotateY = useTransform(x, [-50, 50], [-2, 2]); // Tilt left/right
-  const rotateX = useMotionValue(0); // Could do up/down tilt too but let's keep it subtle horizontally
 
   const [snapPreview, setSnapPreview] = useState<{
     x: number;
@@ -199,14 +198,13 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
             opacity: isMinimized ? 0 : 1,
             scale: isMinimized ? 0.8 : 1,
             y: isMinimized ? 200 : 0,
-            rotateY: isDraggingRef.current ? rotateY : 0,
           }}
           style={{ rotateY }}
           transition={{ duration: 0.2 }}
         >
-          {/* Title Bar */}
+          {/* Title Bar - Increased height for touch targets */}
           <div
-            className={`window-titlebar h-10 flex items-center justify-between px-3 select-none flex-shrink-0
+            className={`window-titlebar h-12 flex items-center justify-between px-3 select-none flex-shrink-0
                  transition-colors duration-300
                  ${isDarkMode
                     ? (isFocused ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-black/20')
@@ -231,22 +229,22 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <motion.button
                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-1 rounded-md transition-colors group`}
+                className={`w-10 h-10 flex items-center justify-center rounded-md transition-colors group`}
                 onClick={(e) => {
                   e.stopPropagation();
                   minimizeWindow(id);
                 }}
               >
-                <LucideIcons.LuMinus size={14} className="opacity-50 group-hover:opacity-100" />
+                <LucideIcons.LuMinus size={16} className="opacity-50 group-hover:opacity-100" />
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-1 rounded-md transition-colors group`}
+                className={`w-10 h-10 flex items-center justify-center rounded-md transition-colors group`}
                 onClick={(e) => {
                   e.stopPropagation();
                   maximizeWindow(id);
@@ -254,12 +252,12 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
               >
                 {isMaximized ? (
                   <LucideIcons.LuMinimize2
-                    size={14}
+                    size={16}
                     className="opacity-50 group-hover:opacity-100"
                   />
                 ) : (
                   <LucideIcons.LuMaximize2
-                    size={14}
+                    size={16}
                     className="opacity-50 group-hover:opacity-100"
                   />
                 )}
@@ -267,13 +265,13 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ windowState, children 
               <motion.button
                 whileHover={{ scale: 1.1, backgroundColor: '#ef4444', color: 'white', rotate: 90 }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-1 rounded-md hover:bg-red-500 hover:text-white transition-colors group`}
+                className={`w-10 h-10 flex items-center justify-center rounded-md hover:bg-red-500 hover:text-white transition-colors group`}
                 onClick={(e) => {
                   e.stopPropagation();
                   closeWindow(id);
                 }}
               >
-                <LucideIcons.LuX size={14} className="opacity-50 group-hover:opacity-100" />
+                <LucideIcons.LuX size={16} className="opacity-50 group-hover:opacity-100" />
               </motion.button>
             </div>
           </div>

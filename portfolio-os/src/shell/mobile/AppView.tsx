@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { AppDefinition } from '../../types/app.types';
 import { LuChevronLeft, LuMenu } from 'react-icons/lu';
 
@@ -20,7 +20,7 @@ export const AppView: React.FC<AppViewProps> = ({ app, onClose }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[50] bg-white dark:bg-gray-900 overflow-hidden"
+      className="fixed inset-0 z-[50] bg-white dark:bg-gray-900 overflow-hidden flex flex-col"
       initial={{ scale: 0.8, opacity: 0, borderRadius: "40px" }}
       animate={{ scale: 1, opacity: 1, borderRadius: "0px" }}
       exit={{ scale: 0.8, opacity: 0, borderRadius: "40px", y: 100 }}
@@ -37,7 +37,7 @@ export const AppView: React.FC<AppViewProps> = ({ app, onClose }) => {
       style={{ originY: 0.5 }} // Zoom from center
     >
       {/* App Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-10 pt-12">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-10 pt-[calc(var(--sat)+12px)]">
         <button
           onClick={onClose}
           className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-90"
@@ -58,7 +58,7 @@ export const AppView: React.FC<AppViewProps> = ({ app, onClose }) => {
       </div>
 
       {/* App Content */}
-      <div className="flex-1 overflow-auto h-[calc(100vh-88px)]">
+      <div className="flex-1 overflow-auto pb-[var(--sab)]">
         <Suspense
           fallback={
             <div className="flex items-center justify-center h-full">

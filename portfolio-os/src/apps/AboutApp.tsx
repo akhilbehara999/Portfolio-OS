@@ -1,1 +1,2 @@
-export { default } from './about/AboutApp';
+import AboutApp from './about/AboutApp';
+export default AboutApp;

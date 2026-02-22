@@ -62,7 +62,7 @@ export const LockScreen: React.FC = () => {
   return (
     <motion.div
       key="lock-screen"
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-between py-12 text-white overflow-hidden"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-between pt-[calc(var(--sat)+3rem)] pb-[calc(var(--sab)+3rem)] text-white overflow-hidden"
       initial={{ y: 0, opacity: 1 }}
       exit={{ y: '-100%', transition: { duration: 0.5, ease: 'easeInOut' } }}
       // Background with wallpaper and blur

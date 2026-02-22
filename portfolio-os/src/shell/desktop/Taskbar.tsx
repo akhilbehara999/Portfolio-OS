@@ -40,13 +40,18 @@ const DockIcon = ({
     return val - bounds.x - bounds.width / 2;
   });
 
-  const widthSync = useTransform(distance, [-150, 0, 150], [40, 60, 40]);
+  // Base size increased to 50px for touch friendliness
+  const widthSync = useTransform(distance, [-150, 0, 150], [50, 70, 50]);
   const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
   const Icon = getIconComponent(item.app!.icon);
 
+  // Detect touch capability to disable hover effects
+  const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+  const shouldEnableHover = enableHoverEffects && !isTouch;
+
   // Conditionally apply magnetic effect
-  const style = enableHoverEffects ? { width } : { width: 40 };
+  const style = shouldEnableHover ? { width } : { width: 50 };
 
   return (
     <div className="flex flex-col items-center justify-end h-full gap-1">
@@ -202,7 +207,7 @@ export const Taskbar: React.FC<TaskbarProps> = ({ onToggleNotifications }) => {
       <StartMenu isOpen={isStartOpen} onClose={() => setIsStartOpen(false)} />
 
       <motion.div
-        className={`fixed bottom-4 left-1/2 -translate-x-1/2 h-16 z-[1000] flex items-center px-4 rounded-2xl backdrop-blur-xl border shadow-2xl
+        className={`fixed bottom-[calc(1rem+var(--sab))] left-1/2 -translate-x-1/2 h-16 z-[1000] flex items-center px-4 rounded-2xl backdrop-blur-xl border shadow-2xl
           ${isDarkMode ? 'bg-black/60 border-white/10' : 'bg-white/60 border-white/40'}
         `}
         initial={{ y: 200 }}

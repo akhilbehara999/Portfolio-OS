@@ -12,8 +12,11 @@ import { useWindowStore } from '../../store/window.store';
 import { useOSStore } from '../../store/os.store';
 import { RippleEffect } from '../../components/effects/RippleEffect';
 import { CustomCursor } from './CustomCursor';
+import { useWindowResizeHandler } from '../../hooks/useWindowResizeHandler';
 
 export const DesktopShell: React.FC = () => {
+  useWindowResizeHandler();
+
   const { focusWindow } = useWindowStore();
   const { isLocked } = useOSStore();
   const desktopRef = useRef<HTMLDivElement>(null);

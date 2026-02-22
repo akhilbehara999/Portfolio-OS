@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useOSStore } from './store/os.store';
 import { useBootSequence } from './hooks/useBootSequence';
