@@ -12,7 +12,7 @@ import {
   LuZap,
   LuInfo,
   LuKeyboard,
-  LuLayout,
+  LuLayoutGrid,
   LuMoon,
   LuSun,
   LuRotateCcw
@@ -548,7 +548,7 @@ const AboutSettings: React.FC<{ uptime: number }> = ({ uptime }) => {
     <div className="space-y-8 text-center max-w-lg mx-auto pt-8">
       <div className="flex justify-center">
          <div className="w-24 h-24 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
-            <LuLayout className="text-white w-12 h-12" />
+            <LuLayoutGrid className="text-white w-12 h-12" />
          </div>
       </div>
 

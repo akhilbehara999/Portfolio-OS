@@ -20,9 +20,8 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity;
 };
 
-const GalleryApp: React.FC<GalleryAppProps> = ({ mode }) => {
+const GalleryApp: React.FC<GalleryAppProps> = () => {
   const { projects } = PORTFOLIO_DATA;
-  const isMobile = mode === 'mobile';
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);

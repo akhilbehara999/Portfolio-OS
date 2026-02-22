@@ -12,7 +12,7 @@ import {
   LuUser,
   LuMessageSquare,
   LuType,
-  LuLoader2,
+  LuLoader,
   LuExternalLink
 } from 'react-icons/lu';
 import { PORTFOLIO_DATA } from '../../config/portfolio-data';
@@ -317,7 +317,7 @@ const ContactApp: React.FC<ContactAppProps> = ({ mode }) => {
               >
                 {isSubmitting ? (
                   <>
-                    <LuLoader2 className="w-5 h-5 animate-spin" />
+                    <LuLoader className="w-5 h-5 animate-spin" />
                     Sending...
                   </>
                 ) : isSuccess ? (

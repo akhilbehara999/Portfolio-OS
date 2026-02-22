@@ -8,9 +8,9 @@ import {
   LuArrowRight,
   LuArrowUp,
   LuSearch,
-  LuGrid,
+  LuLayoutGrid,
   LuList,
-  LuHome,
+  LuHouse,
   LuMonitor,
   LuImage,
   LuFileText,
@@ -125,7 +125,7 @@ const FileExplorerApp: React.FC = () => {
   };
 
   const quickAccess = [
-    { name: 'Home', path: '/home/user', icon: LuHome },
+    { name: 'Home', path: '/home/user', icon: LuHouse },
     { name: 'Desktop', path: '/home/user/Desktop', icon: LuMonitor },
     { name: 'Documents', path: '/home/user/Documents', icon: LuFolder },
     { name: 'Projects', path: '/home/user/Projects', icon: LuBriefcase },
@@ -204,7 +204,7 @@ const FileExplorerApp: React.FC = () => {
              onClick={() => setViewMode('grid')}
              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
            >
-             <LuGrid size={16} />
+             <LuLayoutGrid size={16} />
            </button>
            <button
              onClick={() => setViewMode('list')}

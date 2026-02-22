@@ -11,7 +11,7 @@ import {
   LuMapPin,
   LuPhone,
   LuGlobe,
-  LuLoader2
+  LuLoader
 } from 'react-icons/lu';
 import { PORTFOLIO_DATA } from '../../config/portfolio-data';
 
@@ -312,7 +312,7 @@ ${certifications.map(cert => `- ${cert.title} (${cert.issuer}, ${cert.date})`).j
             disabled={isDownloading}
             className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-70 disabled:cursor-wait"
           >
-            {isDownloading ? <LuLoader2 className="w-4 h-4 animate-spin" /> : <LuDownload className="w-4 h-4" />}
+            {isDownloading ? <LuLoader className="w-4 h-4 animate-spin" /> : <LuDownload className="w-4 h-4" />}
             <span className="hidden sm:inline">Download PDF</span>
           </button>
         </div>
