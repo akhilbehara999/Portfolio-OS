@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useClock } from '../../hooks/useClock';
 import { useNotificationStore } from '../../store/notification.store';
 import { useThemeStore } from '../../store/theme.store';
@@ -10,11 +10,44 @@ export interface SystemTrayProps {
   className?: string;
 }
 
+const Digit = ({ value }: { value: string }) => (
+  <div className="relative w-[0.6em] h-[1.2em] overflow-hidden inline-block text-center">
+    <AnimatePresence mode="popLayout">
+      <motion.span
+        key={value}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -20, opacity: 0 }}
+        transition={{ duration: 0.3, ease: 'backOut' }}
+        className="absolute inset-0"
+      >
+        {value}
+      </motion.span>
+    </AnimatePresence>
+  </div>
+);
+
+const Clock = () => {
+  const { time } = useClock(); // "10:30 PM"
+  // Split time into chars
+  const chars = time.split('');
+
+  return (
+    <div className="flex font-mono text-sm font-bold tracking-widest">
+      {chars.map((char, i) => {
+         if (char === ':' || char === ' ') {
+            return <span key={i} className="opacity-50">{char}</span>;
+         }
+         return <Digit key={`${i}-${char}`} value={char} />;
+      })}
+    </div>
+  );
+};
+
 export const SystemTray: React.FC<SystemTrayProps> = ({
   onToggleNotifications,
   className = '',
 }) => {
-  const { time } = useClock();
   const { unreadCount } = useNotificationStore();
   const { isDarkMode, toggleDarkMode } = useThemeStore();
 
@@ -22,7 +55,7 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
     <div className={`flex items-center gap-4 px-2 ${className}`}>
       {/* Theme Toggle */}
       <motion.button
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.1, rotate: 180 }}
         whileTap={{ scale: 0.95 }}
         onClick={toggleDarkMode}
         className={`p-1.5 rounded-full transition-colors ${
@@ -70,22 +103,25 @@ export const SystemTray: React.FC<SystemTrayProps> = ({
         }`}
       >
         <LuBell className="w-5 h-5" />
-        {unreadCount > 0 && (
-          <motion.span
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-transparent"
-          />
-        )}
+        <AnimatePresence>
+          {unreadCount > 0 && (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-transparent"
+            />
+          )}
+        </AnimatePresence>
       </motion.button>
 
       {/* Clock */}
       <div
-        className={`text-sm font-medium tabular-nums select-none cursor-default ${
+        className={`select-none cursor-default ${
           isDarkMode ? 'text-gray-200' : 'text-gray-800'
         }`}
       >
-        {time}
+        <Clock />
       </div>
     </div>
   );
